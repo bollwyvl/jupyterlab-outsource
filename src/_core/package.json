@@ -1,0 +1,40 @@
+{
+  "author": "Dead Pixels Collective",
+  "bugs": {
+    "url": "https://github.com/deathbeds/jupyterlab-outsource/issues"
+  },
+  "peerDependencies": {
+    "@jupyterlab/application": "^0.18.4",
+    "@jupyterlab/notebook": "^0.18.4"
+  },
+  "devDependencies": {
+    "@jupyterlab/application": "^0.18.4",
+    "@jupyterlab/notebook": "^0.18.4"
+  },
+  "description": "Alternate editors for JupyterLab Source",
+  "files": [
+    "{lib,style}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}"
+  ],
+  "homepage": "https://github.com/deathbeds/jupyterlab-outsource",
+  "jupyterlab": {
+    "extension": "lib/extension.js"
+  },
+  "keywords": [
+    "jupyter",
+    "jupyterlab",
+    "jupyterlab-extension"
+  ],
+  "license": "BSD-3-Clause",
+  "main": "lib/index.js",
+  "name": "@deathbeds/jupyterlab-outsource",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deathbeds/jupyterlab-outsource.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "types": "lib/index.d.ts",
+  "version": "0.1.0"
+}

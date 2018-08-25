@@ -1,0 +1,45 @@
+{
+  "author": "Dead Pixels Collective",
+  "bugs": {
+    "url": "https://github.com/deathbeds/jupyterlab-outsource/issues"
+  },
+  "dependencies": {
+    "@jupyterlab/application": "^0.18.4",
+    "@deathbeds/jupyterlab-outsource": "^0.1.0",
+    "prosemirror-commands": "^1.0.3",
+    "prosemirror-example-setup": "^1.0.1",
+    "prosemirror-keymap": "^1.0.0",
+    "prosemirror-model": "^1.1.0",
+    "prosemirror-schema-basic": "^1.0.0",
+    "prosemirror-schema-list": "^1.0.0",
+    "prosemirror-state": "^1.0.2",
+    "prosemirror-view": "^1.0.8"
+  },
+  "description": "ProseMirror Rich Text Editing for JupyterLab",
+  "files": [
+    "{lib,style}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}"
+  ],
+  "homepage": "https://github.com/deathbeds/jupyterlab-outsource",
+  "jupyterlab": {
+    "extension": "lib/extension.js"
+  },
+  "keywords": [
+    "jupyter",
+    "jupyterlab",
+    "jupyterlab-extension",
+    "prosemirror"
+  ],
+  "license": "BSD-3-Clause",
+  "main": "lib/index.js",
+  "name": "@deathbeds/jupyterlab-outsource-prosemirror",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deathbeds/jupyterlab-outsource.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "types": "lib/index.d.ts",
+  "version": "0.1.0"
+}

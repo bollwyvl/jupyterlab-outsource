@@ -1,0 +1,11 @@
+# This is used by repo2docker. conda can install all the Jupyter dependencies.
+name: jupyterlab-outsource-dev
+
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  - jupyterlab >=0.34.2,<0.35
+  - nodejs >=8.9.3,<9
+  - python >=3.6,<3.7
