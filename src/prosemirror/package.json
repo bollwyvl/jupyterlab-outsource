@@ -3,17 +3,29 @@
   "bugs": {
     "url": "https://github.com/deathbeds/jupyterlab-outsource/issues"
   },
-  "dependencies": {
-    "@jupyterlab/application": "^0.18.4",
+  "peerDependencies": {
     "@deathbeds/jupyterlab-outsource": "^0.1.0",
-    "prosemirror-commands": "^1.0.3",
+    "@jupyterlab/application": "^0.18.4"
+  },
+  "dependencies": {
+    "prosemirror-commands": "^1.0.7",
     "prosemirror-example-setup": "^1.0.1",
     "prosemirror-keymap": "^1.0.0",
-    "prosemirror-model": "^1.1.0",
+    "prosemirror-model": "^1.6.1",
     "prosemirror-schema-basic": "^1.0.0",
-    "prosemirror-schema-list": "^1.0.0",
-    "prosemirror-state": "^1.0.2",
-    "prosemirror-view": "^1.0.8"
+    "prosemirror-schema-list": "^1.0.1",
+    "prosemirror-markdown": "^1.1.1",
+    "prosemirror-state": "^1.2.2",
+    "prosemirror-view": "^1.5.1"
+  },
+  "devDependencies": {
+    "@types/prosemirror-commands": "^1.0.0",
+    "@types/prosemirror-keymap": "^1.0.0",
+    "@types/prosemirror-model": "^1.1.0",
+    "@types/prosemirror-schema-basic": "^1.0.0",
+    "@types/prosemirror-schema-list": "^1.0.0",
+    "@types/prosemirror-state": "^1.0.0",
+    "@types/prosemirror-view": "^1.0.0"
   },
   "description": "ProseMirror Rich Text Editing for JupyterLab",
   "files": [

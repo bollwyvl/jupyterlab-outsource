@@ -9,6 +9,8 @@ export const PLUGIN_ID = '@deathbeds/jupyterlab-outsource:prosemirror';
 export const IOutsourceProsemirror = new Token<IOutsourceProsemirror>(PLUGIN_ID);
 /* tslint:enable */
 
-export interface IOutsourceProsemirror {
-  ready: Promise<void>;
-}
+export interface IOutsourceProsemirror {}
+
+export const CSS = {
+  WRAPPER: `jp-Outsource-ProseMirror-wrapper`
+};

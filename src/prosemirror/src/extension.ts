@@ -1,19 +1,23 @@
 import {JupyterLab, JupyterLabPlugin} from '@jupyterlab/application';
 
-import {IOutsource} from '@deathbeds/jupyterlab-outsource';
+import {IOutsourcerer} from '@deathbeds/jupyterlab-outsource';
 
 import {IOutsourceProsemirror, PLUGIN_ID} from '.';
 
+import {ProsemirrorFactory} from './factory';
+
 import '../style/index.css';
+import 'prosemirror-example-setup/style/style.css';
+import 'prosemirror-view/style/prosemirror.css';
 
 const extension: JupyterLabPlugin<IOutsourceProsemirror> = {
   id: PLUGIN_ID,
   autoStart: true,
   provides: IOutsourceProsemirror,
-  requires: [IOutsource],
-  activate: (app: JupyterLab, sourcerer: IOutsource): IOutsourceProsemirror => {
+  requires: [IOutsourcerer],
+  activate: (app: JupyterLab, sourcerer: IOutsourcerer): IOutsourceProsemirror => {
     console.log(`let's get prosemirroring ${app} ${sourcerer}`);
-    return null;
+    return sourcerer.register(new ProsemirrorFactory());
   },
 };
 

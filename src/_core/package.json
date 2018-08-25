@@ -5,10 +5,12 @@
   },
   "peerDependencies": {
     "@jupyterlab/application": "^0.18.4",
+    "@jupyterlab/apputils": "^0.18.4",
     "@jupyterlab/notebook": "^0.18.4"
   },
   "devDependencies": {
     "@jupyterlab/application": "^0.18.4",
+    "@jupyterlab/apputils": "^0.18.4",
     "@jupyterlab/notebook": "^0.18.4"
   },
   "description": "Alternate editors for JupyterLab Source",
