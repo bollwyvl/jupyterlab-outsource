@@ -1,10 +1,8 @@
-import {ReadonlyJSONObject} from '@phosphor/coreutils';
 import {UUID} from '@phosphor/coreutils';
 
 import {JupyterLab, JupyterLabPlugin} from '@jupyterlab/application';
 import {INotebookTracker, NotebookPanel} from '@jupyterlab/notebook';
 
-import {MarkdownCell} from '@jupyterlab/cells';
 import {MainAreaWidget, ICommandPalette} from '@jupyterlab/apputils';
 
 import {IOutsourcerer, PLUGIN_ID} from '.';
@@ -23,19 +21,11 @@ const extension: JupyterLabPlugin<IOutsourcerer> = {
     notebooks: INotebookTracker
   ): IOutsourcerer => {
     const {commands} = app;
-    const sourceror = new Sourcerer();
-    console.log(`let's get sourcing ${app} ${notebooks}`);
+    const sourceror = new Sourcerer({notebooks});
 
     // Get the current widget and activate unless the args specify otherwise.
-    function getCurrent(args: ReadonlyJSONObject): NotebookPanel | null {
-      const widget = notebooks.currentWidget;
-      const activate = args['activate'] !== false;
-
-      if (activate && widget) {
-        app.shell.activateById(widget.id);
-      }
-
-      return widget;
+    function getCurrent(): NotebookPanel | null {
+      return notebooks.currentWidget;
     }
 
     sourceror.factoryRegistered.connect((_, factory) => {
@@ -43,11 +33,12 @@ const extension: JupyterLabPlugin<IOutsourcerer> = {
       const category = 'Notebook Cell Operations';
       commands.addCommand(command, {
         label: `Create new ${factory.name} for input`,
-        execute: async (args) => {
+        isEnabled: () => (factory.isEnabled ? factory.isEnabled(sourceror) : true),
+        execute: async () => {
           // Clone the OutputArea
-          const current = getCurrent({...args, activate: false});
+          const current = getCurrent();
           const nb = current.content;
-          const model = (nb.activeCell as MarkdownCell).model;
+          const model = nb.activeCell.model;
           const content = await factory.createWidget({model});
 
           // Create a MainAreaWidget

@@ -1,13 +1,17 @@
 import {PromiseDelegate} from '@phosphor/coreutils';
 import {Signal} from '@phosphor/signaling';
+import {INotebookTracker} from '@jupyterlab/notebook';
+import {MarkdownCell, CodeCell} from '@jupyterlab/cells';
 
-import {IOutsourcerer, IOutsourceFactory} from '.';
+import {IOutsourcerer, IOutsourcererOptions, IOutsourceFactory} from '.';
 
 export class Sourcerer implements IOutsourcerer {
   private _ready = new PromiseDelegate<void>();
   private _factoryRegistered = new Signal<this, IOutsourceFactory>(this);
+  private _notebooks: INotebookTracker;
 
-  constructor() {
+  constructor(options: IOutsourcererOptions) {
+    this._notebooks = options.notebooks;
     this._ready.resolve(void 0);
   }
 
@@ -17,6 +21,16 @@ export class Sourcerer implements IOutsourcerer {
 
   get factoryRegistered() {
     return this._factoryRegistered;
+  }
+
+  get isMarkdownCell() {
+    const {activeCell} = this._notebooks;
+    return activeCell instanceof MarkdownCell;
+  }
+
+  get isCodeCell() {
+    const {activeCell} = this._notebooks;
+    return activeCell instanceof CodeCell;
   }
 
   register(factory: IOutsourceFactory) {

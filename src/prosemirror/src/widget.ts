@@ -1,4 +1,5 @@
 import {Widget} from '@phosphor/widgets';
+import {IObservableString} from '@jupyterlab/observables';
 
 import {IMarkdownCellModel} from '@jupyterlab/cells';
 
@@ -14,42 +15,65 @@ export class ProseMirrorSource extends Widget {
   private _model: IMarkdownCellModel;
   private _wrapper: HTMLDivElement;
   private _view: EditorView<any>;
+  private _lastSource: string = '';
 
   constructor(options: IOutsourceFactoryOptions) {
     super();
-
+    this.addClass(CSS.OUTER_WRAPPER);
     this._model = options.model as IMarkdownCellModel;
-    this._model.contentChanged.connect(() => {
-      console.log('contents changed', arguments);
-      let source = this._model.toJSON().source;
-      this._view.state = EditorState.create({
-        doc: (Markdown as any).defaultMarkdownParser.parse(typeof source === 'string' ? source : source.join('')),
-        plugins: (exampleSetup as any).exampleSetup({schema: (Markdown as any).schema})
-      });
-    });
+    this._model.value.changed.connect(this._contentChanged, this);
 
-    this.node.appendChild(this._wrapper = document.createElement('div'));
+    this.node.appendChild((this._wrapper = document.createElement('div')));
     this._wrapper.className = CSS.WRAPPER;
 
-    let fakeNode = document.createElement('h1');
-    fakeNode.textContent = 'hello';
     let that = this;
     let source = this._model.toJSON().source;
 
     this._view = new EditorView(this._wrapper, {
       state: EditorState.create({
-        doc: (Markdown as any).defaultMarkdownParser.parse(typeof source === 'string' ? source : source.join('')),
-        plugins: (exampleSetup as any).exampleSetup({schema: (Markdown as any).schema})
+        doc: (Markdown as any).defaultMarkdownParser.parse(
+          typeof source === 'string' ? source : source.join('')
+        ),
+        plugins: (exampleSetup as any).exampleSetup({schema: (Markdown as any).schema}),
       }),
-      dispatchTransaction(transaction: Transaction) { that._dispatch(transaction); },
+      dispatchTransaction(transaction: Transaction) {
+        that._pmChanged(transaction);
+      },
     });
   }
 
-  private _dispatch(transaction: Transaction) {
+  dispose() {
+    this._model.value.changed.disconnect(this._contentChanged, this);
+    super.dispose();
+  }
+
+  private _pmChanged(transaction: Transaction) {
     const newState = this._view.state.apply(transaction);
     this._view.updateState(newState);
-    console.log('dispatch', transaction, newState);
-    this._model.value.text = (Markdown as any).defaultMarkdownSerializer.serialize(this._view.state.doc);
-    // menu.dispatch(newState);
+    this._lastSource = (Markdown as any).defaultMarkdownSerializer.serialize(
+      this._view.state.doc
+    );
+    if (this._lastSource.trim() === this._model.value.text.trim()) {
+      return;
+    }
+    this._model.value.text = this._lastSource;
+  }
+
+  private _contentChanged(
+    model: IObservableString,
+    change: IObservableString.IChangedArgs
+  ) {
+    console.log('contents', model, change, this.parent.hasClass('jp-mod-active'));
+    let source = this._model.value.text || '';
+    if (this._lastSource && this._lastSource.trim() === source.trim()) {
+      return;
+    }
+    this._lastSource = source;
+    this._view.updateState(
+      EditorState.create({
+        doc: (Markdown as any).defaultMarkdownParser.parse(source),
+        plugins: (exampleSetup as any).exampleSetup({schema: (Markdown as any).schema}),
+      })
+    );
   }
 }
