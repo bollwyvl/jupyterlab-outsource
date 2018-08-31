@@ -19,6 +19,7 @@
     "prosemirror-view": "^1.5.1"
   },
   "devDependencies": {
+    "@deathbeds/jupyterlab-outsource": "^0.1.0",
     "@types/prosemirror-commands": "^1.0.0",
     "@types/prosemirror-keymap": "^1.0.0",
     "@types/prosemirror-model": "^1.1.0",

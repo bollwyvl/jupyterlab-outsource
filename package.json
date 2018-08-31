@@ -16,11 +16,12 @@
   "scripts": {
     "bootstrap": "jlpm && run-s bootstrap:js bootstrap:lab",
     "bootstrap:js": "jlpm lerna bootstrap && jlpm build",
-    "bootstrap:lab": "jlpm lab:link && jlpm lab:build",
+    "bootstrap:lab": "jlpm lab:ext && jlpm lab:link && jlpm lab:build",
     "build": "lerna run build",
     "clean": "run-p clean:*",
     "clean:lib": "lerna exec --parallel -- rimraf lib",
     "lab:build": "jupyter lab build --dev",
+    "lab:ext": "jupyter labextension install $(cat labextensions.txt) --no-build",
     "lab:link": "lerna exec -- jupyter labextension link . --no-build",
     "lint": "run-p lint:**",
     "lint:ts": "prettier --write *.json *.md *.yml && lerna exec -- prettier --write --config=../../.prettierrc ./src/**/*.ts ./src/**/*.tsx ./style/**/*.css ./*.json ./*.md && lerna exec -- tslint -c ../../tslint.json --fix ./src/**/*.ts",

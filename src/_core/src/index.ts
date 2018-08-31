@@ -3,6 +3,7 @@ import {Widget} from '@phosphor/widgets';
 import {ISignal} from '@phosphor/signaling';
 
 import {ICellModel} from '@jupyterlab/cells';
+import {INotebookTracker} from '@jupyterlab/notebook';
 
 export const PLUGIN_ID = '@deathbeds/jupyterlab-outsource';
 
@@ -17,6 +18,12 @@ export interface IOutsourcerer {
   ready: Promise<void>;
   register(factory: IOutsourceFactory): IOutsourceFactory;
   factoryRegistered: ISignal<IOutsourcerer, IOutsourceFactory>;
+  isMarkdownCell: boolean;
+  isCodeCell: boolean;
+}
+
+export interface IOutsourcererOptions {
+  notebooks?: INotebookTracker;
 }
 
 export interface IOutsourceFactory {
@@ -24,6 +31,7 @@ export interface IOutsourceFactory {
   readonly iconClass: string;
   readonly id: string;
   createWidget(options: IOutsourceFactoryOptions): Promise<Widget>;
+  isEnabled?(sourceror?: IOutsourcerer): boolean;
 }
 
 export interface IOutsourceFactoryOptions {
