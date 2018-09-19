@@ -1,0 +1,15 @@
+/* our stuff */
+.jp-Outsource-Blockly {
+  display: flex;
+  flex-direction: column;
+}
+
+.jp-Outsource-Blockly-wrapper {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.jp-Outsource-BlocklyIcon {
+  background-image: url("./img/blockly.svg");
+  background-size: contain;
+}
