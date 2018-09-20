@@ -52,7 +52,7 @@ const extension: JupyterLabPlugin<IOutsourcerer> = {
           widget.addClass('jp-Outsource-outsource');
           current.context.addSibling(widget, {
             ref: current.id,
-            mode: 'split-bottom',
+            mode: 'split-left',
           });
 
           // Remove the output view if the parent notebook is closed.

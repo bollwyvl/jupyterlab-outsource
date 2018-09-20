@@ -19,3 +19,8 @@ export const CSS = {
   OUTER_WRAPPER: NS,
   WRAPPER: `${NS}-wrapper`,
 };
+
+export interface IBlocklyMetadata {
+  workspace?: string;
+  toolbox?: string;
+}
