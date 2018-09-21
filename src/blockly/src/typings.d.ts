@@ -1,6 +1,7 @@
 declare module 'node-blockly/browser' {
   export interface IWorkspace {
     addChangeListener(callback: Function): void;
+    clear(): void;
   }
   export interface ILanguage {
     workspaceToCode(workspace: IWorkspace): string;
@@ -46,6 +47,8 @@ declare module 'node-blockly/browser' {
     workspaceToDom(workspace: IWorkspace): HTMLElement;
     domToWorkspace(node: Element, workspace: IWorkspace): string[];
     domToText(node: Element): string;
+    clearWorkspaceAndLoadFromXml(node: Element, workspace: IWorkspace): string[];
+    textToDom(xml: string): Element;
   }
 
   export interface IBlockly {
@@ -59,7 +62,8 @@ declare module 'node-blockly/browser' {
       context: any,
       callback: Function
     ): any[][];
-    onKeyDown_(evt: Event): void;
+    onKeyDown_(evt: Event): any;
+    getMainWorkspace(): IWorkspace;
   }
   const blocklyStatic: IBlockly;
   export default blocklyStatic;

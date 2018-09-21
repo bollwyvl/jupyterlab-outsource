@@ -1,13 +1,14 @@
 import {PromiseDelegate} from '@phosphor/coreutils';
 import {Signal} from '@phosphor/signaling';
 import {INotebookTracker} from '@jupyterlab/notebook';
-import {MarkdownCell, CodeCell} from '@jupyterlab/cells';
+import {MarkdownCell, CodeCell, ICellModel} from '@jupyterlab/cells';
 
 import {IOutsourcerer, IOutsourcererOptions, IOutsourceFactory} from '.';
 
 export class Sourcerer implements IOutsourcerer {
   private _ready = new PromiseDelegate<void>();
   private _factoryRegistered = new Signal<this, IOutsourceFactory>(this);
+  private _executeRequested = new Signal<this, ICellModel>(this);
   private _notebooks: INotebookTracker;
 
   constructor(options: IOutsourcererOptions) {
@@ -17,6 +18,10 @@ export class Sourcerer implements IOutsourcerer {
 
   get ready() {
     return this._ready.promise;
+  }
+
+  get executeRequested() {
+    return this._executeRequested;
   }
 
   get factoryRegistered() {
@@ -37,6 +42,10 @@ export class Sourcerer implements IOutsourcerer {
     Private.register(factory);
     this._factoryRegistered.emit(factory);
     return factory;
+  }
+
+  execute(cell: ICellModel) {
+    this._executeRequested.emit(cell);
   }
 }
 

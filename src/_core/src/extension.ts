@@ -1,7 +1,7 @@
 import {UUID} from '@phosphor/coreutils';
 
 import {JupyterLab, JupyterLabPlugin} from '@jupyterlab/application';
-import {INotebookTracker, NotebookPanel} from '@jupyterlab/notebook';
+import {NotebookActions, INotebookTracker, NotebookPanel} from '@jupyterlab/notebook';
 
 import {MainAreaWidget, ICommandPalette} from '@jupyterlab/apputils';
 
@@ -27,6 +27,26 @@ const extension: JupyterLabPlugin<IOutsourcerer> = {
     function getCurrent(): NotebookPanel | null {
       return notebooks.currentWidget;
     }
+
+    sourceror.executeRequested.connect((_, cell) => {
+      let executed = false;
+      notebooks.forEach(async (nb) => {
+        if (executed) {
+          return;
+        }
+        let cellCount = nb.model.cells.length;
+        for (let i = 0; i < cellCount; i++) {
+          if (cell.id === nb.model.cells.get(i).id) {
+            let oldIndex = nb.content.activeCellIndex;
+            nb.content.activeCellIndex = i;
+            await NotebookActions.run(nb.content, nb.context.session);
+            executed = true;
+            nb.content.activeCellIndex = oldIndex;
+            break;
+          }
+        }
+      });
+    });
 
     sourceror.factoryRegistered.connect((_, factory) => {
       const command = `${CommandIds.newSource}-${factory.id}`;

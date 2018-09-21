@@ -17,7 +17,7 @@ const extension: JupyterLabPlugin<IOutsourceBlockly> = {
   requires: [IOutsourcerer],
   activate: (app: JupyterLab, sourcerer: IOutsourcerer): IOutsourceBlockly => {
     console.log(`let's get blocklying ${app} ${sourcerer}`);
-    return sourcerer.register(new BlocklyFactory());
+    return sourcerer.register(new BlocklyFactory(sourcerer));
   },
 };
 

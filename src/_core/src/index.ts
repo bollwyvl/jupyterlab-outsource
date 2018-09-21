@@ -20,6 +20,8 @@ export interface IOutsourcerer {
   factoryRegistered: ISignal<IOutsourcerer, IOutsourceFactory>;
   isMarkdownCell: boolean;
   isCodeCell: boolean;
+  executeRequested: ISignal<IOutsourcerer, ICellModel>;
+  execute(cell: ICellModel): void;
 }
 
 export interface IOutsourcererOptions {
@@ -37,4 +39,5 @@ export interface IOutsourceFactory {
 export interface IOutsourceFactoryOptions {
   // FIXME: probably some other upstream model
   model: ICellModel;
+  sourceror?: IOutsourcerer;
 }

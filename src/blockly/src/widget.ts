@@ -2,7 +2,7 @@ import {Widget} from '@phosphor/widgets';
 
 import {ICodeCellModel} from '@jupyterlab/cells';
 
-import {IOutsourceFactoryOptions} from '@deathbeds/jupyterlab-outsource';
+import {IOutsourceFactoryOptions, IOutsourcerer} from '@deathbeds/jupyterlab-outsource';
 
 import Blockly, {IWorkspace} from 'node-blockly/browser';
 
@@ -11,6 +11,30 @@ import {CSS, PLUGIN_ID, IBlocklyMetadata} from '.';
 // tslint:disable
 const DEFAULT_TOOLBOX = require('!!raw-loader!../xml/toolbox.xml') as string;
 // tslint:enable
+
+export const SOURCEROR: {
+  instance: IOutsourcerer;
+} = {
+  instance: null,
+};
+
+const _onKeyDown = Blockly.onKeyDown_;
+Blockly.onKeyDown_ = (evt: KeyboardEvent) => {
+  const {code, ctrlKey, shiftKey} = evt;
+  const cell = Workspaces.cellForWorkspace(Blockly.getMainWorkspace());
+
+  if (code !== 'Enter') {
+    return _onKeyDown(evt);
+  }
+
+  if (shiftKey && ctrlKey) {
+    console.log('set AUTO EXECUTE');
+  }
+
+  if (ctrlKey) {
+    SOURCEROR.instance.execute(cell);
+  }
+};
 
 export class BlocklySource extends Widget {
   private _cellModel: ICodeCellModel;
@@ -30,6 +54,7 @@ export class BlocklySource extends Widget {
       this._workspace = Blockly.inject(this._wrapper, {
         toolbox: this.metadata.toolbox || DEFAULT_TOOLBOX,
       });
+      Workspaces.setByCell(this._cellModel, this._workspace);
       this._metadataToWorkspace();
       this._workspace.addChangeListener(() => this._workspaceChanged());
     }, 1);
@@ -40,11 +65,8 @@ export class BlocklySource extends Widget {
     if (!xml) {
       return;
     }
-    let parser = new DOMParser();
-    let dom = parser
-      .parseFromString(xml as string, 'application/xml')
-      .querySelector('xml');
-    Blockly.Xml.domToWorkspace(dom, this._workspace);
+    this._workspace.clear();
+    Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), this._workspace);
   }
 
   dispose() {
@@ -69,6 +91,10 @@ export class BlocklySource extends Widget {
     }
     this._lastXml = xml;
 
+    if (meta.workspace === this._lastXml) {
+      return;
+    }
+
     this.metadata = {
       ...meta,
       workspace: xml,
@@ -85,6 +111,12 @@ export class BlocklySource extends Widget {
 
   private _metadataChanged() {
     const oldSource = this._cellModel.value.text;
+
+    if (this._lastXml !== this.metadata.workspace) {
+      this._metadataToWorkspace();
+      return;
+    }
+
     let source = Blockly.Python.workspaceToCode(this._workspace)
       .trim()
       .replace(/  /g, '    ');
@@ -93,6 +125,26 @@ export class BlocklySource extends Widget {
 
     if (oldSource !== source) {
       this._cellModel.value.text = source;
+    }
+  }
+}
+
+namespace Workspaces {
+  const _Workspaces = new Map<ICodeCellModel, IWorkspace[]>();
+
+  export function setByCell(cell: ICodeCellModel, workspace: IWorkspace) {
+    _Workspaces.set(cell, [...getByCell(cell), workspace]);
+  }
+
+  export function getByCell(cell: ICodeCellModel) {
+    return _Workspaces.get(cell) || [];
+  }
+
+  export function cellForWorkspace(workspace: IWorkspace) {
+    for (const cell of _Workspaces.keys()) {
+      if (_Workspaces.get(cell).indexOf(workspace) > -1) {
+        return cell;
+      }
     }
   }
 }
