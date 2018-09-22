@@ -18,10 +18,14 @@ export interface IOutsourcerer {
   ready: Promise<void>;
   register(factory: IOutsourceFactory): IOutsourceFactory;
   factoryRegistered: ISignal<IOutsourcerer, IOutsourceFactory>;
+  widgetRequested: ISignal<IOutsourcerer, string>;
   isMarkdownCell: boolean;
   isCodeCell: boolean;
   executeRequested: ISignal<IOutsourcerer, ICellModel>;
   execute(cell: ICellModel): void;
+  factories: IOutsourceFactory[];
+  factory(id: string): IOutsourceFactory;
+  requestWidget(factoryName: string): void;
 }
 
 export interface IOutsourcererOptions {
@@ -41,3 +45,7 @@ export interface IOutsourceFactoryOptions {
   model: ICellModel;
   sourceror?: IOutsourcerer;
 }
+
+export const CSS = {
+  icon: 'jp-OutsourceIcon',
+};

@@ -63,7 +63,6 @@ export class ProseMirrorSource extends Widget {
     model: IObservableString,
     change: IObservableString.IChangedArgs
   ) {
-    console.log('contents', model, change, this.parent.hasClass('jp-mod-active'));
     let source = this._model.value.text || '';
     if (this._lastSource && this._lastSource.trim() === source.trim()) {
       return;

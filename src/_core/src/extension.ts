@@ -7,6 +7,7 @@ import {MainAreaWidget, ICommandPalette} from '@jupyterlab/apputils';
 
 import {IOutsourcerer, PLUGIN_ID} from '.';
 import {Sourcerer} from './sourcerer';
+import {NotebookOutsourceButton} from './button';
 
 import '../style/index.css';
 
@@ -21,14 +22,14 @@ const extension: JupyterLabPlugin<IOutsourcerer> = {
     notebooks: INotebookTracker
   ): IOutsourcerer => {
     const {commands} = app;
-    const sourceror = new Sourcerer({notebooks});
+    const sourcerer = new Sourcerer({notebooks});
 
     // Get the current widget and activate unless the args specify otherwise.
     function getCurrent(): NotebookPanel | null {
       return notebooks.currentWidget;
     }
 
-    sourceror.executeRequested.connect((_, cell) => {
+    sourcerer.executeRequested.connect((_, cell) => {
       let executed = false;
       notebooks.forEach(async (nb) => {
         if (executed) {
@@ -48,12 +49,12 @@ const extension: JupyterLabPlugin<IOutsourcerer> = {
       });
     });
 
-    sourceror.factoryRegistered.connect((_, factory) => {
+    sourcerer.factoryRegistered.connect((_, factory) => {
       const command = `${CommandIds.newSource}-${factory.id}`;
       const category = 'Notebook Cell Operations';
       commands.addCommand(command, {
         label: `Create new ${factory.name} for input`,
-        isEnabled: () => (factory.isEnabled ? factory.isEnabled(sourceror) : true),
+        isEnabled: () => (factory.isEnabled ? factory.isEnabled(sourcerer) : true),
         execute: async () => {
           // Clone the OutputArea
           const current = getCurrent();
@@ -81,7 +82,19 @@ const extension: JupyterLabPlugin<IOutsourcerer> = {
       });
       palette.addItem({command, category});
     });
-    return sourceror;
+
+    sourcerer.widgetRequested.connect((_, factoryId) => {
+      commands.execute(`${CommandIds.newSource}-${factoryId}`);
+    });
+
+    const outsourceButton = new NotebookOutsourceButton();
+    outsourceButton.sourcerer = sourcerer;
+    // fontsButton.widgetRequested.connect(() => {
+    //   app.commands.execute(CMD.editFonts);
+    // });
+
+    app.docRegistry.addWidgetExtension('Notebook', outsourceButton);
+    return sourcerer;
   },
 };
 

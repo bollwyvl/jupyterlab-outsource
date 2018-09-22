@@ -16,7 +16,6 @@ const extension: JupyterLabPlugin<IOutsourceProsemirror> = {
   provides: IOutsourceProsemirror,
   requires: [IOutsourcerer],
   activate: (app: JupyterLab, sourcerer: IOutsourcerer): IOutsourceProsemirror => {
-    console.log(`let's get prosemirroring ${app} ${sourcerer}`);
     return sourcerer.register(new ProsemirrorFactory());
   },
 };

@@ -20,20 +20,14 @@ export const SOURCEROR: {
 
 const _onKeyDown = Blockly.onKeyDown_;
 Blockly.onKeyDown_ = (evt: KeyboardEvent) => {
-  const {code, ctrlKey, shiftKey} = evt;
+  const {code, ctrlKey} = evt;
   const cell = Workspaces.cellForWorkspace(Blockly.getMainWorkspace());
 
-  if (code !== 'Enter') {
-    return _onKeyDown(evt);
+  if (ctrlKey && code === 'Enter') {
+    return SOURCEROR.instance.execute(cell);
   }
 
-  if (shiftKey && ctrlKey) {
-    console.log('set AUTO EXECUTE');
-  }
-
-  if (ctrlKey) {
-    SOURCEROR.instance.execute(cell);
-  }
+  return _onKeyDown(evt);
 };
 
 export class BlocklySource extends Widget {
