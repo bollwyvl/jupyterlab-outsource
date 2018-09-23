@@ -8,8 +8,10 @@ import Blockly, {IWorkspace} from 'node-blockly/browser';
 
 import {CSS, PLUGIN_ID, IBlocklyMetadata, START_BLOCKLY, END_BLOCKLY} from '.';
 
+import './robot';
+
 // tslint:disable
-const DEFAULT_TOOLBOX = require('!!raw-loader!../xml/toolbox.xml') as string;
+const DEFAULT_TOOLBOX = require('!!raw-loader!../xml/robot.xml') as string;
 // tslint:enable
 
 export const SOURCEROR: {

@@ -17,7 +17,7 @@
   },
   "description": "Blockly Visual Code Editing for JupyterLab",
   "files": [
-    "{lib,style,xml}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf,xml}"
+    "{lib,style,xml,blocks}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf,xml}"
   ],
   "homepage": "https://github.com/deathbeds/jupyterlab-outsource",
   "jupyterlab": {

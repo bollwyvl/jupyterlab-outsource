@@ -3,9 +3,11 @@ declare module 'node-blockly/browser' {
     addChangeListener(callback: Function): void;
     clear(): void;
   }
+  export interface IBlockSVG {}
   export interface ILanguage {
     workspaceToCode(workspace: IWorkspace): string;
     INDENT: string;
+    valueToCode(block: IBlockSVG, name: string, outerOrder: number): string;
   }
   /*
   collapse:	boolean	Allows blocks to be collapsed or expanded. Defaults to true if the toolbox has categories, false otherwise.
@@ -56,6 +58,8 @@ declare module 'node-blockly/browser' {
     textToDom(xml: string): Element;
   }
 
+  export interface IBlockJSON {}
+
   export interface IBlockly {
     inject(node: HTMLElement, opts?: IInjectOptions): IWorkspace;
     Python: ILanguage;
@@ -69,11 +73,15 @@ declare module 'node-blockly/browser' {
     ): any[][];
     onKeyDown_(evt: Event): any;
     getMainWorkspace(): IWorkspace;
+    defineBlocksWithJsonArray(blocks: IBlockJSON[]): void;
   }
   const blocklyStatic: IBlockly;
   export default blocklyStatic;
 }
 
 declare module '!!raw-loader!../xml/toolbox.xml' {
+
+}
+declare module '!!raw-loader!../xml/robot.xml' {
 
 }
