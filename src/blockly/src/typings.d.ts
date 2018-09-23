@@ -5,6 +5,7 @@ declare module 'node-blockly/browser' {
   }
   export interface ILanguage {
     workspaceToCode(workspace: IWorkspace): string;
+    INDENT: string;
   }
   /*
   collapse:	boolean	Allows blocks to be collapsed or expanded. Defaults to true if the toolbox has categories, false otherwise.
@@ -41,7 +42,11 @@ declare module 'node-blockly/browser' {
     toolbox?: HTMLElement | string;
     toolboxPosition?: 'start' | 'end';
     trashcan?: boolean;
-    zoom?: object;
+    zoom?: IZoom;
+  }
+  export interface IZoom {
+    controls?: boolean;
+    wheel?: boolean;
   }
   export interface IXml {
     workspaceToDom(workspace: IWorkspace): HTMLElement;

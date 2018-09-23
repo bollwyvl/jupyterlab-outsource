@@ -20,6 +20,7 @@ export class ProseMirrorSource extends Widget {
   constructor(options: IOutsourceFactoryOptions) {
     super();
     this.addClass(CSS.OUTER_WRAPPER);
+    this.addClass('jp-RenderedHTMLCommon');
     this._model = options.model as IMarkdownCellModel;
     this._model.value.changed.connect(this._contentChanged, this);
 

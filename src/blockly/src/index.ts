@@ -24,3 +24,11 @@ export interface IBlocklyMetadata {
   workspace?: string;
   toolbox?: string;
 }
+
+export const START_BLOCKLY = {
+  python: '# start blockly',
+};
+
+export const END_BLOCKLY = {
+  python: '# end blockly',
+};
