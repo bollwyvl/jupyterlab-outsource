@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "declaration": true,
+    "jsx": "react",
     "noImplicitAny": true,
     "noEmitOnError": true,
     "noUnusedLocals": true,

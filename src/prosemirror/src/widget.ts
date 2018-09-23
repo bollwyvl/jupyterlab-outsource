@@ -20,6 +20,7 @@ export class ProseMirrorSource extends Widget {
   constructor(options: IOutsourceFactoryOptions) {
     super();
     this.addClass(CSS.OUTER_WRAPPER);
+    this.addClass('jp-RenderedHTMLCommon');
     this._model = options.model as IMarkdownCellModel;
     this._model.value.changed.connect(this._contentChanged, this);
 
@@ -63,7 +64,6 @@ export class ProseMirrorSource extends Widget {
     model: IObservableString,
     change: IObservableString.IChangedArgs
   ) {
-    console.log('contents', model, change, this.parent.hasClass('jp-mod-active'));
     let source = this._model.value.text || '';
     if (this._lastSource && this._lastSource.trim() === source.trim()) {
       return;

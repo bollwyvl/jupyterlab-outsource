@@ -1,0 +1,45 @@
+{
+  "author": "Dead Pixels Collective",
+  "bugs": {
+    "url": "https://github.com/deathbeds/jupyterlab-outsource/issues"
+  },
+  "peerDependencies": {
+    "@deathbeds/jupyterlab-outsource": "^0.1.0",
+    "@jupyterlab/application": "^0.18.4",
+    "@jupyterlab/apputils": "^0.18.4"
+  },
+  "dependencies": {
+    "node-blockly": "^1.0.35"
+  },
+  "devDependencies": {
+    "@deathbeds/jupyterlab-outsource": "^0.1.0",
+    "@jupyterlab/apputils": "^0.18.4"
+  },
+  "description": "Blockly Visual Code Editing for JupyterLab",
+  "files": [
+    "{lib,style,xml}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf,xml}"
+  ],
+  "homepage": "https://github.com/deathbeds/jupyterlab-outsource",
+  "jupyterlab": {
+    "extension": "lib/extension.js"
+  },
+  "keywords": [
+    "jupyter",
+    "jupyterlab",
+    "jupyterlab-extension",
+    "blockly"
+  ],
+  "license": "BSD-3-Clause",
+  "main": "lib/index.js",
+  "name": "@deathbeds/jupyterlab-outsource-blockly",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deathbeds/jupyterlab-outsource.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "types": "lib/index.d.ts",
+  "version": "0.1.0"
+}

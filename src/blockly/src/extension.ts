@@ -2,21 +2,21 @@ import {JupyterLab, JupyterLabPlugin} from '@jupyterlab/application';
 
 import {IOutsourcerer} from '@deathbeds/jupyterlab-outsource';
 
-import {IOutsourceProsemirror, PLUGIN_ID} from '.';
+import {IOutsourceBlockly, PLUGIN_ID} from '.';
 
-import {ProsemirrorFactory} from './factory';
+import {BlocklyFactory} from './factory';
 
 import '../style/index.css';
 import 'prosemirror-example-setup/style/style.css';
 import 'prosemirror-view/style/prosemirror.css';
 
-const extension: JupyterLabPlugin<IOutsourceProsemirror> = {
+const extension: JupyterLabPlugin<IOutsourceBlockly> = {
   id: PLUGIN_ID,
   autoStart: true,
-  provides: IOutsourceProsemirror,
+  provides: IOutsourceBlockly,
   requires: [IOutsourcerer],
-  activate: (app: JupyterLab, sourcerer: IOutsourcerer): IOutsourceProsemirror => {
-    return sourcerer.register(new ProsemirrorFactory());
+  activate: (app: JupyterLab, sourcerer: IOutsourcerer): IOutsourceBlockly => {
+    return sourcerer.register(new BlocklyFactory(sourcerer));
   },
 };
 
