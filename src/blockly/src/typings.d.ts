@@ -8,6 +8,7 @@ declare module 'node-blockly/browser' {
     workspaceToCode(workspace: IWorkspace): string;
     INDENT: string;
     valueToCode(block: IBlockSVG, name: string, outerOrder: number): string;
+    statementToCode(block: IBlockSVG, name: string): string;
   }
   /*
   collapse:	boolean	Allows blocks to be collapsed or expanded. Defaults to true if the toolbox has categories, false otherwise.
