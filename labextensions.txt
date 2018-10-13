@@ -1,1 +1,0 @@
-@jupyterlab/toc@0.4.0

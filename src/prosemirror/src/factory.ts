@@ -12,7 +12,7 @@ export class ProsemirrorFactory implements IOutsourceFactory {
   readonly iconClass = 'jp-Outsource-ProseMirrorIcon';
 
   isEnabled(sourceror: IOutsourcerer) {
-    return sourceror.isMarkdownCell;
+    return sourceror.isMarkdownCell || sourceror.isCodeCell;
   }
 
   async createWidget(options: IOutsourceFactoryOptions): Promise<Widget> {

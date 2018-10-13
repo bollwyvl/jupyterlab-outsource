@@ -1,0 +1,49 @@
+.jp-Outsource-Blockly {
+  display: flex;
+  flex-direction: column;
+}
+
+.jp-Outsource-Blockly-wrapper {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.jp-Outsource-BlocklyIcon {
+  background-image: url("./img/blockly.svg");
+  background-size: contain;
+}
+
+.jp-Outsource-Blockly .blocklySvg {
+  background-color: var(--jp-layout-color0);
+}
+
+.jp-Outsource-Blockly .blocklyMainBackground {
+  background-color: var(--jp-layout-color0);
+  opacity: 0;
+}
+
+.jp-Outsource-Blockly .blocklyToolboxDiv {
+  background-color: var(--jp-layout-color1);
+  color: var(--jp-ui-font-color0);
+}
+
+.jp-Outsource-Blockly .blocklyFlyoutBackground {
+  fill: var(--jp-layout-color1);
+}
+
+.jp-Outsource-Blockly .blocklyScrollbarHandle {
+  fill: var(--jp-layout-color2);
+}
+
+.jp-Outsource-Blockly .blocklyScrollbarHandle:hover {
+  fill: var(--jp-layout-color3);
+}
+
+.jp-Outsource-Blockly .blocklyTreeSeparator {
+  border-bottom: var(--jp-border-width) solid var(--jp-border-color2);
+  border-left: 0 !important;
+}
+
+.jp-Outsource-Blockly .blocklyTreeRow:not(.blocklyTreeSelected):hover {
+  background-color: var(--jp-layout-color2);
+}

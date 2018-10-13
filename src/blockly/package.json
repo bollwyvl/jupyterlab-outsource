@@ -4,18 +4,20 @@
     "url": "https://github.com/deathbeds/jupyterlab-outsource/issues"
   },
   "peerDependencies": {
+    "@deathbeds/jupyterlab-outsource": "^0.2.0",
     "@jupyterlab/application": "^0.19.1",
-    "@jupyterlab/apputils": "^0.19.1",
-    "@jupyterlab/notebook": "^0.19.1"
+    "@jupyterlab/apputils": "^0.19.1"
+  },
+  "dependencies": {
+    "node-blockly": "^1.0.35"
   },
   "devDependencies": {
-    "@jupyterlab/application": "^0.19.1",
-    "@jupyterlab/apputils": "^0.19.1",
-    "@jupyterlab/notebook": "^0.19.1"
+    "@deathbeds/jupyterlab-outsource": "^0.2.0",
+    "@jupyterlab/apputils": "^0.19.1"
   },
-  "description": "Alternate editors for JupyterLab Source",
+  "description": "Blockly Visual Code Editing for JupyterLab",
   "files": [
-    "{lib,style}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}"
+    "{lib,style,xml}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf,xml}"
   ],
   "homepage": "https://github.com/deathbeds/jupyterlab-outsource",
   "jupyterlab": {
@@ -24,11 +26,12 @@
   "keywords": [
     "jupyter",
     "jupyterlab",
-    "jupyterlab-extension"
+    "jupyterlab-extension",
+    "blockly"
   ],
   "license": "BSD-3-Clause",
   "main": "lib/index.js",
-  "name": "@deathbeds/jupyterlab-outsource",
+  "name": "@deathbeds/jupyterlab-outsource-blockly",
   "repository": {
     "type": "git",
     "url": "https://github.com/deathbeds/jupyterlab-outsource.git"

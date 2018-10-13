@@ -11,7 +11,7 @@
   content: "";
   display: block;
   height: 1px;
-  background-color: silver;
+  background-color: var(--jp-layout-color1);
   line-height: 2px;
 }
 
@@ -22,7 +22,7 @@
 
 .ProseMirror blockquote {
   padding-left: 1em;
-  border-left: 3px solid #eee;
+  border-left: var(--jp-border-width) solid var(--jp-border-color1);
   margin-left: 0;
   margin-right: 0;
 }
@@ -32,11 +32,11 @@
 }
 
 .ProseMirror-prompt {
-  background: white;
+  color: var(--jp-ui-font-color1);
+  background: var(--jp-layout-color1);
   padding: 5px 10px 5px 15px;
-  border: 1px solid silver;
+  border: var(--jp-border-width) solid var(--jp-border-color1);
   position: fixed;
-  border-radius: 3px;
   z-index: 11;
   box-shadow: -0.5px 2px 5px rgba(0, 0, 0, 0.2);
 }
@@ -45,12 +45,12 @@
   margin: 0;
   font-weight: normal;
   font-size: 100%;
-  color: #444;
+  color: var(--jp-ui-font-color2);
 }
 
 .ProseMirror-prompt input[type="text"],
 .ProseMirror-prompt textarea {
-  background: #eee;
+  background: var(--jp-layout-color1);
   border: none;
   outline: none;
 }
@@ -63,7 +63,7 @@
   position: absolute;
   left: 2px;
   top: 1px;
-  color: #666;
+  color: var(--jp-ui-font-color2);
   border: none;
   background: transparent;
   padding: 0;
@@ -75,9 +75,7 @@
 }
 
 .ProseMirror-invalid {
-  background: #ffc;
-  border: 1px solid #cc7;
-  border-radius: 4px;
+  border: var(--jp-border-width) solid var(--jp-warn-color0);
   padding: 5px 10px;
   position: absolute;
   min-width: 10em;
@@ -110,7 +108,7 @@
 }
 
 .ProseMirror-menuseparator {
-  border-right: 1px solid #ddd;
+  border-right: var(--jp-border-width) solid var(--jp-border-color2);
   margin-right: 3px;
 }
 
@@ -147,9 +145,9 @@
 .ProseMirror-menu-dropdown-menu,
 .ProseMirror-menu-submenu {
   position: absolute;
-  background: white;
-  color: #666;
-  border: 1px solid #aaa;
+  background: var(--jp-layout-color0);
+  color: var(--jp-ui-font-color2);
+  border: var(--jp-border-width) solid var(--jp-border-color1);
   padding: 2px;
 }
 
@@ -191,13 +189,11 @@
 }
 
 .ProseMirror-menu-active {
-  background: #eee;
-  border-radius: 4px;
+  background: var(--jp-layout-color1);
 }
 
 .ProseMirror-menu-active {
-  background: #eee;
-  border-radius: 4px;
+  background: var(--jp-layout-color1);
 }
 
 .ProseMirror-menu-disabled {
@@ -214,13 +210,13 @@
   border-top-right-radius: inherit;
   position: relative;
   min-height: 1em;
-  color: #666;
+  color: var(--jp-ui-font-color1);
   padding: 1px 6px;
   top: 0;
   left: 0;
   right: 0;
-  border-bottom: 1px solid silver;
-  background: white;
+  border-bottom: var(--jp-border-width) solid var(--jp-border-color2);
+  background: var(--jp-layout-color0);
   z-index: 10;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -249,18 +245,37 @@
 }
 
 /* our stuff */
-.jp-Outsource-ProseMirror {
+.jp-RenderedHTMLCommon > .jp-Outsource-ProseMirror-wrapper:last-child {
+  margin: 0;
+}
+
+.jp-Outsource-ProseMirror.jp-RenderedHTMLCommon {
   display: flex;
   flex-direction: column;
+  padding: 0;
+  margin: 0;
 }
 
 .jp-Outsource-ProseMirror-wrapper {
   flex: 1;
-  overflow-y: auto;
+  flex-direction: column;
+  display: flex;
 }
 
-.ProseMirror {
+.jp-Outsource-ProseMirror .ProseMirror-menubar-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.jp-Outsource-ProseMirror .ProseMirror {
   padding: 0 var(--jp-notebook-padding);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.jp-Outsource-ProseMirror .ProseMirror-menubar {
+  flex-grow: 0;
 }
 
 .jp-Outsource-ProseMirrorIcon {
