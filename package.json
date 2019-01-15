@@ -17,10 +17,11 @@
   "scripts": {
     "bootstrap": "jlpm && run-s bootstrap:js bootstrap:lab",
     "bootstrap:js": "jlpm lerna bootstrap && jlpm build",
-    "bootstrap:lab": "jlpm lab:link && jlpm lab:build",
+    "bootstrap:lab": "jlpm lab:ext && jlpm lab:link && jlpm lab:build",
     "build": "lerna run build --stream",
     "clean": "run-p clean:*",
     "clean:lib": "lerna exec --parallel --stream -- rimraf lib",
+    "lab:ext": "jupyter labextension install --no-build jupyterlab_robotmode@1.1.1",
     "lab:build": "jupyter lab build --dev",
     "lab:link": "lerna exec --concurrency 1 --stream -- jupyter labextension link . --no-build",
     "lint": "run-p lint:**",

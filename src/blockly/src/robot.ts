@@ -56,6 +56,13 @@ _Python.robot___test__case = (block) => {
   return `*** Test Case ***\n${name}\n${rows}`;
 };
 
+// Things we know
+_Python.robot___task = (block) => {
+  let name = unquote(Blockly.Python.valueToCode(block, 'NAME', 0));
+  let rows = Blockly.Python.statementToCode(block, 'ROWS');
+  return `*** Task ***\n${name}\n${rows}`;
+};
+
 _Python.robot___keyword = (block) => {
   let name = unquote(Blockly.Python.valueToCode(block, 'NAME', 0));
   let rows = Blockly.Python.statementToCode(block, 'ROWS');

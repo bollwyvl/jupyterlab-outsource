@@ -6,9 +6,13 @@ channels:
   - defaults
 
 dependencies:
+  - docutils
   - jupyterlab >=0.35,<0.36
+  - lunr
   - nodejs >=8.9.12,<9
+  - pillow
   - python >=3.6,<3.7
   - robotframework
   - pip:
       - stringcase
+      - robotkernel
