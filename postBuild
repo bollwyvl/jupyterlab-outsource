@@ -15,6 +15,6 @@ else
 fi
 
 set -ex
-
+jlpm || jlpm || echo "well, let's try anyway"
 jlpm bootstrap
 jupyter labextension install $(cat labex.txt)

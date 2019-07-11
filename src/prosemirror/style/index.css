@@ -245,6 +245,10 @@
 }
 
 /* our stuff */
+.jp-RenderedHTMLCommon > .jp-Outsource-ProseMirror-wrapper:last-child {
+  margin: 0;
+}
+
 .jp-Outsource-ProseMirror.jp-RenderedHTMLCommon {
   display: flex;
   flex-direction: column;
