@@ -45,7 +45,7 @@ Starts:
 
 ```bash
 jlpm lint
-jlpm test
+jlpm test # tbd
 ```
 
 ## Design Principles
