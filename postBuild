@@ -17,3 +17,4 @@ fi
 set -ex
 
 jlpm bootstrap
+jupyter labextension install $(cat labex.txt)

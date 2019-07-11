@@ -5,15 +5,15 @@
   },
   "peerDependencies": {
     "@deathbeds/jupyterlab-outsource": "^0.1.0",
-    "@jupyterlab/application": "^0.18.4",
-    "@jupyterlab/apputils": "^0.18.4"
+    "@jupyterlab/application": "^1.0.0",
+    "@jupyterlab/apputils": "^1.0.0"
   },
   "dependencies": {
     "node-blockly": "^1.0.35"
   },
   "devDependencies": {
     "@deathbeds/jupyterlab-outsource": "^0.1.0",
-    "@jupyterlab/apputils": "^0.18.4"
+    "@jupyterlab/apputils": "^1.0.0"
   },
   "description": "Blockly Visual Code Editing for JupyterLab",
   "files": [

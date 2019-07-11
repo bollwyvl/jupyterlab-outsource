@@ -5,12 +5,17 @@
     "rootDir": "src"
   },
   "include": [
-    "src/**/*",
-    "src/@types/**/*"
+    "src/**/*"
   ],
   "references": [
     {
       "path": "../_core"
+    },
+    {
+      "path": "../blockly"
+    },
+    {
+      "path": "../prosemirror"
     }
   ]
 }

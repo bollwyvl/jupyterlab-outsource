@@ -19,6 +19,7 @@ Install:
 conda env update
 conda activate jupyterlab-outsource-dev
 jlpm bootstrap  # this takes a while
+jupyter labextension install $(cat labex.txt)
 jupyter lab --no-browser --debug
 ```
 
