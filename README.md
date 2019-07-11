@@ -14,7 +14,9 @@
   - powered by [Blockly][]
 
 ## Installation
+
 - install JupyterLab >1.0.0 and NodeJS, such as with `conda`:
+
 ```bash
 conda install -c conda-forge jupyterlab nodejs
 # TBD: jupyter labextension install \

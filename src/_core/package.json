@@ -3,17 +3,12 @@
   "bugs": {
     "url": "https://github.com/deathbeds/jupyterlab-outsource/issues"
   },
-  "peerDependencies": {
-    "@jupyterlab/application": "^1.0.0",
-    "@jupyterlab/apputils": "^1.0.0",
-    "@jupyterlab/notebook": "^1.0.0"
-  },
+  "description": "Alternate editors for JupyterLab Source",
   "devDependencies": {
     "@jupyterlab/application": "^1.0.0",
     "@jupyterlab/apputils": "^1.0.0",
     "@jupyterlab/notebook": "^1.0.0"
   },
-  "description": "Alternate editors for JupyterLab Source",
   "files": [
     "{lib,style}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}"
   ],
@@ -28,14 +23,18 @@
   ],
   "license": "BSD-3-Clause",
   "main": "lib/index.js",
-  "types": "lib/index.d.ts",
   "name": "@deathbeds/jupyterlab-outsource",
+  "peerDependencies": {
+    "@jupyterlab/application": "^1.0.0",
+    "@jupyterlab/apputils": "^1.0.0",
+    "@jupyterlab/notebook": "^1.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/deathbeds/jupyterlab-outsource.git"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -b",
     "watch": "tsc -b --watch"
   },
   "types": "lib/index.d.ts",

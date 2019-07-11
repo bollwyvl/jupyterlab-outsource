@@ -15,7 +15,6 @@
   "homepage": "https://github.com/deathbeds/jupyterlab-outsource",
   "license": "BSD-3-Clause",
   "main": "lib/index.js",
-  "types": "lib/index.d.ts",
   "private": true,
   "name": "@deathbeds/jupyterlab-outsource-meta",
   "repository": {
@@ -23,7 +22,7 @@
     "url": "https://github.com/deathbeds/jupyterlab-outsource.git"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -b",
     "watch": "tsc -b --watch"
   },
   "types": "lib/index.d.ts",

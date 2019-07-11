@@ -15,7 +15,10 @@ const extension: JupyterFrontEndPlugin<IOutsourceProsemirror> = {
   autoStart: true,
   provides: IOutsourceProsemirror,
   requires: [IOutsourcerer],
-  activate: (_app: JupyterFrontEnd, sourcerer: IOutsourcerer): IOutsourceProsemirror => {
+  activate: (
+    _app: JupyterFrontEnd,
+    sourcerer: IOutsourcerer
+  ): IOutsourceProsemirror => {
     return sourcerer.register(new ProsemirrorFactory());
   },
 };

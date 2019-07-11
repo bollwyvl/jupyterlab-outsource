@@ -48,7 +48,7 @@ export class BlocklySource extends Widget {
     this._wrapper.className = CSS.WRAPPER;
     setTimeout(() => {
       this._workspace = Blockly.inject(this._wrapper, {
-        toolbox: this.metadata.toolbox || DEFAULT_TOOLBOX as string,
+        toolbox: this.metadata.toolbox || (DEFAULT_TOOLBOX as string),
         zoom: {
           controls: true,
           wheel: true,

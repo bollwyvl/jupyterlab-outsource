@@ -37,7 +37,7 @@
     "url": "https://github.com/deathbeds/jupyterlab-outsource.git"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -b",
     "watch": "tsc -b --watch"
   },
   "types": "lib/index.d.ts",
