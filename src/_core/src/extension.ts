@@ -1,6 +1,6 @@
 import {UUID} from '@phosphor/coreutils';
 
-import {JupyterLab, JupyterLabPlugin} from '@jupyterlab/application';
+import {JupyterFrontEnd, JupyterFrontEndPlugin} from '@jupyterlab/application';
 import {NotebookActions, INotebookTracker, NotebookPanel} from '@jupyterlab/notebook';
 
 import {MainAreaWidget, ICommandPalette} from '@jupyterlab/apputils';
@@ -11,13 +11,13 @@ import {NotebookOutsourceButton} from './button';
 
 import '../style/index.css';
 
-const extension: JupyterLabPlugin<IOutsourcerer> = {
+const extension: JupyterFrontEndPlugin<IOutsourcerer> = {
   id: PLUGIN_ID,
   autoStart: true,
   provides: IOutsourcerer,
   requires: [ICommandPalette, INotebookTracker],
   activate: (
-    app: JupyterLab,
+    app: JupyterFrontEnd,
     palette: ICommandPalette,
     notebooks: INotebookTracker
   ): IOutsourcerer => {
@@ -89,9 +89,6 @@ const extension: JupyterLabPlugin<IOutsourcerer> = {
 
     const outsourceButton = new NotebookOutsourceButton();
     outsourceButton.sourcerer = sourcerer;
-    // fontsButton.widgetRequested.connect(() => {
-    //   app.commands.execute(CMD.editFonts);
-    // });
 
     app.docRegistry.addWidgetExtension('Notebook', outsourceButton);
     return sourcerer;

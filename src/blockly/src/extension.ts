@@ -1,5 +1,4 @@
-import {JupyterLab, JupyterLabPlugin} from '@jupyterlab/application';
-
+import {JupyterFrontEnd, JupyterFrontEndPlugin} from '@jupyterlab/application';
 import {IOutsourcerer} from '@deathbeds/jupyterlab-outsource';
 
 import {IOutsourceBlockly, PLUGIN_ID} from '.';
@@ -10,12 +9,12 @@ import '../style/index.css';
 import 'prosemirror-example-setup/style/style.css';
 import 'prosemirror-view/style/prosemirror.css';
 
-const extension: JupyterLabPlugin<IOutsourceBlockly> = {
+const extension: JupyterFrontEndPlugin<IOutsourceBlockly> = {
   id: PLUGIN_ID,
   autoStart: true,
   provides: IOutsourceBlockly,
   requires: [IOutsourcerer],
-  activate: (app: JupyterLab, sourcerer: IOutsourcerer): IOutsourceBlockly => {
+  activate: (_app: JupyterFrontEnd, sourcerer: IOutsourcerer): IOutsourceBlockly => {
     return sourcerer.register(new BlocklyFactory(sourcerer));
   },
 };

@@ -16,11 +16,10 @@
   "private": true,
   "scripts": {
     "bootstrap": "jlpm && jlpm build",
-    "build": "lerna run build --stream",
+    "build": "lerna run --scope @deathbeds/jupyterlab-outsource-meta build --stream",
     "clean": "lerna exec --parallel --stream -- rimraf lib",
     "lint": "prettier --write *.json *.md *.yml && lerna exec -- prettier --write --config=../../.prettierrc ./src/**/*.ts ./src/**/*.tsx ./style/**/*.css ./*.json ./*.md && lerna exec -- tslint -c ../../tslint.json --fix ./src/**/*.ts",
-    "watch:lab": "jupyter lab --no-browser --debug --watch",
-    "watch:ts": "lerna run --scope @deathbeds/jupyterlab-outsource-meta build"
+    "watch": "lerna run --scope @deathbeds/jupyterlab-outsource-meta watch --stream"
   },
   "version": "1.0.0",
   "workspaces": [
