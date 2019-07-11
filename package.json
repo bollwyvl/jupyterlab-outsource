@@ -18,7 +18,10 @@
     "bootstrap": "jlpm && jlpm build",
     "build": "cd src && cd _meta && jlpm build",
     "clean": "lerna exec --parallel --stream -- rimraf lib",
-    "lint": "prettier --write *.json *.md *.yml && lerna exec -- prettier --write --config=../../.prettierrc ./src/**/*.ts ./src/**/*.tsx ./style/**/*.css ./*.json ./*.md && lerna exec -- tslint -c ../../tslint.json --fix ./src/**/*.ts",
+    "lint": "jlpm lint:root && jlpm lint:prettier && jlpm lint:ts",
+    "lint:root": "prettier --write *.json *.md *.yml",
+    "lint:prettier": "lerna exec -- prettier --write --config=../../.prettierrc ./src/**/*.ts ./src/**/*.tsx ./style/**/*.css ./*.json ./*.md",
+    "lint:ts": "lerna exec -- tslint -c ../../tslint.json --fix ./src/**/*.ts",
     "watch": "cd src && cd _meta && jlpm watch"
   },
   "version": "1.0.0",
