@@ -15,7 +15,7 @@
   "name": "@deathbeds/jupyterlab-outsource",
   "private": true,
   "scripts": {
-    "bootstrap": "jlpm && jlpm lerna bootstrap && jlpm build",
+    "bootstrap": "jlpm",
     "build": "lerna run build --stream",
     "clean": "lerna exec --parallel --stream -- rimraf lib",
     "lint": "prettier --write *.json *.md *.yml && lerna exec -- prettier --write --config=../../.prettierrc ./src/**/*.ts ./src/**/*.tsx ./style/**/*.css ./*.json ./*.md && lerna exec -- tslint -c ../../tslint.json --fix ./src/**/*.ts",

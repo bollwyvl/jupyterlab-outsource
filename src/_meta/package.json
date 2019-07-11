@@ -3,7 +3,7 @@
   "bugs": {
     "url": "https://github.com/deathbeds/jupyterlab-outsource/issues"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@deathbeds/jupyterlab-outsource": "^1.0.0",
     "@deathbeds/jupyterlab-outsource-blockly": "^1.0.0",
     "@deathbeds/jupyterlab-outsource-prosemirror": "^1.0.0"
