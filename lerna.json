@@ -1,7 +1,6 @@
 {
   "lerna": "3.2.1",
   "version": "independent",
-  "npmClient": "jlpm",
-  "registry": "https://registry.npmjs.org/",
+  "npmClient": "yarn",
   "useWorkspaces": true
 }

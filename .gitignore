@@ -4,8 +4,9 @@ _testoutput/
 .projectignore
 *.egg-info/
 *.log
+*.tsbuildinfo
 anaconda-project.yml
 envs/
 node_modules/
 src/*/lib
-Untitled*.ipynb
+Untitled*

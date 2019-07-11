@@ -22,18 +22,7 @@ export class BlocklyFactory implements IOutsourceFactory {
   }
 
   async createWidget(options: IOutsourceFactoryOptions): Promise<Widget> {
-    return await new Promise<Widget>((resolve, reject) => {
-      require.ensure(
-        ['./widget'],
-        (require) =>
-          resolve(
-            new (require('./widget')).BlocklySource({
-              ...options,
-            })
-          ),
-        (error: any) => [console.error(error), reject()],
-        'blockly'
-      );
-    });
+    const {BlocklySource} = await import(/* webpackChunkName: "blockly" */ './widget');
+    return new BlocklySource(options);
   }
 }

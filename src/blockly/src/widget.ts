@@ -9,7 +9,7 @@ import Blockly, {IWorkspace} from 'node-blockly/browser';
 import {CSS, PLUGIN_ID, IBlocklyMetadata, START_BLOCKLY, END_BLOCKLY} from '.';
 
 // tslint:disable
-const DEFAULT_TOOLBOX = require('!!raw-loader!../xml/toolbox.xml') as string;
+import DEFAULT_TOOLBOX from '!!raw-loader!../xml/toolbox.xml';
 // tslint:enable
 
 export const SOURCEROR: {
@@ -48,7 +48,7 @@ export class BlocklySource extends Widget {
     this._wrapper.className = CSS.WRAPPER;
     setTimeout(() => {
       this._workspace = Blockly.inject(this._wrapper, {
-        toolbox: this.metadata.toolbox || DEFAULT_TOOLBOX,
+        toolbox: this.metadata.toolbox || (DEFAULT_TOOLBOX as string),
         zoom: {
           controls: true,
           wheel: true,

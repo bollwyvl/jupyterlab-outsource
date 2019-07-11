@@ -16,13 +16,9 @@ export class ProsemirrorFactory implements IOutsourceFactory {
   }
 
   async createWidget(options: IOutsourceFactoryOptions): Promise<Widget> {
-    return await new Promise<Widget>((resolve, reject) => {
-      require.ensure(
-        ['./widget'],
-        (require) => resolve(new (require('./widget')).ProseMirrorSource(options)),
-        (error: any) => [console.error(error), reject()],
-        'prosemirror'
-      );
-    });
+    const {
+      ProseMirrorSource,
+    } = await import(/* webpackChunkName: "prosemirror" */ './widget');
+    return new ProseMirrorSource(options);
   }
 }

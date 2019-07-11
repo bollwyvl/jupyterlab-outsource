@@ -1,4 +1,4 @@
-import {JupyterLab, JupyterLabPlugin} from '@jupyterlab/application';
+import {JupyterFrontEnd, JupyterFrontEndPlugin} from '@jupyterlab/application';
 
 import {IOutsourcerer} from '@deathbeds/jupyterlab-outsource';
 
@@ -10,12 +10,15 @@ import '../style/index.css';
 import 'prosemirror-example-setup/style/style.css';
 import 'prosemirror-view/style/prosemirror.css';
 
-const extension: JupyterLabPlugin<IOutsourceProsemirror> = {
+const extension: JupyterFrontEndPlugin<IOutsourceProsemirror> = {
   id: PLUGIN_ID,
   autoStart: true,
   provides: IOutsourceProsemirror,
   requires: [IOutsourcerer],
-  activate: (app: JupyterLab, sourcerer: IOutsourcerer): IOutsourceProsemirror => {
+  activate: (
+    _app: JupyterFrontEnd,
+    sourcerer: IOutsourcerer
+  ): IOutsourceProsemirror => {
     return sourcerer.register(new ProsemirrorFactory());
   },
 };
