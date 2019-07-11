@@ -44,6 +44,7 @@
   ],
   "license": "BSD-3-Clause",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "name": "@deathbeds/jupyterlab-outsource-prosemirror",
   "repository": {
     "type": "git",
@@ -51,7 +52,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "watch": "tsc --watch"
+    "watch": "tsc -b --watch"
   },
   "types": "lib/index.d.ts",
   "version": "1.0.0"

@@ -1,9 +1,3 @@
-import * as _jo_core from '@deathbeds/jupyterlab-outsource';
-import * as _jo_blockly from '@deathbeds/jupyterlab-outsource-blockly';
-import * as _jo_prosemirror from '@deathbeds/jupyterlab-outsource-prosemirror';
-
-console.log([
-  _jo_core,
-  _jo_blockly,
-  _jo_prosemirror
-]);
+import '@deathbeds/jupyterlab-outsource';
+import '@deathbeds/jupyterlab-outsource-blockly';
+import '@deathbeds/jupyterlab-outsource-prosemirror';

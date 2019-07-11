@@ -3,7 +3,7 @@
   "bugs": {
     "url": "https://github.com/deathbeds/jupyterlab-outsource/issues"
   },
-  "peerDependencies": {
+  "dependencies": {
     "@deathbeds/jupyterlab-outsource": "^1.0.0",
     "@deathbeds/jupyterlab-outsource-blockly": "^1.0.0",
     "@deathbeds/jupyterlab-outsource-prosemirror": "^1.0.0"
@@ -15,6 +15,7 @@
   "homepage": "https://github.com/deathbeds/jupyterlab-outsource",
   "license": "BSD-3-Clause",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "private": true,
   "name": "@deathbeds/jupyterlab-outsource-meta",
   "repository": {
@@ -23,7 +24,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "watch": "tsc --watch"
+    "watch": "tsc -b --watch"
   },
   "types": "lib/index.d.ts",
   "version": "1.0.0"
