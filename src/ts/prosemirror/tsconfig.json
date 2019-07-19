@@ -1,21 +1,16 @@
 {
-  "extends": "../../tsconfigbase",
+  "extends": "../../../tsconfigbase",
   "compilerOptions": {
     "outDir": "lib",
     "rootDir": "src"
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "src/@types/**/*"
   ],
   "references": [
     {
       "path": "../_core"
-    },
-    {
-      "path": "../blockly"
-    },
-    {
-      "path": "../prosemirror"
     }
   ]
 }
