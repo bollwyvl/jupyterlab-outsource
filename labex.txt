@@ -2,3 +2,4 @@
 ./src/ts/_core
 ./src/ts/blockly
 ./src/ts/prosemirror
+./src/ts/y
