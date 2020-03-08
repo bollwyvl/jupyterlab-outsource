@@ -32,14 +32,16 @@ export const SOURCEROR: {
 
 const _onKeyDown = Blockly.onKeyDown;
 Blockly.onKeyDown = (evt: KeyboardEvent) => {
-  const { code, ctrlKey } = evt;
-  const cell = Workspaces.cellForWorkspace(Blockly.getMainWorkspace());
+  const { code, ctrlKey, shiftKey, metaKey } = evt;
+  const cell = Workspaces.cellForWorkspace(
+    Blockly.getMainWorkspace() as Blockly.WorkspaceSvg
+  );
 
   if (cell == null || SOURCEROR.instance == null) {
     return;
   }
 
-  if (ctrlKey && code === 'Enter') {
+  if ((ctrlKey || shiftKey || metaKey) && code === 'Enter') {
     evt.preventDefault();
     evt.stopImmediatePropagation();
     return SOURCEROR.instance.execute(cell);
@@ -51,7 +53,7 @@ Blockly.onKeyDown = (evt: KeyboardEvent) => {
 export class BlocklySource extends Widget {
   private _cellModel: ICodeCellModel;
   private _wrapper: HTMLDivElement;
-  private _workspace: Blockly.Workspace;
+  private _workspace: Blockly.WorkspaceSvg;
   private _lastXml: string;
 
   constructor(options: IOutsourceror.IFactoryOptions) {
@@ -94,7 +96,7 @@ export class BlocklySource extends Widget {
     if (!this._workspace) {
       return;
     }
-    console.error('Blockly.svgResize(this._workspace);');
+    Blockly.svgResize(this._workspace);
   }
 
   private _workspaceChanged() {
@@ -159,11 +161,11 @@ export class BlocklySource extends Widget {
 }
 
 namespace Workspaces {
-  const _workspaces = new Map<ICodeCellModel, Blockly.Workspace[]>();
+  const _workspaces = new Map<ICodeCellModel, Blockly.WorkspaceSvg[]>();
 
   export function setByCell(
     cell: ICodeCellModel,
-    workspace: Blockly.Workspace
+    workspace: Blockly.WorkspaceSvg
   ) {
     _workspaces.set(cell, [...getByCell(cell), workspace]);
   }
@@ -172,7 +174,7 @@ namespace Workspaces {
     return _workspaces.get(cell) || [];
   }
 
-  export function cellForWorkspace(workspace: Blockly.Workspace) {
+  export function cellForWorkspace(workspace: Blockly.WorkspaceSvg) {
     for (const cell of _workspaces.keys()) {
       const candidate = _workspaces.get(cell);
       if (candidate && candidate.indexOf(workspace) > -1) {
