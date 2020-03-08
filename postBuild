@@ -17,4 +17,4 @@ fi
 set -ex
 jlpm --ignore-optional || jlpm || echo "well, let's try anyway"
 jlpm bootstrap
-jupyter labextension install $(cat labex.txt)
+jupyter labextension link $(cat labex.txt)
