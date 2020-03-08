@@ -8,8 +8,6 @@ import { IOutsourceBlockly, PLUGIN_ID } from '.';
 
 import { BlocklyFactory } from './factory';
 
-(window as any).from_blockly = IOutsourceror;
-
 const extension: JupyterFrontEndPlugin<IOutsourceBlockly> = {
   id: PLUGIN_ID,
   autoStart: true,
