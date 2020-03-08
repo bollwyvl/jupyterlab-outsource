@@ -1,13 +1,19 @@
-import {Widget} from '@lumino/widgets';
+import { Widget } from '@lumino/widgets';
 
-import {ICodeCellModel} from '@jupyterlab/cells';
+import { ICodeCellModel } from '@jupyterlab/cells';
 
-import {IOutsourceror} from '@deathbeds/jupyterlab-outsource';
+import { IOutsourceror } from '@deathbeds/jupyterlab-outsource';
 
 import Blockly from 'blockly';
 import 'blockly/python';
 
-import {CSS, PLUGIN_ID, IBlocklyMetadata, START_BLOCKLY, END_BLOCKLY} from '.';
+import {
+  CSS,
+  PLUGIN_ID,
+  IBlocklyMetadata,
+  START_BLOCKLY,
+  END_BLOCKLY
+} from '.';
 
 // tslint:disable
 import DEFAULT_TOOLBOX from '!!raw-loader!../xml/toolbox.xml';
@@ -16,12 +22,12 @@ import DEFAULT_TOOLBOX from '!!raw-loader!../xml/toolbox.xml';
 export const SOURCEROR: {
   instance: IOutsourceror | null;
 } = {
-  instance: null,
+  instance: null
 };
 
 const _onKeyDown = Blockly.onKeyDown;
 Blockly.onKeyDown = (evt: KeyboardEvent) => {
-  const {code, ctrlKey} = evt;
+  const { code, ctrlKey } = evt;
   const cell = Workspaces.cellForWorkspace(Blockly.getMainWorkspace());
 
   if (cell == null || SOURCEROR.instance == null) {
@@ -56,8 +62,8 @@ export class BlocklySource extends Widget {
         toolbox: this.metadata.toolbox || (DEFAULT_TOOLBOX as string),
         zoom: {
           controls: true,
-          wheel: true,
-        },
+          wheel: true
+        }
       });
       Workspaces.setByCell(this._cellModel, this._workspace);
       this._metadataToWorkspace();
@@ -102,7 +108,7 @@ export class BlocklySource extends Widget {
 
     this.metadata = {
       ...meta,
-      workspace: xml,
+      workspace: xml
     };
   }
 
@@ -150,7 +156,10 @@ export class BlocklySource extends Widget {
 namespace Workspaces {
   const _workspaces = new Map<ICodeCellModel, Blockly.Workspace[]>();
 
-  export function setByCell(cell: ICodeCellModel, workspace: Blockly.Workspace) {
+  export function setByCell(
+    cell: ICodeCellModel,
+    workspace: Blockly.Workspace
+  ) {
     _workspaces.set(cell, [...getByCell(cell), workspace]);
   }
 
