@@ -5,7 +5,12 @@ import { ICodeCellModel } from '@jupyterlab/cells';
 import { IOutsourceror } from '@deathbeds/jupyterlab-outsource';
 
 import Blockly from 'blockly';
+
 import 'blockly/python';
+
+import '../style/index.css';
+import 'prosemirror-example-setup/style/style.css';
+import 'prosemirror-view/style/prosemirror.css';
 
 import {
   CSS,

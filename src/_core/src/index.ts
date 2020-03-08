@@ -7,11 +7,7 @@ import { INotebookTracker } from '@jupyterlab/notebook';
 
 export const PLUGIN_ID = '@deathbeds/jupyterlab-outsource';
 
-/**
- * The notebook source manager
- */
 export const IOutsourceror = new Token<IOutsourceror>(PLUGIN_ID);
-/* tslint:enable */
 
 export interface IOutsourceror {
   ready: Promise<void>;

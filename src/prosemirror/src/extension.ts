@@ -9,9 +9,8 @@ import { IOutsourceProsemirror, PLUGIN_ID } from '.';
 
 import { ProsemirrorFactory } from './factory';
 
-import '../style/index.css';
-import 'prosemirror-example-setup/style/style.css';
-import 'prosemirror-view/style/prosemirror.css';
+(window as any).from_prosemirror = IOutsourceror;
+
 
 const extension: JupyterFrontEndPlugin<IOutsourceProsemirror> = {
   id: PLUGIN_ID,

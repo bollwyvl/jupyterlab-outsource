@@ -8,9 +8,8 @@ import { IOutsourceBlockly, PLUGIN_ID } from '.';
 
 import { BlocklyFactory } from './factory';
 
-import '../style/index.css';
-import 'prosemirror-example-setup/style/style.css';
-import 'prosemirror-view/style/prosemirror.css';
+
+(window as any).from_blockly = IOutsourceror;
 
 const extension: JupyterFrontEndPlugin<IOutsourceBlockly> = {
   id: PLUGIN_ID,

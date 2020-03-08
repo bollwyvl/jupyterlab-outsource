@@ -11,6 +11,10 @@ import * as exampleSetup from 'prosemirror-example-setup';
 
 import { CSS } from '.';
 
+import '../style/index.css';
+import 'prosemirror-example-setup/style/style.css';
+import 'prosemirror-view/style/prosemirror.css';
+
 export class ProseMirrorSource extends Widget {
   private _model: IMarkdownCellModel;
   private _wrapper: HTMLDivElement;

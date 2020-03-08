@@ -18,6 +18,8 @@ import { NotebookOutsourceButton } from './button';
 
 import '../style/index.css';
 
+(window as any).from_core = IOutsourceror;
+
 const extension: JupyterFrontEndPlugin<IOutsourceror> = {
   id: PLUGIN_ID,
   autoStart: true,
