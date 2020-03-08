@@ -1,4 +1,4 @@
-import {UUID} from '@phosphor/coreutils';
+import {UUID} from '@lumino/coreutils';
 
 import {JupyterFrontEnd, JupyterFrontEndPlugin} from '@jupyterlab/application';
 import {NotebookActions, INotebookTracker, NotebookPanel} from '@jupyterlab/notebook';

@@ -1,4 +1,4 @@
-import {Token} from '@phosphor/coreutils';
+import {Token} from '@lumino/coreutils';
 
 export const PLUGIN_ID = '@deathbeds/jupyterlab-outsource:blockly';
 

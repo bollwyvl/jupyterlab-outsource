@@ -4,20 +4,21 @@
     "url": "https://github.com/deathbeds/jupyterlab-outsource/issues"
   },
   "peerDependencies": {
-    "@deathbeds/jupyterlab-outsource": "^1.0.0",
-    "@jupyterlab/application": "^1.0.0",
-    "@jupyterlab/apputils": "^1.0.0"
+    "@deathbeds/jupyterlab-outsource": "~2.0.0",
+    "@jupyterlab/application": "~2.0.0",
+    "@jupyterlab/apputils": "~2.0.0"
   },
   "dependencies": {
-    "node-blockly": "^1.0.35"
+    "node-blockly": "~3.20200123.1"
   },
   "devDependencies": {
-    "@deathbeds/jupyterlab-outsource": "^1.0.0",
-    "@jupyterlab/apputils": "^1.0.0"
+    "@deathbeds/jupyterlab-outsource": "~2.0.0",
+    "@jupyterlab/application": "~2.0.0",
+    "@jupyterlab/apputils": "~2.0.0"
   },
   "description": "Blockly Visual Code Editing for JupyterLab",
   "files": [
-    "{lib,style,xml}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf,xml}"
+    "{lib,style,xml,src}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf,xml,ts,tsx}"
   ],
   "homepage": "https://github.com/deathbeds/jupyterlab-outsource",
   "jupyterlab": {
@@ -41,5 +42,5 @@
     "watch": "tsc -b --watch"
   },
   "types": "lib/index.d.ts",
-  "version": "1.0.0"
+  "version": "2.0.0"
 }

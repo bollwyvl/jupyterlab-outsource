@@ -1,6 +1,6 @@
-import {Token} from '@phosphor/coreutils';
-import {Widget} from '@phosphor/widgets';
-import {ISignal} from '@phosphor/signaling';
+import {Token} from '@lumino/coreutils';
+import {Widget} from '@lumino/widgets';
+import {ISignal} from '@lumino/signaling';
 
 import {ICellModel} from '@jupyterlab/cells';
 import {INotebookTracker} from '@jupyterlab/notebook';

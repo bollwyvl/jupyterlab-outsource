@@ -4,8 +4,8 @@
     "url": "https://github.com/deathbeds/jupyterlab-outsource/issues"
   },
   "peerDependencies": {
-    "@deathbeds/jupyterlab-outsource": "^1.0.0",
-    "@jupyterlab/application": "^1.0.0"
+    "@deathbeds/jupyterlab-outsource": "~2.0.0",
+    "@jupyterlab/application": "~2.0.0"
   },
   "dependencies": {
     "prosemirror-commands": "^1.0.8",
@@ -19,7 +19,7 @@
     "prosemirror-view": "^1.9.11"
   },
   "devDependencies": {
-    "@deathbeds/jupyterlab-outsource": "^1.0.0",
+    "@deathbeds/jupyterlab-outsource": "~2.0.0",
     "@types/prosemirror-commands": "^1.0.0",
     "@types/prosemirror-keymap": "^1.0.0",
     "@types/prosemirror-model": "^1.5.0",
@@ -30,7 +30,7 @@
   },
   "description": "ProseMirror Rich Text Editing for JupyterLab",
   "files": [
-    "{lib,style}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}"
+    "{lib,style,src}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf,ts,stx}"
   ],
   "homepage": "https://github.com/deathbeds/jupyterlab-outsource",
   "jupyterlab": {

@@ -1,5 +1,5 @@
-import {PromiseDelegate} from '@phosphor/coreutils';
-import {Signal} from '@phosphor/signaling';
+import {PromiseDelegate} from '@lumino/coreutils';
+import {Signal} from '@lumino/signaling';
 import {INotebookTracker} from '@jupyterlab/notebook';
 import {MarkdownCell, CodeCell, ICellModel} from '@jupyterlab/cells';
 
