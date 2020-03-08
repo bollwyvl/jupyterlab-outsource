@@ -1,15 +1,15 @@
-import {Widget} from '@lumino/widgets';
-import {IObservableString} from '@jupyterlab/observables';
+import { Widget } from '@lumino/widgets';
+import { IObservableString } from '@jupyterlab/observables';
 
-import {IMarkdownCellModel} from '@jupyterlab/cells';
+import { IMarkdownCellModel } from '@jupyterlab/cells';
 
-import {EditorState, Transaction} from 'prosemirror-state';
-import {EditorView} from 'prosemirror-view';
+import { EditorState, Transaction } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import * as Markdown from 'prosemirror-markdown';
-import {IOutsourceFactoryOptions} from '@deathbeds/jupyterlab-outsource';
+import { IOutsourceror } from '@deathbeds/jupyterlab-outsource';
 import * as exampleSetup from 'prosemirror-example-setup';
 
-import {CSS} from '.';
+import { CSS } from '.';
 
 export class ProseMirrorSource extends Widget {
   private _model: IMarkdownCellModel;
@@ -17,7 +17,7 @@ export class ProseMirrorSource extends Widget {
   private _view: EditorView<any>;
   private _lastSource: string = '';
 
-  constructor(options: IOutsourceFactoryOptions) {
+  constructor(options: IOutsourceror.IFactoryOptions) {
     super();
     this.addClass(CSS.OUTER_WRAPPER);
     this.addClass('jp-RenderedHTMLCommon');
@@ -35,11 +35,13 @@ export class ProseMirrorSource extends Widget {
         doc: (Markdown as any).defaultMarkdownParser.parse(
           typeof source === 'string' ? source : source.join('')
         ),
-        plugins: (exampleSetup as any).exampleSetup({schema: (Markdown as any).schema}),
+        plugins: (exampleSetup as any).exampleSetup({
+          schema: (Markdown as any).schema
+        })
       }),
       dispatchTransaction(transaction: Transaction) {
         that._pmChanged(transaction);
-      },
+      }
     });
   }
 
@@ -72,7 +74,9 @@ export class ProseMirrorSource extends Widget {
     this._view.updateState(
       EditorState.create({
         doc: (Markdown as any).defaultMarkdownParser.parse(source),
-        plugins: (exampleSetup as any).exampleSetup({schema: (Markdown as any).schema}),
+        plugins: (exampleSetup as any).exampleSetup({
+          schema: (Markdown as any).schema
+        })
       })
     );
   }

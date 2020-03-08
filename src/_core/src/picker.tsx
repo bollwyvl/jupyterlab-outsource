@@ -1,16 +1,20 @@
 import React from 'react';
 
-import {IOutsourcerer} from '.';
+import {IOutsourceror} from '.';
 
 import {VDomModel, VDomRenderer} from '@jupyterlab/apputils';
 
 export class OutsourcePicker extends VDomRenderer<OutsourcePicker.Model> {
+  constructor(options: OutsourcePicker.IOptions) {
+    super(new OutsourcePicker.Model(options));
+  }
+
   protected render(): React.ReactElement<any> {
     let m = this.model;
 
     // Bail if there is no model.
-    if (!m || !m.sourcerer) {
-      return;
+    if (!m || !m.sourceror) {
+      return <span />;
     }
 
     return (
@@ -20,7 +24,7 @@ export class OutsourcePicker extends VDomRenderer<OutsourcePicker.Model> {
         onChange={this.onChange}
       >
         <option value="" />
-        {m.sourcerer.factories.map(({name, id}) => (
+        {m.sourceror.factories.map(({name, id}) => (
           <option key={id} value={id}>
             {name}
           </option>
@@ -34,15 +38,24 @@ export class OutsourcePicker extends VDomRenderer<OutsourcePicker.Model> {
     if (value == null) {
       return;
     }
-    this.model.sourcerer.requestWidget(value);
+    this.model.sourceror.requestWidget(value);
     this.model.value = '';
   };
 }
 
 export namespace OutsourcePicker {
+  export interface IOptions {
+    sourceror: IOutsourceror;
+  }
+
   export class Model extends VDomModel {
-    private _sourcerer: IOutsourcerer;
+    private _sourceror: IOutsourceror;
     private _value: string = '';
+
+    constructor(options: IOptions) {
+      super();
+      this._sourceror = options.sourceror;
+    }
 
     get value() {
       return this._value;
@@ -53,13 +66,13 @@ export namespace OutsourcePicker {
       this.stateChanged.emit(void 0);
     }
 
-    get sourcerer() {
-      return this._sourcerer;
+    get sourceror() {
+      return this._sourceror;
     }
 
-    set sourcerer(sourcerer: IOutsourcerer) {
-      this._sourcerer = sourcerer;
-      sourcerer.factoryRegistered.connect(() => this.stateChanged.emit(void 0));
+    set sourceror(sourceror: IOutsourceror) {
+      this._sourceror = sourceror;
+      sourceror.factoryRegistered.connect(() => this.stateChanged.emit(void 0));
       this.stateChanged.emit(void 0);
     }
   }

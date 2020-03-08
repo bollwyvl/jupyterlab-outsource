@@ -1,24 +1,20 @@
-import {Widget} from '@lumino/widgets';
+import { Widget } from '@lumino/widgets';
 
-import {
-  IOutsourceFactory,
-  IOutsourceFactoryOptions,
-  IOutsourcerer,
-} from '@deathbeds/jupyterlab-outsource';
+import { IOutsourceror } from '@deathbeds/jupyterlab-outsource';
 
-export class ProsemirrorFactory implements IOutsourceFactory {
+export class ProsemirrorFactory implements IOutsourceror.IFactory {
   readonly id = 'prosemirror';
   readonly name = 'ProseMirror';
   readonly iconClass = 'jp-Outsource-ProseMirrorIcon';
 
-  isEnabled(sourceror: IOutsourcerer) {
+  isEnabled(sourceror: IOutsourceror) {
     return sourceror.isMarkdownCell || sourceror.isCodeCell;
   }
 
-  async createWidget(options: IOutsourceFactoryOptions): Promise<Widget> {
-    const {
-      ProseMirrorSource,
-    } = await import(/* webpackChunkName: "prosemirror" */ './widget');
+  async createWidget(options: IOutsourceror.IFactoryOptions): Promise<Widget> {
+    const { ProseMirrorSource } = await import(
+      /* webpackChunkName: "prosemirror" */ './widget'
+    );
     return new ProseMirrorSource(options);
   }
 }

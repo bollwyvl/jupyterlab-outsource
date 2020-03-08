@@ -1,19 +1,19 @@
-import {PromiseDelegate} from '@lumino/coreutils';
-import {Signal} from '@lumino/signaling';
-import {INotebookTracker} from '@jupyterlab/notebook';
-import {MarkdownCell, CodeCell, ICellModel} from '@jupyterlab/cells';
+import { PromiseDelegate } from '@lumino/coreutils';
+import { Signal } from '@lumino/signaling';
+import { INotebookTracker } from '@jupyterlab/notebook';
+import { MarkdownCell, CodeCell, ICellModel } from '@jupyterlab/cells';
 
-import {IOutsourcerer, IOutsourcererOptions, IOutsourceFactory} from '.';
+import { IOutsourceror } from '.';
 
-export class Sourcerer implements IOutsourcerer {
+export class Sourceror implements IOutsourceror {
   private _ready = new PromiseDelegate<void>();
-  private _factoryRegistered = new Signal<this, IOutsourceFactory>(this);
+  private _factoryRegistered = new Signal<this, IOutsourceror.IFactory>(this);
   private _executeRequested = new Signal<this, ICellModel>(this);
   private _widgetRequested = new Signal<this, string>(this);
-  private _notebooks: INotebookTracker;
+  private _notebooks: INotebookTracker | null;
 
-  constructor(options: IOutsourcererOptions) {
-    this._notebooks = options.notebooks;
+  constructor(options: IOutsourceror.IOptions) {
+    this._notebooks = options.notebooks || null;
     this._ready.resolve(void 0);
   }
 
@@ -38,16 +38,22 @@ export class Sourcerer implements IOutsourcerer {
   }
 
   get isMarkdownCell() {
-    const {activeCell} = this._notebooks;
+    if (this._notebooks == null) {
+      return false;
+    }
+    const { activeCell } = this._notebooks;
     return activeCell instanceof MarkdownCell;
   }
 
   get isCodeCell() {
-    const {activeCell} = this._notebooks;
+    if (this._notebooks == null) {
+      return false;
+    }
+    const { activeCell } = this._notebooks;
     return activeCell instanceof CodeCell;
   }
 
-  register(factory: IOutsourceFactory) {
+  register(factory: IOutsourceror.IFactory) {
     Private.register(factory);
     this._factoryRegistered.emit(factory);
     return factory;
@@ -58,7 +64,7 @@ export class Sourcerer implements IOutsourcerer {
   }
 
   factory(id: string) {
-    return Private.factory(id);
+    return Private.factory(id) || null;
   }
 
   execute(cell: ICellModel) {
@@ -67,9 +73,9 @@ export class Sourcerer implements IOutsourcerer {
 }
 
 namespace Private {
-  const _factories = new Map<string, IOutsourceFactory>();
+  const _factories = new Map<string, IOutsourceror.IFactory>();
 
-  export function register(factory: IOutsourceFactory): void {
+  export function register(factory: IOutsourceror.IFactory): void {
     _factories.set(factory.id, factory);
   }
 

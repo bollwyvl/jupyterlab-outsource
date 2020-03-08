@@ -74,6 +74,4 @@ declare module 'node-blockly/browser' {
   export default blocklyStatic;
 }
 
-declare module '!!raw-loader!../xml/toolbox.xml' {
-
-}
+declare module '!!raw-loader!../xml/toolbox.xml' {}

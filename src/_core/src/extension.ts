@@ -1,38 +1,45 @@
-import {UUID} from '@lumino/coreutils';
+import { UUID } from '@lumino/coreutils';
 
-import {JupyterFrontEnd, JupyterFrontEndPlugin} from '@jupyterlab/application';
-import {NotebookActions, INotebookTracker, NotebookPanel} from '@jupyterlab/notebook';
+import {
+  JupyterFrontEnd,
+  JupyterFrontEndPlugin
+} from '@jupyterlab/application';
+import {
+  NotebookActions,
+  INotebookTracker,
+  NotebookPanel
+} from '@jupyterlab/notebook';
 
-import {MainAreaWidget, ICommandPalette} from '@jupyterlab/apputils';
+import { MainAreaWidget, ICommandPalette } from '@jupyterlab/apputils';
 
-import {IOutsourcerer, PLUGIN_ID} from '.';
-import {Sourcerer} from './sourcerer';
-import {NotebookOutsourceButton} from './button';
+import { IOutsourceror, PLUGIN_ID } from '.';
+import { Sourceror } from './sourceror';
+import { NotebookOutsourceButton } from './button';
 
 import '../style/index.css';
 
-const extension: JupyterFrontEndPlugin<IOutsourcerer> = {
+const extension: JupyterFrontEndPlugin<IOutsourceror> = {
   id: PLUGIN_ID,
   autoStart: true,
-  provides: IOutsourcerer,
+  provides: IOutsourceror,
   requires: [ICommandPalette, INotebookTracker],
   activate: (
     app: JupyterFrontEnd,
     palette: ICommandPalette,
     notebooks: INotebookTracker
-  ): IOutsourcerer => {
-    const {commands} = app;
-    const sourcerer = new Sourcerer({notebooks});
+  ): IOutsourceror => {
+    const { commands } = app;
+    const sourceror = new Sourceror({ notebooks });
 
     // Get the current widget and activate unless the args specify otherwise.
     function getCurrent(): NotebookPanel | null {
       return notebooks.currentWidget;
     }
 
-    sourcerer.executeRequested.connect((_, cell) => {
+    sourceror.executeRequested.connect((_, cell) => {
       let executed = false;
-      notebooks.forEach(async (nb) => {
-        if (executed) {
+      notebooks.forEach(async nb => {
+        if (executed || nb.model == null) {
           return;
         }
         let cellCount = nb.model.cells.length;
@@ -40,7 +47,7 @@ const extension: JupyterFrontEndPlugin<IOutsourcerer> = {
           if (cell.id === nb.model.cells.get(i).id) {
             let oldIndex = nb.content.activeCellIndex;
             nb.content.activeCellIndex = i;
-            await NotebookActions.run(nb.content, nb.context.session);
+            await NotebookActions.run(nb.content, nb.context.sessionContext);
             executed = true;
             nb.content.activeCellIndex = oldIndex;
             break;
@@ -49,21 +56,32 @@ const extension: JupyterFrontEndPlugin<IOutsourcerer> = {
       });
     });
 
-    sourcerer.factoryRegistered.connect((_, factory) => {
+    sourceror.factoryRegistered.connect((_, factory) => {
       const command = `${CommandIds.newSource}-${factory.id}`;
       const category = 'Notebook Cell Operations';
       commands.addCommand(command, {
         label: `Create new ${factory.name} for input`,
-        isEnabled: () => (factory.isEnabled ? factory.isEnabled(sourcerer) : true),
+        isEnabled: () =>
+          factory.isEnabled ? factory.isEnabled(sourceror) : true,
         execute: async () => {
           // Clone the OutputArea
           const current = getCurrent();
+
+          if (!current) {
+            return;
+          }
+
           const nb = current.content;
+
+          if (nb == null || nb.activeCell == null) {
+            return;
+          }
+
           const model = nb.activeCell.model;
-          const content = await factory.createWidget({model});
+          const content = await factory.createWidget({ model });
 
           // Create a MainAreaWidget
-          const widget = new MainAreaWidget({content});
+          const widget = new MainAreaWidget({ content });
           widget.id = `Outsource-${factory.id}-${UUID.uuid4()}`;
           widget.title.label = `${factory.name}`;
           widget.title.icon = factory.iconClass;
@@ -73,26 +91,26 @@ const extension: JupyterFrontEndPlugin<IOutsourcerer> = {
           widget.addClass('jp-Outsource-outsource');
           current.context.addSibling(widget, {
             ref: current.id,
-            mode: 'split-left',
+            mode: 'split-left'
           });
 
           // Remove the output view if the parent notebook is closed.
           nb.disposed.connect(widget.dispose);
-        },
+        }
       });
-      palette.addItem({command, category});
+      palette.addItem({ command, category });
     });
 
-    sourcerer.widgetRequested.connect((_, factoryId) => {
+    sourceror.widgetRequested.connect((_, factoryId) => {
       commands.execute(`${CommandIds.newSource}-${factoryId}`);
     });
 
-    const outsourceButton = new NotebookOutsourceButton();
-    outsourceButton.sourcerer = sourcerer;
+    const outsourceButton = new NotebookOutsourceButton({ sourceror });
+    outsourceButton.sourceror = sourceror;
 
     app.docRegistry.addWidgetExtension('Notebook', outsourceButton);
-    return sourcerer;
-  },
+    return sourceror;
+  }
 };
 
 export default extension;
