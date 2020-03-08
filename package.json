@@ -20,7 +20,7 @@
     "bootstrap": "jlpm && jlpm clean && jlpm build",
     "build": "lerna run build",
     "clean": "lerna exec --parallel --stream -- rimraf lib",
-    "lab:link": "lerna run lab:link",
+    "lab:link": "lerna run --stream lab:link",
     "lint": "jlpm lint:root && jlpm lint:prettier && jlpm lint:ts",
     "lint:prettier": "lerna exec -- prettier --write --config=../../.prettierrc ./src/**/*.ts ./src/**/*.tsx ./style/**/*.css ./*.json ./*.md",
     "lint:root": "prettier --write *.json *.md *.yml",
