@@ -1,4 +1,4 @@
-@jupyterlab/toc@1.0.1
+@jupyterlab/toc@2.0.0
 ./src/_core
 ./src/blockly
 ./src/prosemirror
