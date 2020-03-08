@@ -21,6 +21,7 @@ const extension: JupyterFrontEndPlugin<IOutsourceBlockly> = {
     _app: JupyterFrontEnd,
     sourceror: IOutsourceror
   ): IOutsourceBlockly => {
+    console.info('🧩 blockly enabled');
     return sourceror.register(new BlocklyFactory(sourceror));
   }
 };

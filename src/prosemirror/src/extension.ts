@@ -22,6 +22,7 @@ const extension: JupyterFrontEndPlugin<IOutsourceProsemirror> = {
     _app: JupyterFrontEnd,
     sourceror: IOutsourceror
   ): IOutsourceProsemirror => {
+    console.info('✒️ prosemirror enabled');
     return sourceror.register(new ProsemirrorFactory());
   }
 };

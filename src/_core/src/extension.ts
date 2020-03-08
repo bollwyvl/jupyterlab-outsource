@@ -109,6 +109,8 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
     outsourceButton.sourceror = sourceror;
 
     app.docRegistry.addWidgetExtension('Notebook', outsourceButton);
+
+    console.info('🧙 outsourceror enabled');
     return sourceror;
   }
 };
