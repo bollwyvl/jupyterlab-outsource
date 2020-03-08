@@ -34,7 +34,7 @@
     "url": "https://github.com/deathbeds/jupyterlab-outsource.git"
   },
   "scripts": {
-    "lab:link": "jupyter labextension link --debug ."
+    "lab:link": "jupyter labextension link --debug --no-build ."
   },
   "types": "lib/index.d.ts",
   "version": "2.0.0"
