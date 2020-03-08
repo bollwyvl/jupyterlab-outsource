@@ -4,7 +4,6 @@
     "url": "https://github.com/deathbeds/jupyterlab-outsource/issues"
   },
   "peerDependencies": {
-    "@deathbeds/jupyterlab-outsource": "*",
     "@jupyterlab/application": "~2.0.0"
   },
   "dependencies": {
@@ -19,7 +18,6 @@
     "prosemirror-view": "~1.14.2"
   },
   "devDependencies": {
-    "@deathbeds/jupyterlab-outsource": "*",
     "@types/prosemirror-commands": "^1.0.0",
     "@types/prosemirror-keymap": "^1.0.1",
     "@types/prosemirror-model": "^1.7.2",

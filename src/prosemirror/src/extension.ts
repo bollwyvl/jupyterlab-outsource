@@ -11,7 +11,6 @@ import { ProsemirrorFactory } from './factory';
 
 (window as any).from_prosemirror = IOutsourceror;
 
-
 const extension: JupyterFrontEndPlugin<IOutsourceProsemirror> = {
   id: PLUGIN_ID,
   autoStart: true,
@@ -21,7 +20,7 @@ const extension: JupyterFrontEndPlugin<IOutsourceProsemirror> = {
     _app: JupyterFrontEnd,
     sourceror: IOutsourceror
   ): IOutsourceProsemirror => {
-    console.info('✒️ prosemirror enabled');
+    console.log('✒️ prosemirror enabled');
     return sourceror.register(new ProsemirrorFactory());
   }
 };

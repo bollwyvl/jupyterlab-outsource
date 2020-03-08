@@ -8,7 +8,6 @@ import { IOutsourceBlockly, PLUGIN_ID } from '.';
 
 import { BlocklyFactory } from './factory';
 
-
 (window as any).from_blockly = IOutsourceror;
 
 const extension: JupyterFrontEndPlugin<IOutsourceBlockly> = {
@@ -20,7 +19,7 @@ const extension: JupyterFrontEndPlugin<IOutsourceBlockly> = {
     _app: JupyterFrontEnd,
     sourceror: IOutsourceror
   ): IOutsourceBlockly => {
-    console.info('🧩 blockly enabled');
+    console.log('🧩 blockly enabled');
     return sourceror.register(new BlocklyFactory(sourceror));
   }
 };

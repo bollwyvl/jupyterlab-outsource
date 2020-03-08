@@ -17,7 +17,7 @@
   },
   "private": true,
   "scripts": {
-    "bootstrap": "jlpm && jlpm clean && jlpm build",
+    "bootstrap": "jlpm && jlpm clean && jlpm lint && jlpm build",
     "build": "lerna run build",
     "clean": "lerna exec --parallel --stream -- rimraf lib",
     "lab:link": "lerna run --stream lab:link",
@@ -25,7 +25,7 @@
     "lint:prettier": "lerna exec -- prettier --write --config=../../.prettierrc ./src/**/*.ts ./src/**/*.tsx ./style/**/*.css ./*.json ./*.md",
     "lint:root": "prettier --write *.json *.md *.yml",
     "lint:ts": "lerna exec -- tslint -c ../../tslint.json --fix ./src/**/*.ts",
-    "watch": "lerna run watch"
+    "watch": "lerna run --stream watch"
   },
   "version": "2.0.0",
   "workspaces": [
