@@ -17,4 +17,6 @@ fi
 set -ex
 jlpm --ignore-optional || jlpm || echo "well, let's try anyway"
 jlpm bootstrap
-jupyter labextension link $(cat labex.txt)
+jupyter labextension link --debug --no-build $(cat labex.txt)
+jupyter labextension list
+jupyter lab build --dev-build=False --minimize=True --debug
