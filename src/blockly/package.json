@@ -9,7 +9,7 @@
     "@jupyterlab/apputils": "~2.0.0"
   },
   "dependencies": {
-    "node-blockly": "~3.20200123.1"
+    "blockly": "~3.20200123.1"
   },
   "devDependencies": {
     "@deathbeds/jupyterlab-outsource": "~2.0.0",
