@@ -4,7 +4,7 @@
     "url": "https://github.com/deathbeds/jupyterlab-outsource/issues"
   },
   "peerDependencies": {
-    "@deathbeds/jupyterlab-outsource": "~2.0.0",
+    "@deathbeds/jupyterlab-outsource": "*",
     "@jupyterlab/application": "~2.0.0",
     "@jupyterlab/apputils": "~2.0.0"
   },
@@ -12,7 +12,7 @@
     "blockly": "~3.20200123.1"
   },
   "devDependencies": {
-    "@deathbeds/jupyterlab-outsource": "~2.0.0",
+    "@deathbeds/jupyterlab-outsource": "*",
     "@jupyterlab/application": "~2.0.0",
     "@jupyterlab/apputils": "~2.0.0"
   },
