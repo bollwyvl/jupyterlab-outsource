@@ -59,7 +59,6 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
         label: `Create new ${factory.name} for input`,
         isEnabled: () => (factory.isEnabled ? factory.isEnabled(sourceror) : true),
         execute: async (options: any) => {
-          console.log(options);
           shell.activateById(options.widgetId);
           const current = shell.activeWidget as MainAreaWidget;
           // // Clone the OutputArea

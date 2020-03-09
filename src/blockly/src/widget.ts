@@ -14,13 +14,7 @@ import '../style/index.css';
 import 'prosemirror-example-setup/style/style.css';
 import 'prosemirror-view/style/prosemirror.css';
 
-import {
-  CSS,
-  PLUGIN_ID,
-  IBlocklyMetadata,
-  START_BLOCKLY,
-  END_BLOCKLY
-} from '.';
+import { CSS, PLUGIN_ID, IBlocklyMetadata, IOutsourceBlockly } from '.';
 
 // tslint:disable
 import DEFAULT_TOOLBOX from '!!raw-loader!../xml/toolbox.xml';
@@ -61,11 +55,13 @@ export class BlocklySource extends Widget {
   private _wrapper: HTMLDivElement;
   private _workspace: Blockly.WorkspaceSvg;
   private _lastXml: string;
+  private _blockly: IOutsourceBlockly;
 
-  constructor(options: IOutsourceror.IFactoryOptions) {
+  constructor(options: IOutsourceBlockly.IFactoryOptions) {
     super();
     this.addClass(CSS.OUTER_WRAPPER);
     this._model = options.model;
+    this._blockly = options.factory;
 
     this.cellModel?.metadata.changed.connect(this._metadataChanged, this);
 
@@ -90,10 +86,26 @@ export class BlocklySource extends Widget {
   }
 
   private _metadataToWorkspace() {
-    const xml = this.metadata.workspace;
+    const { metadata, generator } = this;
+
+    let xml: string | null = null;
+
+    if (metadata.workspace) {
+      xml = metadata.workspace;
+    } else if (generator) {
+      let r: RegExpExecArray | null;
+      /* tslint:disable */
+      while ((r = generator.workspace.exec(this._model.value.text))) {
+        xml = r[1];
+        break;
+      }
+      /* tslint:enable */
+    }
+
     if (!xml) {
       return;
     }
+
     this._workspace.clear();
     Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), this._workspace);
   }
@@ -130,6 +142,10 @@ export class BlocklySource extends Widget {
     };
   }
 
+  get generator() {
+    return this._blockly.generatorForMimeType(this._model.mimeType);
+  }
+
   get metadata(): IBlocklyMetadata {
     return (this.cellModel?.metadata.get(PLUGIN_ID) as IBlocklyMetadata) || {};
   }
@@ -145,21 +161,31 @@ export class BlocklySource extends Widget {
   }
 
   private _metadataChanged() {
-    this._update(this.metadata);
+    this._update();
   }
 
-  private _update(metadata: IBlocklyMetadata) {
+  private async _update(metadata?: IBlocklyMetadata) {
+    const storeInSource = metadata != null;
+
+    metadata = metadata || this.metadata;
+
     let oldSource = this._model.value.text || '';
     let origSource = oldSource;
     let header = '';
     let footer = '';
 
-    if (oldSource.indexOf(START_BLOCKLY.python) > -1) {
-      [header, oldSource] = oldSource.split(START_BLOCKLY.python, 2);
+    const { generator } = this;
+
+    if (generator == null) {
+      return;
     }
 
-    if (oldSource.indexOf(END_BLOCKLY.python) > -1) {
-      [oldSource, footer] = oldSource.split(END_BLOCKLY.python, 2);
+    if (generator.start.test(oldSource)) {
+      [header, oldSource] = oldSource.split(generator.start, 2);
+    }
+
+    if (generator.end.test(oldSource)) {
+      [oldSource, footer] = oldSource.split(generator.end, 2);
     }
 
     if (this._lastXml !== metadata.workspace) {
@@ -167,15 +193,15 @@ export class BlocklySource extends Widget {
       return;
     }
 
-    const python = (Blockly as any).Python as Blockly.Generator;
+    const source = await generator.toSource({
+      blockly: Blockly,
+      workspace: this._workspace,
+      header,
+      footer,
+      xml: storeInSource ? metadata.workspace : null
+    });
 
-    python.INDENT = '    ';
-
-    let source = python.workspaceToCode(this._workspace).trim();
-
-    source = `${header}${START_BLOCKLY.python}\n${source}\n${END_BLOCKLY.python}${footer}`;
-
-    if (origSource !== source) {
+    if (origSource.trim() !== source.trim()) {
       this._model.value.text = source;
     }
   }
