@@ -1,6 +1,8 @@
 import { Widget } from '@lumino/widgets';
 
-import { ICodeCellModel } from '@jupyterlab/cells';
+import { ICodeCellModel, CodeCellModel } from '@jupyterlab/cells';
+
+import { CodeEditor } from '@jupyterlab/codeeditor';
 
 import { IOutsourceror } from '@deathbeds/jupyterlab-outsource';
 
@@ -33,25 +35,29 @@ export const SOURCEROR: {
 const _onKeyDown = Blockly.onKeyDown;
 Blockly.onKeyDown = (evt: KeyboardEvent) => {
   const { code, ctrlKey, shiftKey, metaKey } = evt;
-  const cell = Workspaces.cellForWorkspace(
+  const model = Workspaces.modelForWorkspace(
     Blockly.getMainWorkspace() as Blockly.WorkspaceSvg
   );
 
-  if (cell == null || SOURCEROR.instance == null) {
+  if (model == null || SOURCEROR.instance == null) {
     return;
   }
 
   if ((ctrlKey || shiftKey || metaKey) && code === 'Enter') {
+    if (!(model instanceof CodeCellModel)) {
+      console.warn('TODO: execute plain-old-code model');
+      return;
+    }
     evt.preventDefault();
     evt.stopImmediatePropagation();
-    return SOURCEROR.instance.execute(cell);
+    return SOURCEROR.instance.execute(model);
   }
 
   return _onKeyDown(evt);
 };
 
 export class BlocklySource extends Widget {
-  private _cellModel: ICodeCellModel;
+  private _model: CodeEditor.IModel;
   private _wrapper: HTMLDivElement;
   private _workspace: Blockly.WorkspaceSvg;
   private _lastXml: string;
@@ -59,8 +65,9 @@ export class BlocklySource extends Widget {
   constructor(options: IOutsourceror.IFactoryOptions) {
     super();
     this.addClass(CSS.OUTER_WRAPPER);
-    this._cellModel = options.model as ICodeCellModel;
-    this._cellModel.metadata.changed.connect(this._metadataChanged, this);
+    this._model = options.model;
+
+    this.cellModel?.metadata.changed.connect(this._metadataChanged, this);
 
     this.node.appendChild((this._wrapper = document.createElement('div')));
     this._wrapper.className = CSS.WRAPPER;
@@ -72,10 +79,14 @@ export class BlocklySource extends Widget {
           wheel: true
         }
       });
-      Workspaces.setByCell(this._cellModel, this._workspace);
+      Workspaces.setByModel(this._model, this._workspace);
       this._metadataToWorkspace();
       this._workspace.addChangeListener(() => this._workspaceChanged());
     }, 1);
+  }
+
+  get cellModel(): ICodeCellModel | null {
+    return this._model instanceof CodeCellModel ? this._model : null;
   }
 
   private _metadataToWorkspace() {
@@ -89,7 +100,7 @@ export class BlocklySource extends Widget {
 
   dispose() {
     super.dispose();
-    this._cellModel.metadata.changed.disconnect(this._metadataChanged, this);
+    this.cellModel?.metadata.changed.disconnect(this._metadataChanged, this);
   }
 
   onResize() {
@@ -120,15 +131,25 @@ export class BlocklySource extends Widget {
   }
 
   get metadata(): IBlocklyMetadata {
-    return (this._cellModel.metadata.get(PLUGIN_ID) as IBlocklyMetadata) || {};
+    return (this.cellModel?.metadata.get(PLUGIN_ID) as IBlocklyMetadata) || {};
   }
 
   set metadata(metadata: IBlocklyMetadata) {
-    this._cellModel.metadata.set(PLUGIN_ID, metadata as any);
+    const { cellModel } = this;
+
+    if (cellModel) {
+      this.cellModel?.metadata.set(PLUGIN_ID, metadata as any);
+    } else {
+      this._update(metadata);
+    }
   }
 
   private _metadataChanged() {
-    let oldSource = this._cellModel.value.text || '';
+    this._update(this.metadata);
+  }
+
+  private _update(metadata: IBlocklyMetadata) {
+    let oldSource = this._model.value.text || '';
     let origSource = oldSource;
     let header = '';
     let footer = '';
@@ -141,7 +162,7 @@ export class BlocklySource extends Widget {
       [oldSource, footer] = oldSource.split(END_BLOCKLY.python, 2);
     }
 
-    if (this._lastXml !== this.metadata.workspace) {
+    if (this._lastXml !== metadata.workspace) {
       this._metadataToWorkspace();
       return;
     }
@@ -155,26 +176,26 @@ export class BlocklySource extends Widget {
     source = `${header}${START_BLOCKLY.python}\n${source}\n${END_BLOCKLY.python}${footer}`;
 
     if (origSource !== source) {
-      this._cellModel.value.text = source;
+      this._model.value.text = source;
     }
   }
 }
 
 namespace Workspaces {
-  const _workspaces = new Map<ICodeCellModel, Blockly.WorkspaceSvg[]>();
+  const _workspaces = new Map<CodeEditor.IModel, Blockly.WorkspaceSvg[]>();
 
-  export function setByCell(
-    cell: ICodeCellModel,
+  export function setByModel(
+    model: CodeEditor.IModel,
     workspace: Blockly.WorkspaceSvg
   ) {
-    _workspaces.set(cell, [...getByCell(cell), workspace]);
+    _workspaces.set(model, [...getByModel(model), workspace]);
   }
 
-  export function getByCell(cell: ICodeCellModel) {
+  export function getByModel(cell: CodeEditor.IModel) {
     return _workspaces.get(cell) || [];
   }
 
-  export function cellForWorkspace(workspace: Blockly.WorkspaceSvg) {
+  export function modelForWorkspace(workspace: Blockly.WorkspaceSvg) {
     for (const cell of _workspaces.keys()) {
       const candidate = _workspaces.get(cell);
       if (candidate && candidate.indexOf(workspace) > -1) {

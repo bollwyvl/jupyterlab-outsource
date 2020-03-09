@@ -1,7 +1,6 @@
 import { Widget } from '@lumino/widgets';
 import { IObservableString } from '@jupyterlab/observables';
 
-import { IMarkdownCellModel } from '@jupyterlab/cells';
 import { CodeEditor } from '@jupyterlab/codeeditor';
 
 import { EditorState, Transaction } from 'prosemirror-state';
@@ -26,7 +25,7 @@ export class ProseMirrorSource extends Widget {
     super();
     this.addClass(CSS.OUTER_WRAPPER);
     this.addClass('jp-RenderedHTMLCommon');
-    this._model = options.model as IMarkdownCellModel;
+    this._model = options.model;
     this._model.value.changed.connect(this._contentChanged, this);
 
     this.node.appendChild((this._wrapper = document.createElement('div')));
