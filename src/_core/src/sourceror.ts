@@ -9,7 +9,7 @@ export class Sourceror implements IOutsourceror {
   private _ready = new PromiseDelegate<void>();
   private _factoryRegistered = new Signal<this, IOutsourceror.IFactory>(this);
   private _executeRequested = new Signal<this, ICellModel>(this);
-  private _widgetRequested = new Signal<this, string>(this);
+  private _widgetRequested = new Signal<this, IOutsourceror.IWidgetOptions>(this);
   private _notebooks: INotebookTracker | null;
 
   constructor(options: IOutsourceror.IOptions) {
@@ -29,8 +29,8 @@ export class Sourceror implements IOutsourceror {
     return this._widgetRequested;
   }
 
-  requestWidget(factoryName: string) {
-    this._widgetRequested.emit(factoryName);
+  requestWidget(options: IOutsourceror.IWidgetOptions) {
+    this._widgetRequested.emit(options);
   }
 
   get factoryRegistered() {

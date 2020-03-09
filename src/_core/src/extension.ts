@@ -1,20 +1,19 @@
-import { UUID } from '@lumino/coreutils';
+import {UUID} from '@lumino/coreutils';
 
 import {
   JupyterFrontEnd,
-  JupyterFrontEndPlugin
+  JupyterFrontEndPlugin,
+  ILabShell,
 } from '@jupyterlab/application';
-import {
-  NotebookActions,
-  INotebookTracker,
-  NotebookPanel
-} from '@jupyterlab/notebook';
+import {NotebookActions, INotebookTracker, NotebookPanel} from '@jupyterlab/notebook';
+import {IEditorTracker, FileEditor} from '@jupyterlab/fileeditor';
 
-import { MainAreaWidget, ICommandPalette } from '@jupyterlab/apputils';
+import {MainAreaWidget, ICommandPalette} from '@jupyterlab/apputils';
 
-import { IOutsourceror, PLUGIN_ID } from '.';
-import { Sourceror } from './sourceror';
-import { NotebookOutsourceButton } from './button';
+import {IOutsourceror, PLUGIN_ID} from '.';
+import {Sourceror} from './sourceror';
+import {NotebookOutsourceButton} from './buttons/notebook';
+import {FileEditorOutsourceButton} from './buttons/editor';
 
 import '../style/index.css';
 
@@ -22,23 +21,20 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
   id: PLUGIN_ID,
   autoStart: true,
   provides: IOutsourceror,
-  requires: [ICommandPalette, INotebookTracker],
+  requires: [ILabShell, ICommandPalette, INotebookTracker, IEditorTracker],
   activate: (
     app: JupyterFrontEnd,
+    shell: ILabShell,
     palette: ICommandPalette,
-    notebooks: INotebookTracker
+    notebooks: INotebookTracker,
+    editors: IEditorTracker
   ): IOutsourceror => {
-    const { commands } = app;
-    const sourceror = new Sourceror({ notebooks });
-
-    // Get the current widget and activate unless the args specify otherwise.
-    function getCurrent(): NotebookPanel | null {
-      return notebooks.currentWidget;
-    }
+    const {commands} = app;
+    const sourceror = new Sourceror({notebooks, editors});
 
     sourceror.executeRequested.connect((_, cell) => {
       let executed = false;
-      notebooks.forEach(async nb => {
+      notebooks.forEach(async (nb) => {
         if (executed || nb.model == null) {
           return;
         }
@@ -61,27 +57,39 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
       const category = 'Notebook Cell Operations';
       commands.addCommand(command, {
         label: `Create new ${factory.name} for input`,
-        isEnabled: () =>
-          factory.isEnabled ? factory.isEnabled(sourceror) : true,
-        execute: async () => {
-          // Clone the OutputArea
-          const current = getCurrent();
+        isEnabled: () => (factory.isEnabled ? factory.isEnabled(sourceror) : true),
+        execute: async (options: any) => {
+          console.log(options);
+          shell.activateById(options.widgetId);
+          const current = shell.activeWidget as MainAreaWidget;
+          // // Clone the OutputArea
+          // const current = getCurrent();
 
-          if (!current) {
+          if (current == null || current.content == null) {
             return;
           }
 
-          const nb = current.content;
-
-          if (nb == null || nb.activeCell == null) {
+          if (
+            !(current.content instanceof FileEditor || current instanceof NotebookPanel)
+          ) {
             return;
           }
 
-          const model = nb.activeCell.model;
-          const content = await factory.createWidget({ model });
+          const model =
+            current instanceof NotebookPanel
+              ? current.content.activeCell?.model
+              : current.content instanceof FileEditor
+              ? current.content.model
+              : null;
+
+          if (model == null) {
+            return;
+          }
+
+          const content = await factory.createWidget({model});
 
           // Create a MainAreaWidget
-          const widget = new MainAreaWidget({ content });
+          const widget = new MainAreaWidget({content});
           widget.id = `Outsource-${factory.id}-${UUID.uuid4()}`;
           widget.title.label = `${factory.name}`;
           widget.title.icon = factory.iconClass;
@@ -89,30 +97,34 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
             ? `For Notebook: ${current.title.label}`
             : 'For Notebook:';
           widget.addClass('jp-Outsource-outsource');
-          current.context.addSibling(widget, {
+          app.shell.add(widget, 'main', {
             ref: current.id,
-            mode: 'split-left'
+            mode: 'split-left',
           });
 
-          // Remove the output view if the parent notebook is closed.
-          nb.disposed.connect(widget.dispose);
-        }
+          current.disposed.connect(() => widget.dispose());
+        },
       });
-      palette.addItem({ command, category });
+      palette.addItem({command, category});
     });
 
-    sourceror.widgetRequested.connect((_, factoryId) => {
-      commands.execute(`${CommandIds.newSource}-${factoryId}`);
+    sourceror.widgetRequested.connect((_, options: IOutsourceror.IWidgetOptions) => {
+      commands.execute(`${CommandIds.newSource}-${options.factory}`, options as any);
     });
 
-    const outsourceButton = new NotebookOutsourceButton({ sourceror });
-    outsourceButton.sourceror = sourceror;
+    app.docRegistry.addWidgetExtension(
+      'Notebook',
+      new NotebookOutsourceButton({sourceror})
+    );
 
-    app.docRegistry.addWidgetExtension('Notebook', outsourceButton);
+    app.docRegistry.addWidgetExtension(
+      'Editor',
+      new FileEditorOutsourceButton({sourceror})
+    );
 
     console.log('🧙 outsourceror enabled');
     return sourceror;
-  }
+  },
 };
 
 export default extension;

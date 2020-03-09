@@ -4,6 +4,8 @@ import { ISignal } from '@lumino/signaling';
 
 import { ICellModel } from '@jupyterlab/cells';
 import { INotebookTracker } from '@jupyterlab/notebook';
+import { CodeEditor } from '@jupyterlab/codeeditor';
+import { IEditorTracker } from '@jupyterlab/fileeditor';
 
 export const PLUGIN_ID = '@deathbeds/jupyterlab-outsource';
 
@@ -13,19 +15,20 @@ export interface IOutsourceror {
   ready: Promise<void>;
   register(factory: IOutsourceror.IFactory): IOutsourceror.IFactory;
   factoryRegistered: ISignal<IOutsourceror, IOutsourceror.IFactory>;
-  widgetRequested: ISignal<IOutsourceror, string>;
+  widgetRequested: ISignal<IOutsourceror, IOutsourceror.IWidgetOptions>;
   isMarkdownCell: boolean;
   isCodeCell: boolean;
   executeRequested: ISignal<IOutsourceror, ICellModel>;
   execute(cell: ICellModel): void;
   factories: IOutsourceror.IFactory[];
   factory(id: string): IOutsourceror.IFactory | null;
-  requestWidget(factoryName: string): void;
+  requestWidget(options: IOutsourceror.IWidgetOptions): void;
 }
 
 export namespace IOutsourceror {
   export interface IOptions {
     notebooks?: INotebookTracker;
+    editors?: IEditorTracker;
   }
 
   export interface IFactory {
@@ -37,9 +40,13 @@ export namespace IOutsourceror {
   }
 
   export interface IFactoryOptions {
-    // FIXME: probably some other upstream model
-    model: ICellModel;
+    model: CodeEditor.IModel;
     sourceror?: IOutsourceror;
+  }
+
+  export interface IWidgetOptions {
+    factory: string;
+    widgetId: string;
   }
 }
 

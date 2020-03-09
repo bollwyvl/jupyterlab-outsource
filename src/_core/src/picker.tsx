@@ -38,7 +38,7 @@ export class OutsourcePicker extends VDomRenderer<OutsourcePicker.Model> {
     if (value == null) {
       return;
     }
-    this.model.sourceror.requestWidget(value);
+    this.model.sourceror.requestWidget({factory: value, widgetId: this.model.widgetId});
     this.model.value = '';
   };
 }
@@ -46,15 +46,18 @@ export class OutsourcePicker extends VDomRenderer<OutsourcePicker.Model> {
 export namespace OutsourcePicker {
   export interface IOptions {
     sourceror: IOutsourceror;
+    widgetId: string;
   }
 
   export class Model extends VDomModel {
     private _sourceror: IOutsourceror;
     private _value: string = '';
+    private _widgetId: string = '';
 
     constructor(options: IOptions) {
       super();
       this._sourceror = options.sourceror;
+      this._widgetId = options.widgetId;
     }
 
     get value() {
@@ -63,6 +66,15 @@ export namespace OutsourcePicker {
 
     set value(value: string) {
       this._value = value;
+      this.stateChanged.emit(void 0);
+    }
+
+    get widgetId() {
+      return this._widgetId;
+    }
+
+    set widgetId(widgetId) {
+      this._widgetId = widgetId;
       this.stateChanged.emit(void 0);
     }
 

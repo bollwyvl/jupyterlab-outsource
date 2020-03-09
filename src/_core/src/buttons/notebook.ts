@@ -4,8 +4,8 @@ import { DocumentRegistry } from '@jupyterlab/docregistry';
 
 import { NotebookPanel, INotebookModel } from '@jupyterlab/notebook';
 
-import { IOutsourceror } from '.';
-import { OutsourcePicker } from './picker';
+import { IOutsourceror } from '..';
+import { OutsourcePicker } from '../picker';
 
 /**
  * A notebook widget extension that adds a button to the toolbar.
@@ -25,7 +25,10 @@ export class NotebookOutsourceButton
     panel: NotebookPanel,
     context: DocumentRegistry.IContext<INotebookModel>
   ): IDisposable {
-    let picker = new OutsourcePicker({ sourceror: this.sourceror });
+    let picker = new OutsourcePicker({
+      sourceror: this.sourceror,
+      widgetId: panel.id
+    });
 
     panel.toolbar.insertItem(9, 'outsource', picker);
 

@@ -2,6 +2,7 @@ import { Widget } from '@lumino/widgets';
 import { IObservableString } from '@jupyterlab/observables';
 
 import { IMarkdownCellModel } from '@jupyterlab/cells';
+import { CodeEditor } from '@jupyterlab/codeeditor';
 
 import { EditorState, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
@@ -16,7 +17,7 @@ import 'prosemirror-example-setup/style/style.css';
 import 'prosemirror-view/style/prosemirror.css';
 
 export class ProseMirrorSource extends Widget {
-  private _model: IMarkdownCellModel;
+  private _model: CodeEditor.IModel;
   private _wrapper: HTMLDivElement;
   private _view: EditorView<any>;
   private _lastSource: string = '';
@@ -32,13 +33,11 @@ export class ProseMirrorSource extends Widget {
     this._wrapper.className = CSS.WRAPPER;
 
     let that = this;
-    let source = this._model.toJSON().source;
+    let source = this._model.value.text;
 
     this._view = new EditorView(this._wrapper, {
       state: EditorState.create({
-        doc: (Markdown as any).defaultMarkdownParser.parse(
-          typeof source === 'string' ? source : source.join('')
-        ),
+        doc: (Markdown as any).defaultMarkdownParser.parse(source),
         plugins: (exampleSetup as any).exampleSetup({
           schema: (Markdown as any).schema
         })
