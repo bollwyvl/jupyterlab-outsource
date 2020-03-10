@@ -1,8 +1,8 @@
 import React from 'react';
 
-import {IOutsourceror} from '.';
+import { IOutsourceror } from '.';
 
-import {VDomModel, VDomRenderer} from '@jupyterlab/apputils';
+import { VDomModel, VDomRenderer } from '@jupyterlab/apputils';
 
 export class OutsourcePicker extends VDomRenderer<OutsourcePicker.Model> {
   constructor(options: OutsourcePicker.IOptions) {
@@ -24,7 +24,7 @@ export class OutsourcePicker extends VDomRenderer<OutsourcePicker.Model> {
         onChange={this.onChange}
       >
         <option value="" />
-        {m.sourceror.factories.map(({name, id}) => (
+        {m.sourceror.factories.map(({ name, id }) => (
           <option key={id} value={id}>
             {name}
           </option>
@@ -34,11 +34,14 @@ export class OutsourcePicker extends VDomRenderer<OutsourcePicker.Model> {
   }
 
   onChange = (evt: React.FormEvent<any>) => {
-    const {value} = evt.currentTarget;
+    const { value } = evt.currentTarget;
     if (value == null) {
       return;
     }
-    this.model.sourceror.requestWidget({factory: value, widgetId: this.model.widgetId});
+    this.model.sourceror.requestWidget({
+      factory: value,
+      widgetId: this.model.widgetId
+    });
     this.model.value = '';
   };
 }

@@ -1,19 +1,19 @@
-import {UUID} from '@lumino/coreutils';
+import { UUID } from '@lumino/coreutils';
 
 import {
   JupyterFrontEnd,
   JupyterFrontEndPlugin,
   ILabShell,
 } from '@jupyterlab/application';
-import {NotebookActions, INotebookTracker, NotebookPanel} from '@jupyterlab/notebook';
-import {IEditorTracker, FileEditor} from '@jupyterlab/fileeditor';
+import { NotebookActions, INotebookTracker, NotebookPanel } from '@jupyterlab/notebook';
+import { IEditorTracker, FileEditor } from '@jupyterlab/fileeditor';
 
-import {MainAreaWidget, ICommandPalette} from '@jupyterlab/apputils';
+import { MainAreaWidget, ICommandPalette } from '@jupyterlab/apputils';
 
-import {IOutsourceror, PLUGIN_ID} from '.';
-import {Sourceror} from './sourceror';
-import {NotebookOutsourceButton} from './buttons/notebook';
-import {FileEditorOutsourceButton} from './buttons/editor';
+import { IOutsourceror, PLUGIN_ID } from '.';
+import { Sourceror } from './sourceror';
+import { NotebookOutsourceButton } from './buttons/notebook';
+import { FileEditorOutsourceButton } from './buttons/editor';
 
 import '../style/index.css';
 
@@ -29,8 +29,8 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
     notebooks: INotebookTracker,
     editors: IEditorTracker
   ): IOutsourceror => {
-    const {commands} = app;
-    const sourceror = new Sourceror({notebooks, editors});
+    const { commands } = app;
+    const sourceror = new Sourceror({ notebooks, editors });
 
     sourceror.executeRequested.connect((_, cell) => {
       let executed = false;
@@ -85,10 +85,14 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
             return;
           }
 
-          const content = await factory.createWidget({model});
+          const content = await factory.createWidget({
+            model,
+            sourceror,
+            widget: current.content,
+          });
 
           // Create a MainAreaWidget
-          const widget = new MainAreaWidget({content});
+          const widget = new MainAreaWidget({ content });
           widget.id = `Outsource-${factory.id}-${UUID.uuid4()}`;
           widget.title.label = `${factory.name}`;
           widget.title.icon = factory.iconClass;
@@ -104,7 +108,7 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
           current.disposed.connect(() => widget.dispose());
         },
       });
-      palette.addItem({command, category});
+      palette.addItem({ command, category });
     });
 
     sourceror.widgetRequested.connect((_, options: IOutsourceror.IWidgetOptions) => {
@@ -113,12 +117,12 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
 
     app.docRegistry.addWidgetExtension(
       'Notebook',
-      new NotebookOutsourceButton({sourceror})
+      new NotebookOutsourceButton({ sourceror })
     );
 
     app.docRegistry.addWidgetExtension(
       'Editor',
-      new FileEditorOutsourceButton({sourceror})
+      new FileEditorOutsourceButton({ sourceror })
     );
 
     console.log('🧙 outsourceror enabled');

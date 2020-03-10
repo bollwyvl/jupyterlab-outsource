@@ -41,7 +41,8 @@ export namespace IOutsourceror {
 
   export interface IFactoryOptions {
     model: CodeEditor.IModel;
-    sourceror?: IOutsourceror;
+    sourceror: IOutsourceror;
+    widget: Widget;
   }
 
   export interface IWidgetOptions {
