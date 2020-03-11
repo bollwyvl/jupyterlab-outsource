@@ -61,3 +61,8 @@ export namespace IOutsourceror {
 export const CSS = {
   icon: 'jp-OutsourceIcon'
 };
+
+export namespace CommandIds {
+  export const newSource = 'outsource:new-outsource';
+  export const treeOpen = 'outsource:tree-open';
+}

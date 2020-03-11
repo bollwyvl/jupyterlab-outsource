@@ -4,27 +4,36 @@ import {
   JupyterFrontEnd,
   JupyterFrontEndPlugin,
   ILabShell,
+  IRouter,
 } from '@jupyterlab/application';
 import { NotebookActions, INotebookTracker, NotebookPanel } from '@jupyterlab/notebook';
 import { IEditorTracker, FileEditor } from '@jupyterlab/fileeditor';
 
 import { MainAreaWidget, ICommandPalette } from '@jupyterlab/apputils';
+import { URLExt } from '@jupyterlab/coreutils';
 
-import { IOutsourceror, PLUGIN_ID } from '.';
+import { IOutsourceror, PLUGIN_ID, CommandIds } from '.';
 import { Sourceror } from './sourceror';
 import { NotebookOutsourceButton } from './buttons/notebook';
 import { FileEditorOutsourceButton } from './buttons/editor';
-
-import '../style/index.css';
 
 const extension: JupyterFrontEndPlugin<IOutsourceror> = {
   id: PLUGIN_ID,
   autoStart: true,
   provides: IOutsourceror,
-  requires: [ILabShell, ICommandPalette, INotebookTracker, IEditorTracker],
+  requires: [
+    JupyterFrontEnd.IPaths,
+    ILabShell,
+    IRouter,
+    ICommandPalette,
+    INotebookTracker,
+    IEditorTracker,
+  ],
   activate: (
     app: JupyterFrontEnd,
+    paths: JupyterFrontEnd.IPaths,
     shell: ILabShell,
+    router: IRouter,
     palette: ICommandPalette,
     notebooks: INotebookTracker,
     editors: IEditorTracker
@@ -141,12 +150,46 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
       new FileEditorOutsourceButton({ sourceror })
     );
 
+    const outsourcePattern = new RegExp(`^${paths.urls.tree}/outsource/([^/]+)/?(.*)`);
+
+    app.commands.addCommand(CommandIds.treeOpen, {
+      execute: async (args) => {
+        const loc = args as IRouter.ILocation;
+        const outsourceMatch = loc.path.match(outsourcePattern);
+        console.log(args, loc, outsourceMatch);
+        if (outsourceMatch == null) {
+          return;
+        }
+        const [factory, path] = outsourceMatch.slice(1);
+
+        setTimeout(async () => {
+          const doc = await commands.execute('docmanager:open', {
+            path,
+            factory: 'Editor',
+          });
+
+          await commands.execute(`${CommandIds.newSource}-${factory}`, {
+            widgetId: doc.content.id,
+            factory,
+          });
+        }, 1000);
+
+        const url = URLExt.join(paths.urls.tree, path);
+        router.navigate(url);
+
+
+        return router.stop;
+      },
+    });
+
+    router.register({
+      command: CommandIds.treeOpen,
+      pattern: outsourcePattern,
+      rank: 29,
+    });
+
     return sourceror;
   },
 };
 
 export default extension;
-
-namespace CommandIds {
-  export const newSource = 'outsource:new-outsource';
-}

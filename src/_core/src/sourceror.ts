@@ -5,6 +5,8 @@ import { MarkdownCell, CodeCell, ICellModel } from '@jupyterlab/cells';
 
 import { IOutsourceror } from '.';
 
+import '../style/index.css';
+
 export class Sourceror implements IOutsourceror {
   private _ready = new PromiseDelegate<void>();
   private _factoryRegistered = new Signal<this, IOutsourceror.IFactory>(this);
