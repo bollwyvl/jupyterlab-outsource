@@ -6,10 +6,16 @@ import { IOutsourceProsemirror } from '.';
 
 import { SCHEMA } from './schema';
 
+import * as widget from './widget';
+
 export class ProsemirrorFactory implements IOutsourceProsemirror {
   readonly id = 'prosemirror';
   readonly name = 'ProseMirror';
   readonly iconClass = 'jp-Outsource-ProseMirrorIcon';
+
+  constructor(sourceror: IOutsourceror) {
+    widget.SOURCEROR.instance = sourceror;
+  }
 
   isEnabled(sourceror: IOutsourceror) {
     return sourceror.isMarkdownCell || sourceror.isCodeCell;

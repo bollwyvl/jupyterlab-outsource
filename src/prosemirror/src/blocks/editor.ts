@@ -239,19 +239,18 @@ export const arrowHandlers = keymap({
   ArrowDown: arrowHandler('down')
 });
 
-
-export function outsourceExtension(schema: Schema): IOutsourceProsemirror.IExtensionPoints {
+export function outsourceExtension(
+  schema: Schema
+): IOutsourceProsemirror.IExtensionPoints {
   return {
     nodes: {
-      code_block: {...schema.nodes.code_block, isolating: true} as any
+      code_block: { ...schema.nodes.code_block, isolating: true } as any
     },
     nodeViews: {
       code_block: (node: Node, view: EditorView, getPos: () => number) => {
         return new CodeBlockView(node, view, getPos, schema);
-      },
+      }
     },
-    plugins: [
-      arrowHandlers
-    ]
-  }
+    plugins: [arrowHandlers]
+  };
 }

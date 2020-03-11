@@ -4,6 +4,7 @@ import { Plugin } from 'prosemirror-state';
 import { Schema } from 'prosemirror-model';
 
 import { IOutsourceror } from '@deathbeds/jupyterlab-outsource/src';
+import { ProseMirrorSource } from './widget';
 
 export const PLUGIN_ID = '@deathbeds/jupyterlab-outsource:prosemirror';
 
@@ -23,7 +24,11 @@ export namespace IOutsourceProsemirror {
     init(): Promise<IExtend>;
   }
   export interface IExtend {
-    (schema: Schema): IExtensionPoints;
+    (api: IAPI): IExtensionPoints;
+  }
+  export interface IAPI {
+    schema: Schema;
+    widget: ProseMirrorSource;
   }
   export interface IExtensionPoints {
     nodes?: Partial<Schema['nodes']>;

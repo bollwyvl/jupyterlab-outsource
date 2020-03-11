@@ -8,7 +8,8 @@ import { IOutsourceror } from '.';
 export class Sourceror implements IOutsourceror {
   private _ready = new PromiseDelegate<void>();
   private _factoryRegistered = new Signal<this, IOutsourceror.IFactory>(this);
-  private _executeRequested = new Signal<this, ICellModel>(this);
+  private _executeCellRequested = new Signal<this, ICellModel>(this);
+  private _executeTextRequested = new Signal<this, IOutsourceror.IConsoleExecuteOptions>(this);
   private _widgetRequested = new Signal<this, IOutsourceror.IWidgetOptions>(this);
   private _notebooks: INotebookTracker | null;
 
@@ -21,8 +22,12 @@ export class Sourceror implements IOutsourceror {
     return this._ready.promise;
   }
 
-  get executeRequested() {
-    return this._executeRequested;
+  get executeCellRequested() {
+    return this._executeCellRequested;
+  }
+
+  get executeTextRequested() {
+    return this._executeTextRequested;
   }
 
   get widgetRequested() {
@@ -67,8 +72,12 @@ export class Sourceror implements IOutsourceror {
     return Private.factory(id) || null;
   }
 
-  execute(cell: ICellModel) {
-    this._executeRequested.emit(cell);
+  executeCell(cell: ICellModel) {
+    this._executeCellRequested.emit(cell);
+  }
+
+  executeText(options: IOutsourceror.IConsoleExecuteOptions) {
+    this._executeTextRequested.emit(options);
   }
 }
 

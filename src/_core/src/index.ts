@@ -18,8 +18,10 @@ export interface IOutsourceror {
   widgetRequested: ISignal<IOutsourceror, IOutsourceror.IWidgetOptions>;
   isMarkdownCell: boolean;
   isCodeCell: boolean;
-  executeRequested: ISignal<IOutsourceror, ICellModel>;
-  execute(cell: ICellModel): void;
+  executeCellRequested: ISignal<IOutsourceror, ICellModel>;
+  executeTextRequested: ISignal<IOutsourceror, IOutsourceror.IConsoleExecuteOptions>;
+  executeCell(cell: ICellModel): void;
+  executeText(options: IOutsourceror.IConsoleExecuteOptions): void;
   factories: IOutsourceror.IFactory[];
   factory(id: string): IOutsourceror.IFactory | null;
   requestWidget(options: IOutsourceror.IWidgetOptions): void;
@@ -29,6 +31,11 @@ export namespace IOutsourceror {
   export interface IOptions {
     notebooks?: INotebookTracker;
     editors?: IEditorTracker;
+  }
+
+  export interface IConsoleExecuteOptions {
+    text: string;
+    widgetId: string;
   }
 
   export interface IFactory {

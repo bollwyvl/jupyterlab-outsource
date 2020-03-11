@@ -32,7 +32,7 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
     const { commands } = app;
     const sourceror = new Sourceror({ notebooks, editors });
 
-    sourceror.executeRequested.connect((_, cell) => {
+    sourceror.executeCellRequested.connect((_, cell) => {
       let executed = false;
       notebooks.forEach(async (nb) => {
         if (executed || nb.model == null) {
@@ -48,6 +48,23 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
             nb.content.activeCellIndex = oldIndex;
             break;
           }
+        }
+      });
+    });
+    sourceror.executeTextRequested.connect((_, options) => {
+      let executed = false;
+      editors.forEach(async (ed) => {
+        if (executed) {
+          return false;
+        }
+        if (ed.content.id === options.widgetId) {
+          console.log('execute', ed, options.text);
+          commands.execute('console:inject', {
+            activate: false,
+            code: options.text,
+            path: ed.context.path,
+          });
+          executed = true;
         }
       });
     });

@@ -1,31 +1,60 @@
-import { CodeBlockView, arrowHandlers } from './editor';
-import { IOutsourceProsemirror } from '..';
+/**
+ * Executable code block model, extension of the CodeMirror prose mirror integration
+ * in `editor.ts`
+ */
+
 import { Schema, Node } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
+import { IOutsourceProsemirror } from '..';
+import { ProseMirrorSource } from '../widget';
+import { CodeBlockView, arrowHandlers } from './editor';
 
 export class ExecuteCodeBlockView extends CodeBlockView {
+  protected widget: ProseMirrorSource;
+  constructor(
+    node: Node,
+    view: EditorView,
+    getPos: () => number,
+    schema: Schema,
+    widget: ProseMirrorSource
+  ) {
+    super(node, view, getPos, schema);
+    this.widget = widget;
+  }
+
   codeMirrorKeymap() {
     const { keymap } = super.codeMirrorKeymap();
-    let view = this.view;
     return {
       ...keymap,
-      [`Shift-Enter`]: () => console.log('whatever', view),
+      [`Shift-Enter`]: () => this.onExecute()
     };
+  }
+
+  onExecute() {
+    let text = this.cm.getSelection();
+    console.log(text);
+    this.widget.execute(text);
   }
 }
 
-export function executeExtension(schema: Schema): IOutsourceProsemirror.IExtensionPoints {
+export function executeExtension(
+  api: IOutsourceProsemirror.IAPI
+): IOutsourceProsemirror.IExtensionPoints {
   return {
     nodes: {
-      code_block: {...schema.nodes.code_block, isolating: true} as any
+      code_block: { ...api.schema.nodes.code_block, isolating: true } as any
     },
     nodeViews: {
       code_block: (node: Node, view: EditorView, getPos: () => number) => {
-        return new ExecuteCodeBlockView(node, view, getPos, schema);
-      },
+        return new ExecuteCodeBlockView(
+          node,
+          view,
+          getPos,
+          api.schema,
+          api.widget
+        );
+      }
     },
-    plugins: [
-      arrowHandlers
-    ]
-  }
+    plugins: [arrowHandlers]
+  };
 }

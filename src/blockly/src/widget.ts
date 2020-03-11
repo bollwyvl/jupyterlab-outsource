@@ -44,7 +44,7 @@ Blockly.onKeyDown = (evt: KeyboardEvent) => {
     }
     evt.preventDefault();
     evt.stopImmediatePropagation();
-    return SOURCEROR.instance.execute(model);
+    return SOURCEROR.instance.executeCell(model);
   }
 
   return _onKeyDown(evt);

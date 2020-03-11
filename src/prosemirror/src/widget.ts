@@ -1,4 +1,5 @@
 import { Widget } from '@lumino/widgets';
+// import {Signal} from '@lumino/signaling';
 import { IObservableString } from '@jupyterlab/observables';
 
 import { CodeEditor } from '@jupyterlab/codeeditor';
@@ -14,6 +15,13 @@ import 'prosemirror-example-setup/style/style.css';
 import 'prosemirror-view/style/prosemirror.css';
 
 import { SCHEMA, PARSE, SERIALIZE } from './schema';
+import { IOutsourceror } from '@deathbeds/jupyterlab-outsource/src';
+
+export const SOURCEROR: {
+  instance: IOutsourceror | null;
+} = {
+  instance: null,
+};
 
 export class ProseMirrorSource extends Widget {
   private _model: CodeEditor.IModel;
@@ -21,8 +29,9 @@ export class ProseMirrorSource extends Widget {
   private _view: EditorView<any>;
   private _lastSource: string = '';
   private _factory: IOutsourceProsemirror;
+  // private _executeRequested = new Signal<ProseMirrorSource, string>(this);
   // TODO: add execution based on parent widget's kernel
-  // private _widget: Widget;
+  private _widget: Widget;
 
   constructor(options: IOutsourceProsemirror.IFactoryOptions) {
     super();
@@ -31,7 +40,7 @@ export class ProseMirrorSource extends Widget {
     this._factory = options.factory;
     this._model = options.model;
     this._model.value.changed.connect(this._contentChanged, this);
-    // this._widget = options.widget;
+    this._widget = options.widget;
 
     this.node.appendChild((this._wrapper = document.createElement('div')));
     this._wrapper.className = CSS.WRAPPER;
@@ -58,13 +67,24 @@ export class ProseMirrorSource extends Widget {
     });
   }
 
+  execute(text: string) {
+    SOURCEROR.instance?.executeText({
+      widgetId: this._widget.id,
+      text: text,
+    });
+    console.log(this._widget);
+  }
+
   create() {
     let nodeViews = {};
     let plugins = [] as Plugin<any, any>[];
     let nodes = {};
 
     for (const extension of this._factory.getExtensions()) {
-      const ep = extension(SCHEMA);
+      const ep = extension({
+        schema: SCHEMA,
+        widget: this,
+      });
       nodeViews = { ...nodeViews, ...ep.nodeViews };
       if (plugins != null) {
         plugins = [...plugins, ...(ep.plugins || [])] as any;
