@@ -58,7 +58,6 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
           return false;
         }
         if (ed.content.id === options.widgetId) {
-          console.log('execute', ed, options.text);
           commands.execute('console:inject', {
             activate: false,
             code: options.text,
@@ -142,7 +141,6 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
       new FileEditorOutsourceButton({ sourceror })
     );
 
-    console.log('🧙 outsourceror enabled');
     return sourceror;
   },
 };

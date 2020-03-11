@@ -96,6 +96,7 @@ export class CodeBlockView {
     let head = this.cm.indexFromPos(this.cm.getCursor('head')) + offset;
     return TextSelection.create(doc, anchor, head);
   }
+
   setSelection(anchor: number, head: number) {
     this.cm.focus();
     this.updating = true;
@@ -127,7 +128,6 @@ export class CodeBlockView {
       Left: () => this.maybeEscape('char', -1),
       Down: () => this.maybeEscape('line', 1),
       Right: () => this.maybeEscape('char', 1),
-      [`Shift-Enter`]: () => console.log('whatever', view),
       [`${mod}-Z`]: () => undo(view.state, view.dispatch),
       [`Shift-${mod}-Z`]: () => redo(view.state, view.dispatch),
       [`${mod}-Y`]: () => redo(view.state, view.dispatch),
@@ -158,7 +158,7 @@ export class CodeBlockView {
     this.view.focus();
   }
 
-  update(node: Node) {
+  update(node: Node): boolean {
     if (node.type !== this.node.type) {
       return false;
     }

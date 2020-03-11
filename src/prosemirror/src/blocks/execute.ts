@@ -32,8 +32,15 @@ export class ExecuteCodeBlockView extends CodeBlockView {
 
   onExecute() {
     let text = this.cm.getSelection();
-    console.log(text);
     this.widget.execute(text);
+  }
+
+  update(node: Node) {
+    const mode = this.node.attrs['params'];
+    if (this.cm.getOption('mode') !== mode) {
+      this.cm.setOption('mode', mode);
+    }
+    return super.update(node);
   }
 }
 

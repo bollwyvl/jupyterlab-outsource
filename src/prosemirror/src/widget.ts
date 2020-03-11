@@ -1,5 +1,4 @@
 import { Widget } from '@lumino/widgets';
-// import {Signal} from '@lumino/signaling';
 import { IObservableString } from '@jupyterlab/observables';
 
 import { CodeEditor } from '@jupyterlab/codeeditor';
@@ -29,8 +28,6 @@ export class ProseMirrorSource extends Widget {
   private _view: EditorView<any>;
   private _lastSource: string = '';
   private _factory: IOutsourceProsemirror;
-  // private _executeRequested = new Signal<ProseMirrorSource, string>(this);
-  // TODO: add execution based on parent widget's kernel
   private _widget: Widget;
 
   constructor(options: IOutsourceProsemirror.IFactoryOptions) {
@@ -72,7 +69,6 @@ export class ProseMirrorSource extends Widget {
       widgetId: this._widget.id,
       text: text,
     });
-    console.log(this._widget);
   }
 
   create() {
@@ -123,6 +119,7 @@ export class ProseMirrorSource extends Widget {
       EditorState.create({
         doc: PARSE(source),
         plugins: [...exampleSetup({ schema: SCHEMA })],
+        selection: this._view.state.selection
       })
     );
   }
