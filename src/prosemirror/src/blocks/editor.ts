@@ -1,5 +1,9 @@
-// schema {
-// import { schema as baseSchema } from 'prosemirror-schema-basic';
+/*
+  Ported from:
+  https://github.com/ProseMirror/website/blob/master/example/codemirror/index.js
+  MIT License
+  Copyright (C) 2015-2017 by Marijn Haverbeke <marijnh@gmail.com> and others
+*/
 import { Node, Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import {
@@ -14,6 +18,7 @@ import { exitCode } from 'prosemirror-commands';
 import { undo, redo } from 'prosemirror-history';
 
 import CodeMirror from 'codemirror';
+import { IOutsourceProsemirror } from '..';
 
 export type TDirection =
   | 'left'
@@ -22,18 +27,6 @@ export type TDirection =
   | 'down'
   | 'forward'
   | 'backward';
-
-// let baseNodes = baseSchema.spec.nodes as { [x: string]: NodeSpec };
-// export const schema = new Schema({
-//   nodes: {
-//     ...baseNodes,
-//     code_block: {
-//       ...baseNodes['code_block'],
-//       isolating: true,
-//     },
-//   },
-//   marks: baseSchema.spec.marks,
-// });
 
 export class CodeBlockView {
   cm: CodeMirror.Editor;
@@ -244,3 +237,20 @@ export const arrowHandlers = keymap({
   ArrowUp: arrowHandler('up'),
   ArrowDown: arrowHandler('down')
 });
+
+
+export function outsourceExtension(schema: Schema): IOutsourceProsemirror.IExtensionPoints {
+  return {
+    nodes: {
+      code_block: {...schema.nodes.code_block, isolating: true} as any
+    },
+    nodeViews: {
+      code_block: (node: Node, view: EditorView, getPos: () => number) => {
+        return new CodeBlockView(node, view, getPos, schema);
+      },
+    },
+    plugins: [
+      arrowHandlers
+    ]
+  }
+}

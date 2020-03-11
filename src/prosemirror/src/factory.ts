@@ -2,7 +2,11 @@ import { Widget } from '@lumino/widgets';
 
 import { IOutsourceror } from '@deathbeds/jupyterlab-outsource';
 
-export class ProsemirrorFactory implements IOutsourceror.IFactory {
+import { IOutsourceProsemirror } from '.';
+
+import { SCHEMA } from './schema';
+
+export class ProsemirrorFactory implements IOutsourceProsemirror {
   readonly id = 'prosemirror';
   readonly name = 'ProseMirror';
   readonly iconClass = 'jp-Outsource-ProseMirrorIcon';
@@ -11,10 +15,32 @@ export class ProsemirrorFactory implements IOutsourceror.IFactory {
     return sourceror.isMarkdownCell || sourceror.isCodeCell;
   }
 
+  addExtension(name: string, extension: IOutsourceProsemirror.IExtension) {
+    Private._extensions.set(name, extension);
+  }
+
+  getExtensions() {
+    return [...Private._resolvedExtensions.values()];
+  }
+
   async createWidget(options: IOutsourceror.IFactoryOptions): Promise<Widget> {
     const { ProseMirrorSource } = await import(
       /* webpackChunkName: "prosemirror" */ './widget'
     );
-    return new ProseMirrorSource(options);
+    await Private.resolveExtensions();
+    return new ProseMirrorSource({ ...options, factory: this, schema: SCHEMA });
+  }
+}
+
+namespace Private {
+  export const _extensions = new Map<string, IOutsourceProsemirror.IExtension>();
+  export const _resolvedExtensions = new Map<string, IOutsourceProsemirror.IExtend>();
+
+  export async function resolveExtensions() {
+    for (const [extName, extension] of Private._extensions.entries()) {
+      if (!_resolvedExtensions.has(extName)) {
+        _resolvedExtensions.set(extName,  await extension.init());
+      }
+    }
   }
 }

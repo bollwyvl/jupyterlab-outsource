@@ -3,34 +3,32 @@ import { IObservableString } from '@jupyterlab/observables';
 
 import { CodeEditor } from '@jupyterlab/codeeditor';
 
-import { EditorState, Transaction } from 'prosemirror-state';
-import { Schema, Node } from 'prosemirror-model';
+import { EditorState, Transaction, Plugin } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import * as Markdown from 'prosemirror-markdown';
-import { IOutsourceror } from '@deathbeds/jupyterlab-outsource';
 import { exampleSetup } from 'prosemirror-example-setup';
 
-import { CSS } from '.';
+import { CSS, IOutsourceProsemirror } from '.';
 
 import '../style/index.css';
 import 'prosemirror-example-setup/style/style.css';
 import 'prosemirror-view/style/prosemirror.css';
-import { arrowHandlers, CodeBlockView } from './blocks/editor';
 
-const SCHEMA = (Markdown as any).schema as Schema;
+import { SCHEMA, PARSE, SERIALIZE } from './schema';
 
 export class ProseMirrorSource extends Widget {
   private _model: CodeEditor.IModel;
   private _wrapper: HTMLDivElement;
   private _view: EditorView<any>;
   private _lastSource: string = '';
+  private _factory: IOutsourceProsemirror;
   // TODO: add execution based on parent widget's kernel
   // private _widget: Widget;
 
-  constructor(options: IOutsourceror.IFactoryOptions) {
+  constructor(options: IOutsourceProsemirror.IFactoryOptions) {
     super();
     this.addClass(CSS.OUTER_WRAPPER);
     this.addClass('jp-RenderedHTMLCommon');
+    this._factory = options.factory;
     this._model = options.model;
     this._model.value.changed.connect(this._contentChanged, this);
     // this._widget = options.widget;
@@ -41,18 +39,24 @@ export class ProseMirrorSource extends Widget {
     let that = this;
     let source = this._model.value.text;
 
+    let allNodeViews = {};
+    let allPlugins = [] as Plugin<any, any>[];
+    let allNodes = {};
+
+    for (const extension of this._factory.getExtensions()) {
+      const { nodes, nodeViews, plugins } = extension(SCHEMA);
+      allNodeViews = { ...allNodeViews, nodes };
+      if (plugins != null) {
+        allPlugins = [...allPlugins, plugins] as any;
+      }
+      allNodes = { ...allNodes, nodeViews };
+    }
+
     this._view = new EditorView(this._wrapper, {
-      nodeViews: {
-        code_block: (node: Node, view: EditorView, getPos: () => number) => {
-          return new CodeBlockView(node, view, getPos, SCHEMA);
-        },
-      },
+      nodeViews: allNodes,
       state: EditorState.create({
-        doc: Markdown.defaultMarkdownParser.parse(source),
-        plugins: [
-          ...exampleSetup({ schema: SCHEMA }),
-          arrowHandlers,
-        ],
+        doc: PARSE(source),
+        plugins: [...exampleSetup({ schema: SCHEMA }), ...(allPlugins || [])],
       }),
       dispatchTransaction(transaction: Transaction) {
         that._pmChanged(transaction);
@@ -68,9 +72,7 @@ export class ProseMirrorSource extends Widget {
   private _pmChanged(transaction: Transaction) {
     const newState = this._view.state.apply(transaction);
     this._view.updateState(newState);
-    this._lastSource = (Markdown as any).defaultMarkdownSerializer.serialize(
-      this._view.state.doc
-    );
+    this._lastSource = SERIALIZE(this._view.state.doc);
     if (this._lastSource.trim() === this._model.value.text.trim()) {
       return;
     }
@@ -88,10 +90,11 @@ export class ProseMirrorSource extends Widget {
     this._lastSource = source;
     this._view.updateState(
       EditorState.create({
-        doc: (Markdown as any).defaultMarkdownParser.parse(source),
-        plugins: exampleSetup({
-          schema: SCHEMA,
-        }),
+        doc: PARSE(source),
+        plugins: [
+          ...exampleSetup({ schema: SCHEMA }),
+
+        ],
       })
     );
   }
