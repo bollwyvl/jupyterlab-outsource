@@ -127,6 +127,7 @@ export class CodeBlockView {
       Left: () => this.maybeEscape('char', -1),
       Down: () => this.maybeEscape('line', 1),
       Right: () => this.maybeEscape('char', 1),
+      [`Shift-Enter`]: () => console.log('whatever', view),
       [`${mod}-Z`]: () => undo(view.state, view.dispatch),
       [`Shift-${mod}-Z`]: () => redo(view.state, view.dispatch),
       [`${mod}-Y`]: () => redo(view.state, view.dispatch),

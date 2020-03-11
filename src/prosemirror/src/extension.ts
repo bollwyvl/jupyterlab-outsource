@@ -23,14 +23,14 @@ const extension: JupyterFrontEndPlugin<IOutsourceProsemirror> = {
 };
 
 const codeBlock: JupyterFrontEndPlugin<void> = {
-  id: `${PLUGIN_ID}-block-codemirror`,
+  id: `${PLUGIN_ID}-block-codemirror-execute`,
   autoStart: true,
   requires: [IOutsourceProsemirror],
   activate: (_app: JupyterFrontEnd, prosemirror: IOutsourceProsemirror): void => {
 
     async function init() {
-      const {outsourceExtension} = await import('./blocks/editor');
-      return outsourceExtension;
+      const {executeExtension} = await import('./blocks/execute');
+      return executeExtension;
     }
 
     prosemirror.addExtension('code_block', {
