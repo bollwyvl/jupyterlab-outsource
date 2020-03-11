@@ -39,29 +39,40 @@ export class ProseMirrorSource extends Widget {
     let that = this;
     let source = this._model.value.text;
 
-    let allNodeViews = {};
-    let allPlugins = [] as Plugin<any, any>[];
-    let allNodes = {};
+    const { nodeViews, nodes, plugins } = this.create();
 
-    for (const extension of this._factory.getExtensions()) {
-      const { nodes, nodeViews, plugins } = extension(SCHEMA);
-      allNodeViews = { ...allNodeViews, nodes };
-      if (plugins != null) {
-        allPlugins = [...allPlugins, plugins] as any;
-      }
-      allNodes = { ...allNodes, nodeViews };
-    }
+    SCHEMA.nodes = {
+      ...SCHEMA.nodes,
+      ...nodes,
+    };
 
     this._view = new EditorView(this._wrapper, {
-      nodeViews: allNodes,
+      nodeViews,
       state: EditorState.create({
         doc: PARSE(source),
-        plugins: [...exampleSetup({ schema: SCHEMA }), ...(allPlugins || [])],
+        plugins: [...exampleSetup({ schema: SCHEMA }), ...(plugins || [])],
       }),
       dispatchTransaction(transaction: Transaction) {
         that._pmChanged(transaction);
       },
     });
+  }
+
+  create() {
+    let nodeViews = {};
+    let plugins = [] as Plugin<any, any>[];
+    let nodes = {};
+
+    for (const extension of this._factory.getExtensions()) {
+      const ep = extension(SCHEMA);
+      nodeViews = { ...nodeViews, ...ep.nodeViews };
+      if (plugins != null) {
+        plugins = [...plugins, ...(ep.plugins || [])] as any;
+      }
+      nodes = { ...nodes, ...ep.nodes };
+    }
+
+    return { nodeViews, nodes, plugins };
   }
 
   dispose() {
@@ -91,10 +102,7 @@ export class ProseMirrorSource extends Widget {
     this._view.updateState(
       EditorState.create({
         doc: PARSE(source),
-        plugins: [
-          ...exampleSetup({ schema: SCHEMA }),
-
-        ],
+        plugins: [...exampleSetup({ schema: SCHEMA })],
       })
     );
   }
