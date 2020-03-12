@@ -1,34 +1,33 @@
 {
   "devDependencies": {
     "@types/node": "~9.4.2",
-    "lerna": "2.11.0",
-    "npm-run-all": "~4.1.3",
-    "prettier": "1.14.0",
     "rimraf": "~2.6.1",
-    "tslint": "^5.10.0",
-    "typescript": "^2.9.2",
-    "webpack": "~4.12.0",
-    "webpack-cli": "^3.0.3",
-    "@types/webpack-env": "~1.13.6"
+    "typescript": "~3.7.2",
+    "eslint": "^6.7.2",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "lerna": "^3.19.0",
+    "lint-staged": "^9.5.0",
+    "prettier": "^1.19.1",
+    "shell-quote": "^1.7.2",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "^2.0.1",
+    "tslint-react": "^4.1.0"
   },
-  "name": "@deathbeds/jupyterlab-outsource",
   "private": true,
   "scripts": {
-    "bootstrap": "jlpm && run-s bootstrap:js bootstrap:lab",
-    "bootstrap:js": "jlpm lerna bootstrap && jlpm build",
-    "bootstrap:lab": "jlpm lab:ext && jlpm lab:link && jlpm lab:build",
+    "bootstrap": "jlpm && jlpm clean && jlpm lint && jlpm build",
     "build": "lerna run build",
-    "clean": "run-p clean:*",
-    "clean:lib": "lerna exec --parallel -- rimraf lib",
-    "lab:build": "jupyter lab build --dev",
-    "lab:ext": "jupyter labextension install $(cat labextensions.txt) --no-build",
-    "lab:link": "lerna exec -- jupyter labextension link . --no-build",
-    "lint": "run-p lint:**",
-    "lint:ts": "prettier --write *.json *.md *.yml && lerna exec -- prettier --write --config=../../.prettierrc ./src/**/*.ts ./src/**/*.tsx ./style/**/*.css ./*.json ./*.md && lerna exec -- tslint -c ../../tslint.json --fix ./src/**/*.ts",
-    "watch:ts": "lerna run watch --parallel",
-    "watch:lab": "jupyter lab --no-browser --debug --watch"
+    "clean": "lerna exec --parallel --stream -- rimraf lib",
+    "lab:link": "lerna run --stream lab:link",
+    "lint": "jlpm lint:root && jlpm lint:prettier && jlpm lint:ts",
+    "lint:prettier": "lerna exec -- prettier --write --config=../../.prettierrc ./src/**/*.ts ./src/**/*.tsx ./style/**/*.css ./*.json ./*.md",
+    "lint:root": "prettier --write *.json *.md *.yml",
+    "lint:ts": "lerna exec -- tslint -c ../../tslint.json --fix ./src/**/*.ts",
+    "watch": "lerna run --stream watch"
   },
-  "version": "0.1.0",
+  "version": "2.0.0",
   "workspaces": [
     "src/*"
   ]
