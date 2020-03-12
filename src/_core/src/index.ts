@@ -1,4 +1,4 @@
-import { Token } from '@lumino/coreutils';
+import { Token, ReadonlyPartialJSONObject } from '@lumino/coreutils';
 import { Widget } from '@lumino/widgets';
 import { ISignal } from '@lumino/signaling';
 
@@ -52,7 +52,7 @@ export namespace IOutsourceror {
     widget: Widget;
   }
 
-  export interface IWidgetOptions {
+  export interface IWidgetOptions extends ReadonlyPartialJSONObject {
     factory: string;
     widgetId: string;
   }

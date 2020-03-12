@@ -1,16 +1,15 @@
 import { UUID } from '@lumino/coreutils';
 
+import { MainAreaWidget, ICommandPalette } from '@jupyterlab/apputils';
 import {
   JupyterFrontEnd,
   JupyterFrontEndPlugin,
   ILabShell,
   IRouter,
 } from '@jupyterlab/application';
-import { NotebookActions, INotebookTracker, NotebookPanel } from '@jupyterlab/notebook';
+import { DocumentWidget } from '@jupyterlab/docregistry';
 import { IEditorTracker, FileEditor } from '@jupyterlab/fileeditor';
-
-import { MainAreaWidget, ICommandPalette } from '@jupyterlab/apputils';
-import { URLExt } from '@jupyterlab/coreutils';
+import { NotebookActions, INotebookTracker, NotebookPanel } from '@jupyterlab/notebook';
 
 import { IOutsourceror, PLUGIN_ID, CommandIds } from '.';
 import { Sourceror } from './sourceror';
@@ -83,12 +82,11 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
       commands.addCommand(command, {
         label: `Create new ${factory.name} for input`,
         isEnabled: () => (factory.isEnabled ? factory.isEnabled(sourceror) : true),
-        execute: async (options: any) => {
-          shell.activateById(options.widgetId);
+        execute: async (args: IOutsourceror.IWidgetOptions) => {
+          console.log(args);
+          shell.activateById(args.widgetId);
           const current = shell.activeWidget as MainAreaWidget;
-          // // Clone the OutputArea
-          // const current = getCurrent();
-
+          console.log(current.id, current);
           if (current == null || current.content == null) {
             return;
           }
@@ -163,20 +161,20 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
         const [factory, path] = outsourceMatch.slice(1);
 
         setTimeout(async () => {
-          const doc = await commands.execute('docmanager:open', {
+          const doc = (await commands.execute('docmanager:open', {
             path,
             factory: 'Editor',
-          });
+          })) as DocumentWidget;
+
+          await doc.context.ready;
 
           await commands.execute(`${CommandIds.newSource}-${factory}`, {
-            widgetId: doc.content.id,
+            widgetId: doc.id,
             factory,
           });
-        }, 1000);
+        }, 0);
 
-        const url = URLExt.join(paths.urls.tree, path);
-        router.navigate(url);
-
+        router.navigate(paths.urls.app);
 
         return router.stop;
       },
