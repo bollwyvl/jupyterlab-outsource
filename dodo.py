@@ -42,7 +42,7 @@ def task_setup():
                 P.ROOT / "scripts/_labextension.py",
                 "develop",
                 "--overwrite",
-                "jupyterlab_outsource",
+                C.PY_MOD,
             ]
         ],
         file_dep=[*B.ALL_PY_DIST],
@@ -51,20 +51,12 @@ def task_setup():
 
 
 def task_build():
-    # yield dict(
-    #     name="js:pre",
-    #     actions=[[*C.LERNA, "run", "prebuild"]],
-    #     file_dep=[P.YARN_INTEGRITY],
-    #     targets=[*B.ALL_CORE_SCHEMA],
-    # )
-
     yield dict(
         name="js:tsc",
         actions=[[*C.LERNA, "run", "build"]],
         file_dep=[
             P.YARN_INTEGRITY,
             *P.ALL_TS,
-            # *B.ALL_CORE_SCHEMA
         ],
         targets=[B.META_BUILDINFO],
     )
@@ -206,6 +198,13 @@ def task_lint():
 
 
 def task_test():
+    yield dict(
+        name="pytest",
+        actions=[[*C.PYM, "pytest"]],
+        file_dep=[*P.ALL_PY_SRC],
+        task_dep=["setup:pip"],
+    )
+
     file_dep = [*P.ALL_ROBOT]
     task_dep = []
 
@@ -246,12 +245,12 @@ class C:
     PYM = [*PY, "-m"]
     PIP = [*PYM, "pip"]
     JPY = [*PYM, "jupyter"]
-    # SCHEMA_DTS = "_schema.d.ts"
     TSBUILDINFO = "tsconfig.tsbuildinfo"
     ENC = dict(encoding="utf-8")
     CORE_EXT = "@deathbeds/"
     CI = bool(json.loads(os.environ.get("CI", "0")))
     ATEST_ARGS = json.loads(os.environ.get("ATEST_ARGS", "[]"))
+    PY_MOD = "jupyterlab_outsource"
 
 
 class P:
@@ -274,7 +273,7 @@ class P:
     META = PACKAGES / "_meta"
     META_PKG_JSON = META / "package.json"
 
-    PY_SRC = ROOT / "src/jupyterlab_outsource"
+    PY_SRC = ROOT / f"src/{C.PY_MOD}"
     PY_SETUP = [ROOT / "setup.cfg", ROOT / "setup.py", ROOT / "MANIFEST.in"]
     ALL_PY_SRC = [*PY_SRC.rglob("*.py")]
 
@@ -370,13 +369,10 @@ class B:
     """built things"""
 
     BUILD = P.ROOT / "build"
-    # CORE_SCHEMA_SRC = P.CORE_SRC / C.SCHEMA_DTS
-    # CORE_SCHEMA_LIB = P.CORE_LIB / C.SCHEMA_DTS
-    # ALL_CORE_SCHEMA = [CORE_SCHEMA_SRC, CORE_SCHEMA_LIB]
     META_BUILDINFO = P.META / C.TSBUILDINFO
     ATEST_OUT = BUILD / "atest"
     LABEXT = P.PY_SRC / "labextensions"
-    WHEEL = P.DIST / f"""jupyterlab_outsource-{D.CORE_PKG_VERSION}-py3-none-any.whl"""
+    WHEEL = P.DIST / f"""{C.PY_MOD}-{D.CORE_PKG_VERSION}-py3-none-any.whl"""
     SDIST = P.DIST / f"""jupyterlab-outsource-{D.CORE_PKG_VERSION}.tar.gz"""
     JS_TARBALL = {
         k: P.DIST / U.npm_tgz_name(v)
