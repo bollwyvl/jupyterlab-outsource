@@ -1,10 +1,10 @@
 __pycache__
 _testoutput/
 .ipynb_checkpoints/
+.venv/
 *.egg-info/
 *.log
 *.tsbuildinfo
-envs/
 node_modules/
-src/*/lib
+packages/*/lib
 Untitled*

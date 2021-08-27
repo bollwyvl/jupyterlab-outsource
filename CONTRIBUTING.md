@@ -3,7 +3,7 @@
 We would love to have contributions of
 
 - additional sources
-- additional supported apps
+- additional supported editors
 
 ## Development
 
@@ -11,28 +11,26 @@ We would love to have contributions of
 
 Install:
 
-- [conda](https://conda.io/docs/user-guide/install/download.html)
+- [Mambaforge](https://github.com/conda-forge/miniforge)
 
 ### Setup
 
 ```bash
-conda env update
-conda activate jupyterlab-outsource-dev
-jlpm bootstrap  # this takes a while
-jupyter labextension install $(cat labex.txt)
-jupyter lab --no-browser --debug
+mamba env update --file .binder/environment.yml --prefix .venv/
+conda activate ./.venv
+doit lab
 ```
 
 ## Build Once
 
 ```bash
-jlpm build
+doit build
 ```
 
 ## Always Be Building
 
 ```bash
-jlpm watch
+doit watch
 ```
 
 Starts:
@@ -44,8 +42,8 @@ Starts:
 ## Thinking about Committing
 
 ```bash
-jlpm lint
-jlpm test # tbd
+doit lint
+doit test # tbd
 ```
 
 ## Design Principles
