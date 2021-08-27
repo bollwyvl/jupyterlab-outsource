@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IOutsourceror } from '.';
+import { IOutsourceror, outsourceIcon } from '.';
 
 import { VDomModel, VDomRenderer } from '@jupyterlab/apputils';
 
@@ -18,18 +18,17 @@ export class OutsourcePicker extends VDomRenderer<OutsourcePicker.Model> {
     }
 
     return (
-      <select
-        className="jp-mod-styled jp-Outsource-Picker"
-        value={m.value}
-        onChange={this.onChange}
-      >
-        <option value="" />
-        {m.sourceror.factories.map(({ name, id }) => (
-          <option key={id} value={id}>
-            {name}
-          </option>
-        ))}
-      </select>
+      <label className="jp-Outsource-Picker">
+        <outsourceIcon.react className="jp-Outsource-Picker-icon" tag="div" />
+        <select className="jp-mod-styled" value={m.value} onChange={this.onChange}>
+          <option value="" />
+          {m.sourceror.factories.map(({ name, id }) => (
+            <option key={id} value={id}>
+              {name}
+            </option>
+          ))}
+        </select>
+      </label>
     );
   }
 

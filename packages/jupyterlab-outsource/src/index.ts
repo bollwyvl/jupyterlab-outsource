@@ -7,6 +7,9 @@ import { INotebookTracker } from '@jupyterlab/notebook';
 import { CodeEditor } from '@jupyterlab/codeeditor';
 import { IEditorTracker } from '@jupyterlab/fileeditor';
 import { WidgetTracker } from '@jupyterlab/apputils';
+import { LabIcon } from '@jupyterlab/ui-components';
+
+import * as OUTSOURCE_SVG from '../style/img/outsource.svg';
 
 export { Outsource } from './widget';
 
@@ -84,3 +87,8 @@ export namespace CommandIds {
   export const newSource = 'outsource:new-outsource';
   export const treeOpen = 'outsource:tree-open';
 }
+
+export const outsourceIcon = new LabIcon({
+  name: `${PLUGIN_ID}:wand`,
+  svgstr: OUTSOURCE_SVG.default,
+});

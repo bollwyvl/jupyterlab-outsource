@@ -1,6 +1,5 @@
 button.jp-ToolbarButtonComponent.jp-OutsourceIcon,
 button.jp-ToolbarButtonComponent.jp-OutsourceIcon:hover {
-  background-image: url("./img/outsource.svg");
   background-repeat: no-repeat;
   background-position: center;
   min-width: 24px;
@@ -12,21 +11,34 @@ button.jp-ToolbarButtonComponent.jp-OutsourceIcon {
   background-size: 16px;
 }
 
-.jp-Outsource-Picker.jp-mod-styled {
-  background-image: url("./img/outsource.svg");
-  font-size: var(--jp-ui-font-size1);
-  background-size: 16px;
-  max-width: 24px;
-  border: none;
-  border-radius: 0;
-  outline: none;
-  background-color: transparent;
-  padding: 0 4px;
-  color: transparent;
-  max-height: 24px;
-  background-position: center;
+.jp-Outsource-Picker {
+  margin: 0;
+  line-height: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  position: relative;
 }
 
-.jp-Outsource-Picker option:first-child {
-  visibility: hidden;
+.jp-Outsource-Picker .jp-mod-styled,
+.jp-Outsource-Picker .jp-mod-styled:hover,
+.jp-Outsource-Picker .jp-mod-styled:active {
+  background-color: transparent;
+  background-size: 16px;
+  border-radius: 0;
+  border: none;
+  font-size: var(--jp-ui-font-size1);
+  max-height: 24px;
+  max-width: 24px;
+  min-width: 24px;
+  outline: none;
+  padding: 0;
+}
+
+.jp-Outsource-Picker .jp-mod-styled option {
+  background-color: var(--jp-layout-color1);
+}
+
+.jp-Outsource-Picker-icon {
+  margin-right: -24px;
 }
