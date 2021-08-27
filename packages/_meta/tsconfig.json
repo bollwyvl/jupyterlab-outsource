@@ -10,13 +10,13 @@
   ],
   "references": [
     {
-      "path": "../_core"
+      "path": "../jupyterlab-outsource"
     },
     {
-      "path": "../blockly"
+      "path": "../jupyterlab-outsource-blockly"
     },
     {
-      "path": "../prosemirror"
+      "path": "../jupyterlab-outsource-prosemirror"
     }
   ]
 }

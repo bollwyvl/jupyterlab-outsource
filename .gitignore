@@ -2,9 +2,11 @@ __pycache__
 _testoutput/
 .ipynb_checkpoints/
 .venv/
+*.doit.*
 *.egg-info/
 *.log
 *.tsbuildinfo
 node_modules/
 packages/*/lib
 Untitled*
+untitled*
