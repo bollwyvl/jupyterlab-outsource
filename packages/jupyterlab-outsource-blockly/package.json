@@ -23,6 +23,9 @@
   "files": [
     "{lib,style,xml,src}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf,xml,ts,tsx}"
   ],
+  "scripts": {
+    "watch": "jupyter labextension watch --debug ."
+  },
   "dependencies": {
     "@deathbeds/jupyterlab-outsource": "^3.0.0",
     "@jupyterlab/application": "~3.0",
@@ -31,9 +34,6 @@
   },
   "devDependencies": {
     "@jupyterlab/builder": "~3.1"
-  },
-  "scripts": {
-    "watch": "jupyter labextension watch --debug ."
   },
   "jupyterlab": {
     "extension": "lib/extension.js",
