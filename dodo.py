@@ -202,7 +202,7 @@ def task_test():
         name="pytest",
         actions=[[*C.PYM, "pytest"]],
         file_dep=[*P.ALL_PY_SRC],
-        task_dep=["setup:pip"],
+        task_dep=["setup:pip"] if not C.CI else [],
     )
 
     file_dep = [*P.ALL_ROBOT]
