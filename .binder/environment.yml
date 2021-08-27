@@ -7,8 +7,9 @@ channels:
 dependencies:
   # run
   - jupyterlab >=3.1.9,<4
-  - python >=3.9,<3.10
+  - python >=3.7,<3.10
   # build
+  - pip
   - doit
   - nodejs >=14,<15
   - twine
