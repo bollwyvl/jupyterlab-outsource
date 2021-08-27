@@ -25,3 +25,6 @@ dependencies:
   - firefox
   - geckodriver
   - robotframework-jupyterlibrary
+  # demo toys
+  - jupyterlab-link-share
+  - ipywidgets
