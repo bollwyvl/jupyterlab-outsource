@@ -5,6 +5,22 @@ channels:
   - nodefaults
 
 dependencies:
+  # run
   - jupyterlab >=3.1.9,<4
-  - nodejs >=14,<15
   - python >=3.9,<3.10
+  # build
+  - doit
+  - nodejs >=14,<15
+  - twine
+  - wheel
+  # lint
+  - black
+  - isort
+  - flake8
+  # utest
+  - pytest
+  - pytest-cov
+  # atest
+  - firefox
+  - geckodriver
+  - robotframework-jupyterlibrary

@@ -4,18 +4,22 @@
     "url": "https://github.com/deathbeds/jupyterlab-outsource/issues"
   },
   "description": "Alternate editors for JupyterLab Source",
+  "dependencies": {
+    "@jupyterlab/application": "~3.0",
+    "@jupyterlab/apputils": "~3.0",
+    "@jupyterlab/fileeditor": "~3.0",
+    "@jupyterlab/notebook": "~3.0"
+  },
   "devDependencies": {
-    "@jupyterlab/application": "~2.0.0",
-    "@jupyterlab/apputils": "~2.0.0",
-    "@jupyterlab/fileeditor": "~2.0.0",
-    "@jupyterlab/notebook": "~2.0.0"
+    "@jupyterlab/builder": "~3.1"
   },
   "files": [
     "{lib,style,src}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf,ts,tsx}"
   ],
   "homepage": "https://github.com/deathbeds/jupyterlab-outsource",
   "jupyterlab": {
-    "extension": "lib/extension.js"
+    "extension": "lib/extension.js",
+    "outputDir": "../../src/jupyterlab_outsource/labextensions/@deathbeds/jupyterlab-outsource"
   },
   "keywords": [
     "jupyter",
@@ -25,19 +29,10 @@
   "license": "BSD-3-Clause",
   "main": "lib/index.js",
   "name": "@deathbeds/jupyterlab-outsource",
-  "peerDependencies": {
-    "@jupyterlab/application": "~2.0.0",
-    "@jupyterlab/apputils": "~2.0.0",
-    "@jupyterlab/fileeditor": "~2.0.0",
-    "@jupyterlab/notebook": "~2.0.0"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/deathbeds/jupyterlab-outsource.git"
   },
-  "scripts": {
-    "lab:link": "jupyter labextension link --debug --no-build ."
-  },
   "types": "lib/index.d.ts",
-  "version": "2.0.0"
+  "version": "3.0.0"
 }
