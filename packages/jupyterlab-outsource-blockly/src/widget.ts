@@ -153,12 +153,12 @@ export class BlocklySource extends Outsource {
     if (cellModel) {
       this.cellModel?.metadata.set(PLUGIN_ID, metadata as any);
     } else {
-      this._update(metadata);
+      this._update(metadata).catch(console.warn);
     }
   }
 
-  private _metadataChanged() {
-    this._update();
+  private async _metadataChanged() {
+    await this._update();
   }
 
   private async _update(metadata?: IBlocklyMetadata) {

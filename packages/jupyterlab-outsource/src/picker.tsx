@@ -40,7 +40,7 @@ export class OutsourcePicker extends VDomRenderer<OutsourcePicker.Model> {
     }
     this.model.sourceror.requestWidget({
       factory: value,
-      path: this.model.path
+      path: this.model.path,
     });
     this.model.value = '';
   };

@@ -11,7 +11,8 @@ import { OutsourcePicker } from '../picker';
  * A notebook widget extension that adds a button to the toolbar.
  */
 export class NotebookOutsourceButton
-  implements DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel> {
+  implements DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel>
+{
   /**
    * Create a new extension object.
    */

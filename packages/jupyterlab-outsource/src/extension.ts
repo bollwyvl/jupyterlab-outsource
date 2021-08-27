@@ -81,7 +81,7 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
           return false;
         }
         if (ed.content.id === options.widgetId) {
-          commands.execute('console:inject', {
+          await commands.execute('console:inject', {
             activate: false,
             code: options.text,
             path: ed.context.path,
@@ -173,7 +173,8 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
         });
 
         doc.disposed.connect(() => widget.dispose());
-        sourceror.tracker.add(content);
+
+        await sourceror.tracker.add(content);
 
         return widget;
       },

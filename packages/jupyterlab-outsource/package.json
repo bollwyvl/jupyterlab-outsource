@@ -1,9 +1,27 @@
 {
-  "author": "Dead Pixels Collective",
+  "name": "@deathbeds/jupyterlab-outsource",
+  "version": "3.0.0",
+  "description": "Alternate editors for JupyterLab Source",
+  "keywords": [
+    "jupyter",
+    "jupyterlab",
+    "jupyterlab-extension"
+  ],
+  "homepage": "https://github.com/deathbeds/jupyterlab-outsource",
   "bugs": {
     "url": "https://github.com/deathbeds/jupyterlab-outsource/issues"
   },
-  "description": "Alternate editors for JupyterLab Source",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deathbeds/jupyterlab-outsource.git"
+  },
+  "license": "BSD-3-Clause",
+  "author": "Dead Pixels Collective",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "{lib,style,src}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf,ts,tsx}"
+  ],
   "dependencies": {
     "@jupyterlab/application": "~3.0",
     "@jupyterlab/apputils": "~3.0",
@@ -13,26 +31,8 @@
   "devDependencies": {
     "@jupyterlab/builder": "~3.1"
   },
-  "files": [
-    "{lib,style,src}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf,ts,tsx}"
-  ],
-  "homepage": "https://github.com/deathbeds/jupyterlab-outsource",
   "jupyterlab": {
     "extension": "lib/extension.js",
     "outputDir": "../../src/jupyterlab_outsource/labextensions/@deathbeds/jupyterlab-outsource"
-  },
-  "keywords": [
-    "jupyter",
-    "jupyterlab",
-    "jupyterlab-extension"
-  ],
-  "license": "BSD-3-Clause",
-  "main": "lib/index.js",
-  "name": "@deathbeds/jupyterlab-outsource",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/deathbeds/jupyterlab-outsource.git"
-  },
-  "types": "lib/index.d.ts",
-  "version": "3.0.0"
+  }
 }

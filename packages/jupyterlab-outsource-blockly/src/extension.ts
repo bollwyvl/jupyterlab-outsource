@@ -1,7 +1,4 @@
-import {
-  JupyterFrontEnd,
-  JupyterFrontEndPlugin
-} from '@jupyterlab/application';
+import { JupyterFrontEnd, JupyterFrontEndPlugin } from '@jupyterlab/application';
 import { IOutsourceror } from '@deathbeds/jupyterlab-outsource';
 
 import { IOutsourceBlockly, PLUGIN_ID } from '.';
@@ -14,14 +11,11 @@ const extension: JupyterFrontEndPlugin<IOutsourceBlockly> = {
   autoStart: true,
   provides: IOutsourceBlockly,
   requires: [IOutsourceror],
-  activate: (
-    _app: JupyterFrontEnd,
-    sourceror: IOutsourceror
-  ): IOutsourceBlockly => {
+  activate: (_app: JupyterFrontEnd, sourceror: IOutsourceror): IOutsourceBlockly => {
     const blockly = new BlocklyFactory(sourceror);
     sourceror.register(blockly);
     return blockly;
-  }
+  },
 };
 
 const python: JupyterFrontEndPlugin<void> = {
@@ -45,9 +39,9 @@ const python: JupyterFrontEndPlugin<void> = {
           source = `${source}### workspace: ${options.xml}\n`;
         }
         return `${source}${options.footer}`;
-      }
+      },
     });
-  }
+  },
 };
 
 export default [extension, python];

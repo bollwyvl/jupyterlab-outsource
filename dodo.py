@@ -191,7 +191,7 @@ def task_lint():
                 "--config",
                 P.ESLINTRC,
                 "--ext",
-                ".js,.jsx,.ts,.tsx",
+                ".ts,.tsx",
                 "--fix",
                 "packages",
             ]
@@ -280,7 +280,7 @@ class P:
     NODE_MODULES = ROOT / "node_modules"
     YARN_INTEGRITY = NODE_MODULES / ".yarn-integrity"
     YARN_LOCK = ROOT / "yarn.lock"
-    ESLINTRC = ROOT / ".eslintrc.js"
+    ESLINTRC = PACKAGES / ".eslintrc.js"
 
     ALL_ROBOT = [*ATEST.rglob("*.robot")]
 

@@ -10,7 +10,7 @@ const NS = 'jp-Outsource-Blockly';
 
 export const CSS = {
   OUTER_WRAPPER: NS,
-  WRAPPER: `${NS}-wrapper`
+  WRAPPER: `${NS}-wrapper`,
 };
 
 export interface IBlocklyMetadata {

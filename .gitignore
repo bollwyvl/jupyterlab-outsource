@@ -1,5 +1,6 @@
 __pycache__
 _testoutput/
+.eslintcache
 .ipynb_checkpoints/
 .venv/
 *.doit.*
@@ -8,5 +9,5 @@ _testoutput/
 *.tsbuildinfo
 node_modules/
 packages/*/lib
-Untitled*
 untitled*
+Untitled*

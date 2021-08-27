@@ -3,14 +3,15 @@ import { IDisposable, DisposableDelegate } from '@lumino/disposable';
 import {
   DocumentRegistry,
   DocumentWidget,
-  DocumentModel
+  DocumentModel,
 } from '@jupyterlab/docregistry';
 
 import { IOutsourceror } from '..';
 import { OutsourcePicker } from '../picker';
 
 export class FileEditorOutsourceButton
-  implements DocumentRegistry.IWidgetExtension<DocumentWidget, DocumentModel> {
+  implements DocumentRegistry.IWidgetExtension<DocumentWidget, DocumentModel>
+{
   sourceror: IOutsourceror;
 
   constructor(options: FileEditorOutsourceButton.IOptions) {
@@ -23,7 +24,7 @@ export class FileEditorOutsourceButton
   ): IDisposable {
     let picker = new OutsourcePicker({
       sourceror: this.sourceror,
-      path: panel.context.path
+      path: panel.context.path,
     });
 
     panel.toolbar.insertItem(9, 'outsource', picker);

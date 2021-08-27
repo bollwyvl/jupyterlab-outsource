@@ -1,4 +1,3 @@
-
 declare module 'prosemirror-example-setup' {
   import { Plugin } from 'prosemirror-state';
   import { Schema } from 'prosemirror-model';

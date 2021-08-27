@@ -43,7 +43,6 @@ export class ProseMirrorSource extends Outsource {
     this.node.appendChild((this._wrapper = document.createElement('div')));
     this._wrapper.className = CSS.WRAPPER;
 
-    let that = this;
     let source = this._model.value.text;
 
     const { nodeViews, nodes, plugins } = this.create();
@@ -59,8 +58,8 @@ export class ProseMirrorSource extends Outsource {
         doc: PARSE(source),
         plugins: [...exampleSetup({ schema: SCHEMA }), ...(plugins || [])],
       }),
-      dispatchTransaction(transaction: Transaction) {
-        that._pmChanged(transaction);
+      dispatchTransaction: (transaction: Transaction) => {
+        this._pmChanged(transaction);
       },
     });
   }

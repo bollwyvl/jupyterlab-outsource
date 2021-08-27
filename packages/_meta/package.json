@@ -1,30 +1,30 @@
 {
-  "author": "Dead Pixels Collective",
+  "name": "@deathbeds/jupyterlab-outsource-meta",
+  "version": "3.0.0",
+  "private": true,
+  "description": "Alternate editors for JupyterLab Source",
+  "homepage": "https://github.com/deathbeds/jupyterlab-outsource",
   "bugs": {
     "url": "https://github.com/deathbeds/jupyterlab-outsource/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deathbeds/jupyterlab-outsource.git"
+  },
+  "license": "BSD-3-Clause",
+  "author": "Dead Pixels Collective",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "{lib,style}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "watch": "tsc -b --watch"
   },
   "dependencies": {
     "@deathbeds/jupyterlab-outsource": "file:../jupyterlab-outsource",
     "@deathbeds/jupyterlab-outsource-blockly": "file:../jupyterlab-outsource-blockly",
     "@deathbeds/jupyterlab-outsource-prosemirror": "file:../jupyterlab-outsource-prosemirror"
-  },
-  "description": "Alternate editors for JupyterLab Source",
-  "files": [
-    "{lib,style}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}"
-  ],
-  "homepage": "https://github.com/deathbeds/jupyterlab-outsource",
-  "license": "BSD-3-Clause",
-  "main": "lib/index.js",
-  "private": true,
-  "name": "@deathbeds/jupyterlab-outsource-meta",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/deathbeds/jupyterlab-outsource.git"
-  },
-  "scripts": {
-    "build": "tsc -b",
-    "watch": "tsc -b --watch"
-  },
-  "types": "lib/index.d.ts",
-  "version": "3.0.0"
+  }
 }

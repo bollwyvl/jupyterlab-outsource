@@ -1,19 +1,39 @@
 {
-  "author": "Dead Pixels Collective",
+  "name": "@deathbeds/jupyterlab-outsource-prosemirror",
+  "version": "3.0.0",
+  "description": "ProseMirror Rich Text Editing for JupyterLab",
+  "keywords": [
+    "jupyter",
+    "jupyterlab",
+    "jupyterlab-extension",
+    "prosemirror"
+  ],
+  "homepage": "https://github.com/deathbeds/jupyterlab-outsource",
   "bugs": {
     "url": "https://github.com/deathbeds/jupyterlab-outsource/issues"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deathbeds/jupyterlab-outsource.git"
+  },
+  "license": "BSD-3-Clause",
+  "author": "Dead Pixels Collective",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "{lib,style,src}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf,ts,stx}"
+  ],
   "dependencies": {
-    "@deathbeds/jupyterlab-outsource": "^2.0.0",
+    "@deathbeds/jupyterlab-outsource": "^3.0.0",
     "@jupyterlab/application": "~3.0",
     "prosemirror-commands": "~1.1.10",
     "prosemirror-example-setup": "~1.1.2",
     "prosemirror-history": "~1.2.0",
     "prosemirror-keymap": "~1.1.4",
+    "prosemirror-markdown": "~1.5.1",
     "prosemirror-model": "~1.14.3",
     "prosemirror-schema-basic": "~1.1.2",
     "prosemirror-schema-list": "~1.1.5",
-    "prosemirror-markdown": "~1.5.1",
     "prosemirror-state": "~1.3.4",
     "prosemirror-view": "~1.19.3"
   },
@@ -30,28 +50,8 @@
     "@types/prosemirror-state": "^1.2.7",
     "@types/prosemirror-view": "^1.18.0"
   },
-  "description": "ProseMirror Rich Text Editing for JupyterLab",
-  "files": [
-    "{lib,style,src}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf,ts,stx}"
-  ],
-  "homepage": "https://github.com/deathbeds/jupyterlab-outsource",
   "jupyterlab": {
     "extension": "lib/extension.js",
     "outputDir": "../../src/jupyterlab_outsource/labextensions/@deathbeds/jupyterlab-outsource-prosemirror"
-  },
-  "keywords": [
-    "jupyter",
-    "jupyterlab",
-    "jupyterlab-extension",
-    "prosemirror"
-  ],
-  "license": "BSD-3-Clause",
-  "main": "lib/index.js",
-  "name": "@deathbeds/jupyterlab-outsource-prosemirror",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/deathbeds/jupyterlab-outsource.git"
-  },
-  "types": "lib/index.d.ts",
-  "version": "3.0.0"
+  }
 }

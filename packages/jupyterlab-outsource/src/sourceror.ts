@@ -12,8 +12,13 @@ export class Sourceror implements IOutsourceror {
   private _ready = new PromiseDelegate<void>();
   private _factoryRegistered = new Signal<this, IOutsourceror.IFactory>(this);
   private _executeCellRequested = new Signal<this, ICellModel>(this);
-  private _executeTextRequested = new Signal<this, IOutsourceror.IConsoleExecuteOptions>(this);
-  private _widgetRequested = new Signal<this, IOutsourceror.IOutsourceCommandArgs>(this);
+  private _executeTextRequested = new Signal<
+    this,
+    IOutsourceror.IConsoleExecuteOptions
+  >(this);
+  private _widgetRequested = new Signal<this, IOutsourceror.IOutsourceCommandArgs>(
+    this
+  );
   private _notebooks: INotebookTracker | null;
   tracker: WidgetTracker<IOutsourceror.IOutsource>;
 

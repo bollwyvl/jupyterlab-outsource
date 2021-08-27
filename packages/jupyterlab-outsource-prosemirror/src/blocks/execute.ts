@@ -26,7 +26,7 @@ export class ExecuteCodeBlockView extends CodeBlockView {
     const { keymap } = super.codeMirrorKeymap();
     return {
       ...keymap,
-      [`Shift-Enter`]: () => this.onExecute()
+      [`Shift-Enter`]: () => this.onExecute(),
     };
   }
 
@@ -49,19 +49,13 @@ export function executeExtension(
 ): IOutsourceProsemirror.IExtensionPoints {
   return {
     nodes: {
-      code_block: { ...api.schema.nodes.code_block, isolating: true } as any
+      code_block: { ...api.schema.nodes.code_block, isolating: true } as any,
     },
     nodeViews: {
       code_block: (node: Node, view: EditorView, getPos: () => number) => {
-        return new ExecuteCodeBlockView(
-          node,
-          view,
-          getPos,
-          api.schema,
-          api.widget
-        );
-      }
+        return new ExecuteCodeBlockView(node, view, getPos, api.schema, api.widget);
+      },
     },
-    plugins: [arrowHandlers]
+    plugins: [arrowHandlers],
   };
 }

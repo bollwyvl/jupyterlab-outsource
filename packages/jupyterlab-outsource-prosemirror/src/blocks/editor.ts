@@ -6,12 +6,7 @@
 */
 import { Node, Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import {
-  Selection,
-  EditorState,
-  Transaction,
-  TextSelection
-} from 'prosemirror-state';
+import { Selection, EditorState, Transaction, TextSelection } from 'prosemirror-state';
 import { keymap } from 'prosemirror-keymap';
 
 import { exitCode } from 'prosemirror-commands';
@@ -20,13 +15,7 @@ import { undo, redo } from 'prosemirror-history';
 import CodeMirror from 'codemirror';
 import { IOutsourceProsemirror } from '..';
 
-export type TDirection =
-  | 'left'
-  | 'right'
-  | 'up'
-  | 'down'
-  | 'forward'
-  | 'backward';
+export type TDirection = 'left' | 'right' | 'up' | 'down' | 'forward' | 'backward';
 
 export class CodeBlockView {
   cm: CodeMirror.Editor;
@@ -37,12 +26,7 @@ export class CodeBlockView {
   updating: boolean;
   schema: Schema;
 
-  constructor(
-    node: Node,
-    view: EditorView,
-    getPos: () => number,
-    schema: Schema
-  ) {
+  constructor(node: Node, view: EditorView, getPos: () => number, schema: Schema) {
     // Store for later
     this.node = node;
     this.view = view;
@@ -53,7 +37,7 @@ export class CodeBlockView {
     this.cm = new (CodeMirror as any)(null, {
       value: this.node.textContent,
       lineNumbers: true,
-      extraKeys: this.codeMirrorKeymap()
+      extraKeys: this.codeMirrorKeymap(),
     });
 
     // The editor's outer node is our DOM representation
@@ -100,10 +84,7 @@ export class CodeBlockView {
   setSelection(anchor: number, head: number) {
     this.cm.focus();
     this.updating = true;
-    this.cm.setSelection(
-      this.cm.posFromIndex(anchor),
-      this.cm.posFromIndex(head)
-    );
+    this.cm.setSelection(this.cm.posFromIndex(anchor), this.cm.posFromIndex(head));
     this.updating = false;
   }
 
@@ -135,7 +116,7 @@ export class CodeBlockView {
         if (exitCode(view.state, view.dispatch)) {
           view.focus();
         }
-      }
+      },
     });
   }
 
@@ -144,17 +125,14 @@ export class CodeBlockView {
     if (
       this.cm.somethingSelected() ||
       pos.line !== (dir < 0 ? this.cm.firstLine() : this.cm.lastLine()) ||
-      (unit === 'char' &&
-        pos.ch !== (dir < 0 ? 0 : this.cm.getLine(pos.line).length))
+      (unit === 'char' && pos.ch !== (dir < 0 ? 0 : this.cm.getLine(pos.line).length))
     ) {
       return CodeMirror.Pass;
     }
     this.view.focus();
     let targetPos = this.getPos() + (dir < 0 ? 0 : this.node.nodeSize);
     let selection = Selection.near(this.view.state.doc.resolve(targetPos), dir);
-    this.view.dispatch(
-      this.view.state.tr.setSelection(selection).scrollIntoView()
-    );
+    this.view.dispatch(this.view.state.tr.setSelection(selection).scrollIntoView());
     this.view.focus();
   }
 
@@ -193,10 +171,7 @@ export function computeChange(oldVal: string, newVal: string) {
   let start = 0;
   let oldEnd = oldVal.length;
   let newEnd = newVal.length;
-  while (
-    start < oldEnd &&
-    oldVal.charCodeAt(start) === newVal.charCodeAt(start)
-  ) {
+  while (start < oldEnd && oldVal.charCodeAt(start) === newVal.charCodeAt(start)) {
     ++start;
   }
   while (
@@ -236,7 +211,7 @@ export const arrowHandlers = keymap({
   ArrowLeft: arrowHandler('left'),
   ArrowRight: arrowHandler('right'),
   ArrowUp: arrowHandler('up'),
-  ArrowDown: arrowHandler('down')
+  ArrowDown: arrowHandler('down'),
 });
 
 export function outsourceExtension(
@@ -244,13 +219,13 @@ export function outsourceExtension(
 ): IOutsourceProsemirror.IExtensionPoints {
   return {
     nodes: {
-      code_block: { ...schema.nodes.code_block, isolating: true } as any
+      code_block: { ...schema.nodes.code_block, isolating: true } as any,
     },
     nodeViews: {
       code_block: (node: Node, view: EditorView, getPos: () => number) => {
         return new CodeBlockView(node, view, getPos, schema);
-      }
+      },
     },
-    plugins: [arrowHandlers]
+    plugins: [arrowHandlers],
   };
 }

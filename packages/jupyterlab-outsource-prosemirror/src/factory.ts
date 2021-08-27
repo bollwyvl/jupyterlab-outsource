@@ -27,7 +27,9 @@ export class ProsemirrorFactory implements IOutsourceProsemirror {
     return [...Private._resolvedExtensions.values()];
   }
 
-  async createWidget(options: IOutsourceror.IFactoryOptions): Promise<IOutsourceror.IOutsource> {
+  async createWidget(
+    options: IOutsourceror.IFactoryOptions
+  ): Promise<IOutsourceror.IOutsource> {
     const { ProseMirrorSource } = await import(
       /* webpackChunkName: "prosemirror" */ './widget'
     );
@@ -43,7 +45,7 @@ namespace Private {
   export async function resolveExtensions() {
     for (const [extName, extension] of Private._extensions.entries()) {
       if (!_resolvedExtensions.has(extName)) {
-        _resolvedExtensions.set(extName,  await extension.init());
+        _resolvedExtensions.set(extName, await extension.init());
       }
     }
   }

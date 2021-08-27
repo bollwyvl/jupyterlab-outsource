@@ -60,7 +60,7 @@ export namespace IOutsourceror {
     widget: Widget;
   }
 
-  export interface IWidgetOptions  {
+  export interface IWidgetOptions {
     factory: IFactory;
     path: string;
   }

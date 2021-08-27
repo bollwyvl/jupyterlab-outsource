@@ -1,39 +1,39 @@
 {
-  "author": "Dead Pixels Collective",
-  "bugs": {
-    "url": "https://github.com/deathbeds/jupyterlab-outsource/issues"
-  },
-  "dependencies": {
-    "@deathbeds/jupyterlab-outsource": "^2.0.0",
-    "blockly": "~6.20210701.0",
-    "@jupyterlab/application": "~3.0",
-    "@jupyterlab/apputils": "~3.0"
-  },
-  "devDependencies": {
-    "@jupyterlab/builder": "~3.1"
-  },
+  "name": "@deathbeds/jupyterlab-outsource-blockly",
+  "version": "3.0.0",
   "description": "Blockly Visual Code Editing for JupyterLab",
-  "files": [
-    "{lib,style,xml,src}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf,xml,ts,tsx}"
-  ],
-  "homepage": "https://github.com/deathbeds/jupyterlab-outsource",
-  "jupyterlab": {
-    "extension": "lib/extension.js",
-    "outputDir": "../../src/jupyterlab_outsource/labextensions/@deathbeds/jupyterlab-outsource-blockly"
-  },
   "keywords": [
     "jupyter",
     "jupyterlab",
     "jupyterlab-extension",
     "blockly"
   ],
-  "license": "BSD-3-Clause",
-  "main": "lib/index.js",
-  "name": "@deathbeds/jupyterlab-outsource-blockly",
+  "homepage": "https://github.com/deathbeds/jupyterlab-outsource",
+  "bugs": {
+    "url": "https://github.com/deathbeds/jupyterlab-outsource/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/deathbeds/jupyterlab-outsource.git"
   },
+  "license": "BSD-3-Clause",
+  "author": "Dead Pixels Collective",
+  "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "version": "3.0.0"
+  "files": [
+    "{lib,style,xml,src}/**/*.{css,d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf,xml,ts,tsx}"
+  ],
+  "dependencies": {
+    "@deathbeds/jupyterlab-outsource": "^3.0.0",
+    "@jupyterlab/application": "~3.0",
+    "@jupyterlab/apputils": "~3.0",
+    "blockly": "~6.20210701.0"
+  },
+  "devDependencies": {
+    "@jupyterlab/builder": "~3.1"
+  },
+  "jupyterlab": {
+    "extension": "lib/extension.js",
+    "outputDir": "../../src/jupyterlab_outsource/labextensions/@deathbeds/jupyterlab-outsource-blockly"
+  }
 }
