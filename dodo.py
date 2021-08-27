@@ -61,7 +61,11 @@ def task_build():
     yield dict(
         name="js:tsc",
         actions=[[*C.LERNA, "run", "build"]],
-        file_dep=[P.YARN_INTEGRITY, *P.ALL_TS, *B.ALL_CORE_SCHEMA],
+        file_dep=[
+            P.YARN_INTEGRITY,
+            *P.ALL_TS,
+            # *B.ALL_CORE_SCHEMA
+        ],
         targets=[B.META_BUILDINFO],
     )
 
@@ -242,7 +246,7 @@ class C:
     PYM = [*PY, "-m"]
     PIP = [*PYM, "pip"]
     JPY = [*PYM, "jupyter"]
-    SCHEMA_DTS = "_schema.d.ts"
+    # SCHEMA_DTS = "_schema.d.ts"
     TSBUILDINFO = "tsconfig.tsbuildinfo"
     ENC = dict(encoding="utf-8")
     CORE_EXT = "@deathbeds/"
@@ -366,9 +370,9 @@ class B:
     """built things"""
 
     BUILD = P.ROOT / "build"
-    CORE_SCHEMA_SRC = P.CORE_SRC / C.SCHEMA_DTS
-    CORE_SCHEMA_LIB = P.CORE_LIB / C.SCHEMA_DTS
-    ALL_CORE_SCHEMA = [CORE_SCHEMA_SRC, CORE_SCHEMA_LIB]
+    # CORE_SCHEMA_SRC = P.CORE_SRC / C.SCHEMA_DTS
+    # CORE_SCHEMA_LIB = P.CORE_LIB / C.SCHEMA_DTS
+    # ALL_CORE_SCHEMA = [CORE_SCHEMA_SRC, CORE_SCHEMA_LIB]
     META_BUILDINFO = P.META / C.TSBUILDINFO
     ATEST_OUT = BUILD / "atest"
     LABEXT = P.PY_SRC / "labextensions"

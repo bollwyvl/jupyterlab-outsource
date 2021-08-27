@@ -14,7 +14,7 @@ FILES = []
 for package_json in EXT.glob("*/package.json"):
     pkg = json.loads(package_json.read_text(encoding="utf-8"))
 
-    FILES += [(f"""{SHARE}/{pkg["name"]}""", ["src/jupyterlab_fonts/install.json"])]
+    FILES += [(f"""{SHARE}/{pkg["name"]}""", ["src/jupyterlab_outsource/install.json"])]
 
     for path in package_json.parent.rglob("*"):
         if path.is_dir():

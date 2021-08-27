@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@deathbeds/jupyterlab-outsource": "^3.0.0",
-    "@jupyterlab/application": "~3.0",
+    "@jupyterlab/application": "~3.1",
     "prosemirror-commands": "~1.1.10",
     "prosemirror-example-setup": "~1.1.2",
     "prosemirror-history": "~1.2.0",

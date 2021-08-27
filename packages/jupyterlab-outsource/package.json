@@ -26,10 +26,10 @@
     "watch": "jupyter labextension watch --debug ."
   },
   "dependencies": {
-    "@jupyterlab/application": "~3.0",
-    "@jupyterlab/apputils": "~3.0",
-    "@jupyterlab/fileeditor": "~3.0",
-    "@jupyterlab/notebook": "~3.0"
+    "@jupyterlab/application": "~3.1",
+    "@jupyterlab/apputils": "~3.1",
+    "@jupyterlab/fileeditor": "~3.1",
+    "@jupyterlab/notebook": "~3.1"
   },
   "devDependencies": {
     "@jupyterlab/builder": "~3.1"

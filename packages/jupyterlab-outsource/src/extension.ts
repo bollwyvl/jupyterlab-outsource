@@ -124,7 +124,7 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
           if (found != null) {
             break;
           }
-          await new Promise((resolve) => setTimeout(() => resolve(), 100));
+          await new Promise((resolve) => setTimeout(() => resolve(void 0), 100));
         }
 
         if (found == null) {
@@ -205,13 +205,14 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
       new FileEditorOutsourceButton({ sourceror })
     );
 
-    const outsourcePattern = new RegExp(`^${paths.urls.tree}/outsource/([^/]+)/?(.*)`);
+    const outsourcePattern = new RegExp(
+      `^${paths.urls.app}/tree/outsource/([^/]+)/?(.*)`
+    );
 
     app.commands.addCommand(CommandIds.treeOpen, {
       execute: async (args) => {
         const loc = args as IRouter.ILocation;
         const outsourceMatch = loc.path.match(outsourcePattern);
-        console.log(args, loc, outsourceMatch);
         if (outsourceMatch == null) {
           return;
         }

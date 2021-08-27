@@ -9,5 +9,6 @@ _testoutput/
 *.tsbuildinfo
 node_modules/
 packages/*/lib
+src/*/labextensions
 untitled*
 Untitled*
