@@ -156,8 +156,6 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
           widget: doc.content,
         });
 
-        console.log(content);
-
         // Create a MainAreaWidget
         const widget = new MainAreaWidget({ content });
         widget.id = `Outsource-${factory.id}-${UUID.uuid4()}`;

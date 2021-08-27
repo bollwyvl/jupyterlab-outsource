@@ -3,7 +3,7 @@ import { EditorProps } from 'prosemirror-view';
 import { Plugin } from 'prosemirror-state';
 import { Schema } from 'prosemirror-model';
 
-import { IOutsourceror } from '@deathbeds/jupyterlab-outsource/src';
+import { IOutsourceror } from '@deathbeds/jupyterlab-outsource';
 import { ProseMirrorSource } from './widget';
 
 export const PLUGIN_ID = '@deathbeds/jupyterlab-outsource:prosemirror';

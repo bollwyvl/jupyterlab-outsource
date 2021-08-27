@@ -55,6 +55,12 @@
   },
   "jupyterlab": {
     "extension": "lib/extension.js",
-    "outputDir": "../../src/jupyterlab_outsource/labextensions/@deathbeds/jupyterlab-outsource-prosemirror"
+    "outputDir": "../../src/jupyterlab_outsource/labextensions/@deathbeds/jupyterlab-outsource-prosemirror",
+    "sharedPackages": {
+      "@deathbeds/jupyterlab-outsource": {
+        "bundled": false,
+        "singleton": true
+      }
+    }
   }
 }

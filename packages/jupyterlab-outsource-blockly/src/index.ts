@@ -1,6 +1,6 @@
 import { Token } from '@lumino/coreutils';
 import Blockly from 'blockly';
-import { IOutsourceror } from '@deathbeds/jupyterlab-outsource/src';
+import { IOutsourceror } from '@deathbeds/jupyterlab-outsource';
 
 export const PLUGIN_ID = '@deathbeds/jupyterlab-outsource:blockly';
 

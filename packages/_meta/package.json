@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "build": "tsc -b",
-    "watch": "tsc -b --watch"
+    "watch": "tsc -b --watch --preserveWatchOutput"
   },
   "dependencies": {
     "@deathbeds/jupyterlab-outsource": "file:../jupyterlab-outsource",
