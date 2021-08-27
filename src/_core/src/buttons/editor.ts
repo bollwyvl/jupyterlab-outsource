@@ -23,7 +23,7 @@ export class FileEditorOutsourceButton
   ): IDisposable {
     let picker = new OutsourcePicker({
       sourceror: this.sourceror,
-      widgetId: panel.id
+      path: panel.context.path
     });
 
     panel.toolbar.insertItem(9, 'outsource', picker);

@@ -1,4 +1,6 @@
 import { UUID } from '@lumino/coreutils';
+import * as alg from '@lumino/algorithm';
+import { Widget } from '@lumino/widgets';
 
 import { MainAreaWidget, ICommandPalette } from '@jupyterlab/apputils';
 import {
@@ -6,6 +8,7 @@ import {
   JupyterFrontEndPlugin,
   ILabShell,
   IRouter,
+  ILayoutRestorer,
 } from '@jupyterlab/application';
 import { DocumentWidget } from '@jupyterlab/docregistry';
 import { IEditorTracker, FileEditor } from '@jupyterlab/fileeditor';
@@ -22,6 +25,7 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
   provides: IOutsourceror,
   requires: [
     JupyterFrontEnd.IPaths,
+    ILayoutRestorer,
     ILabShell,
     IRouter,
     ICommandPalette,
@@ -31,6 +35,7 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
   activate: (
     app: JupyterFrontEnd,
     paths: JupyterFrontEnd.IPaths,
+    restorer: ILayoutRestorer,
     shell: ILabShell,
     router: IRouter,
     palette: ICommandPalette,
@@ -39,6 +44,15 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
   ): IOutsourceror => {
     const { commands } = app;
     const sourceror = new Sourceror({ notebooks, editors });
+
+    // Handle state restoration.
+    restorer
+      .restore(sourceror.tracker, {
+        command: CommandIds.newSource,
+        args: (widget) => ({ path: widget.path, factory: widget.factory.id }),
+        name: (widget) => widget.path,
+      })
+      .catch(console.warn);
 
     sourceror.executeCellRequested.connect((_, cell) => {
       let executed = false;
@@ -59,6 +73,7 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
         }
       });
     });
+
     sourceror.executeTextRequested.connect((_, options) => {
       let executed = false;
       editors.forEach(async (ed) => {
@@ -76,67 +91,108 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
       });
     });
 
-    sourceror.factoryRegistered.connect((_, factory) => {
-      const command = `${CommandIds.newSource}-${factory.id}`;
-      const category = 'Notebook Cell Operations';
-      commands.addCommand(command, {
-        label: `Create new ${factory.name} for input`,
-        isEnabled: () => (factory.isEnabled ? factory.isEnabled(sourceror) : true),
-        execute: async (args: IOutsourceror.IWidgetOptions) => {
-          console.log(args);
-          shell.activateById(args.widgetId);
-          const current = shell.activeWidget as MainAreaWidget;
-          console.log(current.id, current);
-          if (current == null || current.content == null) {
-            return;
-          }
+    commands.addCommand(CommandIds.newSource, {
+      label: (args: IOutsourceror.IOutsourceCommandArgs) => {
+        const name = sourceror.factory(args.factory)?.name || 'Outsource';
+        return `Create new ${name} for input`;
+      },
+      isEnabled: (args: IOutsourceror.IOutsourceCommandArgs) => {
+        const factory = sourceror.factory(args.factory);
+        if (factory == null) {
+          return false;
+        }
+        return factory.isEnabled ? factory.isEnabled(sourceror) : true;
+      },
+      execute: async (args: IOutsourceror.IOutsourceCommandArgs) => {
+        const factory = sourceror.factory(args.factory);
 
-          if (
-            !(current.content instanceof FileEditor || current instanceof NotebookPanel)
-          ) {
-            return;
-          }
+        if (factory == null) {
+          return false;
+        }
 
-          const model =
-            current instanceof NotebookPanel
-              ? current.content.activeCell?.model
-              : current.content instanceof FileEditor
-              ? current.content.model
-              : null;
+        let found: Widget | undefined;
+        let retries = 10;
 
-          if (model == null) {
-            return;
-          }
-
-          const content = await factory.createWidget({
-            model,
-            sourceror,
-            widget: current.content,
+        while (retries && found == null) {
+          retries--;
+          found = alg.find(shell.widgets('main'), (widget) => {
+            return (
+              widget instanceof DocumentWidget && widget.context.path === args.path
+            );
           });
 
-          // Create a MainAreaWidget
-          const widget = new MainAreaWidget({ content });
-          widget.id = `Outsource-${factory.id}-${UUID.uuid4()}`;
-          widget.title.label = `${factory.name}`;
-          widget.title.icon = factory.iconClass;
-          widget.title.caption = current.title.label
-            ? `For Notebook: ${current.title.label}`
-            : 'For Notebook:';
-          widget.addClass('jp-Outsource-outsource');
-          app.shell.add(widget, 'main', {
-            ref: current.id,
-            mode: 'split-left',
-          });
+          if (found != null) {
+            break;
+          }
+          await new Promise((resolve) => setTimeout(() => resolve(), 100));
+        }
 
-          current.disposed.connect(() => widget.dispose());
-        },
-      });
-      palette.addItem({ command, category });
+        if (found == null) {
+          console.warn(`${args.path} not found for ${args.factory}`);
+        }
+
+        const doc = found as DocumentWidget;
+
+        if (!(doc.content instanceof FileEditor || doc instanceof NotebookPanel)) {
+          return;
+        }
+
+        const model =
+          doc instanceof NotebookPanel
+            ? doc.content.activeCell?.model
+            : doc.content instanceof FileEditor
+            ? doc.content.model
+            : null;
+
+        if (model == null) {
+          return;
+        }
+
+        const content = await factory.createWidget({
+          factory,
+          path: doc.context.path,
+          model,
+          sourceror,
+          widget: doc.content,
+        });
+
+        console.log(content);
+
+        // Create a MainAreaWidget
+        const widget = new MainAreaWidget({ content });
+        widget.id = `Outsource-${factory.id}-${UUID.uuid4()}`;
+        widget.title.label = `${factory.name}`;
+        widget.title.icon = factory.iconClass;
+        widget.title.caption = doc.title.label
+          ? `For Notebook: ${doc.title.label}`
+          : 'For Notebook:';
+        widget.addClass('jp-Outsource-outsource');
+        app.shell.add(widget, 'main', {
+          ref: doc.id,
+          mode: 'split-left',
+        });
+
+        doc.disposed.connect(() => widget.dispose());
+        sourceror.tracker.add(content);
+
+        return widget;
+      },
     });
 
-    sourceror.widgetRequested.connect((_, options: IOutsourceror.IWidgetOptions) => {
-      commands.execute(`${CommandIds.newSource}-${options.factory}`, options as any);
-    });
+    // sourceror.factoryRegistered.connect((_, factory) => {
+    //   const command = `${CommandIds.newSource}-${factory.id}`;
+    //   const category = 'Notebook Cell Operations';
+    //   palette.addItem({ command, category });
+    // });
+
+    sourceror.widgetRequested.connect(
+      async (_, options: IOutsourceror.IOutsourceCommandArgs) => {
+        await commands.execute(CommandIds.newSource, {
+          path: options.path,
+          factory: options.factory,
+        });
+      }
+    );
 
     app.docRegistry.addWidgetExtension(
       'Notebook',
@@ -168,7 +224,7 @@ const extension: JupyterFrontEndPlugin<IOutsourceror> = {
 
           await doc.context.ready;
 
-          await commands.execute(`${CommandIds.newSource}-${factory}`, {
+          await commands.execute(CommandIds.newSource, {
             widgetId: doc.id,
             factory,
           });

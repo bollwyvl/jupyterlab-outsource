@@ -3,21 +3,24 @@ import { Signal } from '@lumino/signaling';
 import { INotebookTracker } from '@jupyterlab/notebook';
 import { MarkdownCell, CodeCell, ICellModel } from '@jupyterlab/cells';
 
-import { IOutsourceror } from '.';
+import { IOutsourceror, NS } from '.';
 
 import '../style/index.css';
+import { WidgetTracker } from '@jupyterlab/apputils';
 
 export class Sourceror implements IOutsourceror {
   private _ready = new PromiseDelegate<void>();
   private _factoryRegistered = new Signal<this, IOutsourceror.IFactory>(this);
   private _executeCellRequested = new Signal<this, ICellModel>(this);
   private _executeTextRequested = new Signal<this, IOutsourceror.IConsoleExecuteOptions>(this);
-  private _widgetRequested = new Signal<this, IOutsourceror.IWidgetOptions>(this);
+  private _widgetRequested = new Signal<this, IOutsourceror.IOutsourceCommandArgs>(this);
   private _notebooks: INotebookTracker | null;
+  tracker: WidgetTracker<IOutsourceror.IOutsource>;
 
   constructor(options: IOutsourceror.IOptions) {
     this._notebooks = options.notebooks || null;
     this._ready.resolve(void 0);
+    this.tracker = new WidgetTracker<IOutsourceror.IOutsource>({ namespace: NS });
   }
 
   get ready() {
@@ -36,7 +39,7 @@ export class Sourceror implements IOutsourceror {
     return this._widgetRequested;
   }
 
-  requestWidget(options: IOutsourceror.IWidgetOptions) {
+  requestWidget(options: IOutsourceror.IOutsourceCommandArgs) {
     this._widgetRequested.emit(options);
   }
 

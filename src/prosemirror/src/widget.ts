@@ -14,7 +14,7 @@ import 'prosemirror-example-setup/style/style.css';
 import 'prosemirror-view/style/prosemirror.css';
 
 import { SCHEMA, PARSE, SERIALIZE } from './schema';
-import { IOutsourceror } from '@deathbeds/jupyterlab-outsource/src';
+import { IOutsourceror, Outsource } from '@deathbeds/jupyterlab-outsource';
 
 export const SOURCEROR: {
   instance: IOutsourceror | null;
@@ -22,16 +22,17 @@ export const SOURCEROR: {
   instance: null,
 };
 
-export class ProseMirrorSource extends Widget {
+export class ProseMirrorSource extends Outsource {
   private _model: CodeEditor.IModel;
   private _wrapper: HTMLDivElement;
   private _view: EditorView<any>;
   private _lastSource: string = '';
-  private _factory: IOutsourceProsemirror;
   private _widget: Widget;
 
+  protected _factory: IOutsourceProsemirror;
+
   constructor(options: IOutsourceProsemirror.IFactoryOptions) {
-    super();
+    super(options);
     this.addClass(CSS.OUTER_WRAPPER);
     this.addClass('jp-RenderedHTMLCommon');
     this._factory = options.factory;
@@ -119,7 +120,7 @@ export class ProseMirrorSource extends Widget {
       EditorState.create({
         doc: PARSE(source),
         plugins: [...exampleSetup({ schema: SCHEMA })],
-        selection: this._view.state.selection
+        selection: this._view.state.selection,
       })
     );
   }

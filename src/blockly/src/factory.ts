@@ -1,5 +1,3 @@
-import { Widget } from '@lumino/widgets';
-
 import { IOutsourceror } from '@deathbeds/jupyterlab-outsource';
 
 import * as widget from './widget';
@@ -33,7 +31,7 @@ export class BlocklyFactory implements IOutsourceBlockly {
 
   async createWidget(
     options: IOutsourceBlockly.IFactoryOptions
-  ): Promise<Widget> {
+  ): Promise<IOutsourceror.IOutsource> {
     const { BlocklySource } = await import(
       /* webpackChunkName: "blockly" */ './widget'
     );

@@ -1,5 +1,3 @@
-import { Widget } from '@lumino/widgets';
-
 import { IOutsourceror } from '@deathbeds/jupyterlab-outsource';
 
 import { IOutsourceProsemirror } from '.';
@@ -29,7 +27,7 @@ export class ProsemirrorFactory implements IOutsourceProsemirror {
     return [...Private._resolvedExtensions.values()];
   }
 
-  async createWidget(options: IOutsourceror.IFactoryOptions): Promise<Widget> {
+  async createWidget(options: IOutsourceror.IFactoryOptions): Promise<IOutsourceror.IOutsource> {
     const { ProseMirrorSource } = await import(
       /* webpackChunkName: "prosemirror" */ './widget'
     );

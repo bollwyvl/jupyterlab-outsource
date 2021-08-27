@@ -1,10 +1,9 @@
-import { Widget } from '@lumino/widgets';
-
 import { ICodeCellModel, CodeCellModel } from '@jupyterlab/cells';
 
 import { CodeEditor } from '@jupyterlab/codeeditor';
 
 import { IOutsourceror } from '@deathbeds/jupyterlab-outsource';
+import { Outsource } from '@deathbeds/jupyterlab-outsource';
 
 import Blockly from 'blockly';
 
@@ -16,14 +15,12 @@ import 'prosemirror-view/style/prosemirror.css';
 
 import { CSS, PLUGIN_ID, IBlocklyMetadata, IOutsourceBlockly } from '.';
 
-// tslint:disable
 import DEFAULT_TOOLBOX from '!!raw-loader!../xml/toolbox.xml';
-// tslint:enable
 
 export const SOURCEROR: {
   instance: IOutsourceror | null;
 } = {
-  instance: null
+  instance: null,
 };
 
 const _onKeyDown = Blockly.onKeyDown;
@@ -50,7 +47,7 @@ Blockly.onKeyDown = (evt: KeyboardEvent) => {
   return _onKeyDown(evt);
 };
 
-export class BlocklySource extends Widget {
+export class BlocklySource extends Outsource {
   private _model: CodeEditor.IModel;
   private _wrapper: HTMLDivElement;
   private _workspace: Blockly.WorkspaceSvg;
@@ -58,7 +55,7 @@ export class BlocklySource extends Widget {
   private _blockly: IOutsourceBlockly;
 
   constructor(options: IOutsourceBlockly.IFactoryOptions) {
-    super();
+    super(options);
     this.addClass(CSS.OUTER_WRAPPER);
     this._model = options.model;
     this._blockly = options.factory;
@@ -72,8 +69,8 @@ export class BlocklySource extends Widget {
         toolbox: this.metadata.toolbox || (DEFAULT_TOOLBOX as string),
         zoom: {
           controls: true,
-          wheel: true
-        }
+          wheel: true,
+        },
       });
       Workspaces.setByModel(this._model, this._workspace);
       this._metadataToWorkspace();
@@ -138,7 +135,7 @@ export class BlocklySource extends Widget {
 
     this.metadata = {
       ...meta,
-      workspace: xml
+      workspace: xml,
     };
   }
 
@@ -198,7 +195,7 @@ export class BlocklySource extends Widget {
       workspace: this._workspace,
       header,
       footer,
-      xml: storeInSource ? metadata.workspace : null
+      xml: storeInSource ? metadata.workspace : null,
     });
 
     if (origSource.trim() !== source.trim()) {

@@ -40,7 +40,7 @@ export class OutsourcePicker extends VDomRenderer<OutsourcePicker.Model> {
     }
     this.model.sourceror.requestWidget({
       factory: value,
-      widgetId: this.model.widgetId
+      path: this.model.path
     });
     this.model.value = '';
   };
@@ -49,18 +49,18 @@ export class OutsourcePicker extends VDomRenderer<OutsourcePicker.Model> {
 export namespace OutsourcePicker {
   export interface IOptions {
     sourceror: IOutsourceror;
-    widgetId: string;
+    path: string;
   }
 
   export class Model extends VDomModel {
     private _sourceror: IOutsourceror;
     private _value: string = '';
-    private _widgetId: string = '';
+    private _path: string = '';
 
     constructor(options: IOptions) {
       super();
       this._sourceror = options.sourceror;
-      this._widgetId = options.widgetId;
+      this._path = options.path;
     }
 
     get value() {
@@ -72,12 +72,12 @@ export namespace OutsourcePicker {
       this.stateChanged.emit(void 0);
     }
 
-    get widgetId() {
-      return this._widgetId;
+    get path() {
+      return this._path;
     }
 
-    set widgetId(widgetId) {
-      this._widgetId = widgetId;
+    set path(path) {
+      this._path = path;
       this.stateChanged.emit(void 0);
     }
 

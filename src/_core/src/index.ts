@@ -6,6 +6,11 @@ import { ICellModel } from '@jupyterlab/cells';
 import { INotebookTracker } from '@jupyterlab/notebook';
 import { CodeEditor } from '@jupyterlab/codeeditor';
 import { IEditorTracker } from '@jupyterlab/fileeditor';
+import { WidgetTracker } from '@jupyterlab/apputils';
+
+export { Outsource } from './widget';
+
+export const NS = 'outsource';
 
 export const PLUGIN_ID = '@deathbeds/jupyterlab-outsource';
 
@@ -15,7 +20,7 @@ export interface IOutsourceror {
   ready: Promise<void>;
   register(factory: IOutsourceror.IFactory): IOutsourceror.IFactory;
   factoryRegistered: ISignal<IOutsourceror, IOutsourceror.IFactory>;
-  widgetRequested: ISignal<IOutsourceror, IOutsourceror.IWidgetOptions>;
+  widgetRequested: ISignal<IOutsourceror, IOutsourceror.IOutsourceCommandArgs>;
   isMarkdownCell: boolean;
   isCodeCell: boolean;
   executeCellRequested: ISignal<IOutsourceror, ICellModel>;
@@ -24,7 +29,8 @@ export interface IOutsourceror {
   executeText(options: IOutsourceror.IConsoleExecuteOptions): void;
   factories: IOutsourceror.IFactory[];
   factory(id: string): IOutsourceror.IFactory | null;
-  requestWidget(options: IOutsourceror.IWidgetOptions): void;
+  requestWidget(options: IOutsourceror.IOutsourceCommandArgs): void;
+  tracker: WidgetTracker<IOutsourceror.IOutsource>;
 }
 
 export namespace IOutsourceror {
@@ -42,24 +48,36 @@ export namespace IOutsourceror {
     readonly name: string;
     readonly iconClass: string;
     readonly id: string;
-    createWidget(options: IFactoryOptions): Promise<Widget>;
+    createWidget(options: IFactoryOptions): Promise<IOutsource>;
     isEnabled?(sourceror?: IOutsourceror): boolean;
   }
 
   export interface IFactoryOptions {
+    path: string;
+    factory: IOutsourceror.IFactory;
     model: CodeEditor.IModel;
     sourceror: IOutsourceror;
     widget: Widget;
   }
 
-  export interface IWidgetOptions extends ReadonlyPartialJSONObject {
+  export interface IWidgetOptions  {
+    factory: IFactory;
+    path: string;
+  }
+
+  export interface IOutsourceCommandArgs extends ReadonlyPartialJSONObject {
     factory: string;
-    widgetId: string;
+    path: string;
+  }
+
+  export interface IOutsource extends Widget {
+    factory: IFactory;
+    path: string;
   }
 }
 
 export const CSS = {
-  icon: 'jp-OutsourceIcon'
+  icon: 'jp-OutsourceIcon',
 };
 
 export namespace CommandIds {
