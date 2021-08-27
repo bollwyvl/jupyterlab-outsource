@@ -32,6 +32,9 @@
   "devDependencies": {
     "@jupyterlab/builder": "~3.1"
   },
+  "scripts": {
+    "watch": "jupyter labextension watch --debug ."
+  },
   "jupyterlab": {
     "extension": "lib/extension.js",
     "outputDir": "../../src/jupyterlab_outsource/labextensions/@deathbeds/jupyterlab-outsource-blockly"
