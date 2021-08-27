@@ -8,6 +8,8 @@ _testoutput/
 *.egg-info/
 *.log
 *.tsbuildinfo
+build/
+dist/
 node_modules/
 packages/*/lib
 src/*/labextensions
