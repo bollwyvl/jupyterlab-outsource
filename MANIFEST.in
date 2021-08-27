@@ -1,0 +1,2 @@
+include LICENSE README.md src/jupyterlab_outsource/install.json
+recursive-include src/jupyterlab_outsource/labextensions *.*
