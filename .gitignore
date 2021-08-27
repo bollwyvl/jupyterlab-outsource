@@ -3,6 +3,7 @@ _testoutput/
 .eslintcache
 .ipynb_checkpoints/
 .venv/
+.yarn-packages/
 *.doit.*
 *.egg-info/
 *.log
